@@ -13,38 +13,23 @@ import studio.coldstream.popeglade.gameobjects.Player;
 
 public class CollisionHandler {
 
-    private Rectangle intersectionX = new Rectangle();
-    private Rectangle intersectionY = new Rectangle();
+    public CollisionHandler() {}
 
-    public CollisionHandler() {
-    }
+    public void collision(float delta, Player player, Level level) {
 
-    public void collision(Player player, Level level) {
-        intersectionX = new Rectangle();
-        intersectionY = new Rectangle();
+        player.updateX(delta);
 
-        Intersector.intersectRectangles(player.getBoundingRectX(), level.getRect1(), intersectionX);
-        Intersector.intersectRectangles(player.getBoundingRectY(), level.getRect1(), intersectionY);
-
-        if (intersectionY.area() > 0.0f && intersectionY.getAspectRatio() > 1.0f) { //collision top-bottom
-
+        if(!Intersector.overlaps(player.getBoundingRect(), level.getRect1())){
             player.makeMoveX();
+            //Gdx.app.log("GameWorld", "CollisionY!! " + intersectionY.area() + "   " + intersectionY.getAspectRatio() + "   " );
+        }
 
-            Gdx.app.log("GameWorld", "CollisionY!! " + intersectionY.area() + "   " + intersectionY.getAspectRatio() + "   " );
-            //intersection.setWidth(intersection.width + 0.1f);
-        } else if (intersectionX.area() > 0.0f || intersectionX.getAspectRatio() <= 1.0f) { //collision right-left
+        player.updateY(delta);
 
+        if(!Intersector.overlaps(player.getBoundingRect(), level.getRect1())){
             player.makeMoveY();
-
-
-            Gdx.app.log("GameWorld", "CollisionX!! " + intersectionX.area() + "   " + intersectionX.getAspectRatio());
-            //intersection.setWidth(intersection.width + 0.1f);
-        } else {
-            player.makeMoveX();
-            player.makeMoveY();
+            //Gdx.app.log("GameWorld", "CollisionX!! " + intersectionX.area() + "   " + intersectionX.getAspectRatio());
         }
     }
-
-
 
 }

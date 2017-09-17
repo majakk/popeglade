@@ -21,7 +21,8 @@ public class Player {
     private int moveX, moveY;
 
     private float velocity;
-    private Rectangle boundingRectX, boundingRectY;
+    private Rectangle boundingRect;
+    private float speedFactor;
 
     public Player(float x, float y, int w, int h) {
         width = w;
@@ -32,40 +33,46 @@ public class Player {
         tempPosition = new Vector2(x, y);
         rotation = 0;
         velocity = 1.5f;
-        boundingRectX = new Rectangle();
-        boundingRectY = new Rectangle();
+        boundingRect = new Rectangle();
     }
 
-    public void update(float delta) {
-
+    public void updateX(float delta) {
 
         tempPosition.set(position);
 
-        if (this.moveX < 0 && this.moveY == 0)
-            tempPosition.add(-velocity * 1.5f, 0);
-        else if (this.moveX > 0 && this.moveY == 0)
-            tempPosition.add(velocity * 1.5f, 0);
+        if(this.moveY == 0)
+            speedFactor=1.5f;
+        else
+            speedFactor=1.0f;
 
+        if (this.moveX < 0)
+            tempPosition.add(-velocity * speedFactor, 0);
+        else if (this.moveX > 0)
+            tempPosition.add(velocity * speedFactor, 0);
 
-        if (this.moveY < 0 && this.moveX == 0)
-            tempPosition.add(0, velocity * 1.5f);
-        else if (this.moveY > 0 && this.moveX == 0)
-            tempPosition.add(0, -velocity * 1.5f);
-
-        else if (this.moveX < 0 && this.moveY < 0)
-            tempPosition.add(-velocity, velocity);
-        else if (this.moveX < 0 && this.moveY > 0)
-            tempPosition.add(-velocity, -velocity);
-        else if (this.moveX > 0 && this.moveY < 0)
-            tempPosition.add(velocity, velocity);
-        else if (this.moveX > 0 && this.moveY > 0)
-            tempPosition.add(velocity, -velocity);
-
-        boundingRectX.set(tempPosition.x + width * 0.2f, tempPosition.y, width * (1.0f - 0.4f), height * 0.3f);
-        boundingRectY.set(tempPosition.x + width * 0.25f, tempPosition.y - height * 0.05f, width * (1.0f - 0.5f), height * 0.4f);
+        boundingRect.set(tempPosition.x + width * 0.25f, tempPosition.y - height * 0.05f, width * (1.0f - 0.5f), height * 0.4f);
 
         return;
 
+    }
+
+    public void updateY(float delta) {
+
+        tempPosition.set(position);
+
+        if(this.moveX == 0)
+            speedFactor=1.5f;
+        else
+            speedFactor=1.0f;
+
+        if (this.moveY < 0 )
+            tempPosition.add(0, velocity * speedFactor );
+        else if (this.moveY > 0 )
+            tempPosition.add(0, -velocity * speedFactor );
+
+        boundingRect.set(tempPosition.x + width * 0.25f, tempPosition.y - height * 0.05f, width * (1.0f - 0.5f), height * 0.4f);
+
+        return;
     }
 
     public void moveX(int m) {
@@ -104,20 +111,17 @@ public class Player {
         rotation = rot;
     }
 
-    public Rectangle getBoundingRectX(){
-        return boundingRectX;
-    }
-    public Rectangle getBoundingRectY(){
-        return boundingRectY;
+    public Rectangle getBoundingRect(){
+        return boundingRect;
     }
 
     public void makeMoveX() {
         position.set(tempPosition.x, position.y);
-        //position.add(position.x - tempPosition.x, 0);
-        //tempPosition.set(position.x, tempPosition.y);
     }
     public void makeMoveY() {
         position.set(position.x, tempPosition.y);
-        //tempPosition.set(tempPosition.x, position.y);
+
     }
+
+
 }

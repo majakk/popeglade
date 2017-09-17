@@ -95,11 +95,13 @@ public class GameRenderer {
 
             //Draw Player Collision Circle
             shapeRenderer.setColor(1,0,0,0.2f);
-            shapeRenderer.rect(player.getBoundingRectX().x, player.getBoundingRectX().y, player.getBoundingRectX().width, player.getBoundingRectX().height);
-            shapeRenderer.rect(player.getBoundingRectY().x, player.getBoundingRectY().y, player.getBoundingRectY().width, player.getBoundingRectY().height);
+            shapeRenderer.rect(player.getBoundingRect().x, player.getBoundingRect().y, player.getBoundingRect().width, player.getBoundingRect().height);
+            //shapeRenderer.rect(player.getBoundingRectY().x, player.getBoundingRectY().y, player.getBoundingRectY().width, player.getBoundingRectY().height);
 
             shapeRenderer.rect(myWorld.getLevel().getRect1().x, myWorld.getLevel().getRect1().y, myWorld.getLevel().getRect1().width, myWorld.getLevel().getRect1().height);
             //shapeRenderer.rect(myWorld.getRect2().x, myWorld.getRect2().y, myWorld.getRect2().width, myWorld.getRect2().height);
+
+
 
         shapeRenderer.end();
 

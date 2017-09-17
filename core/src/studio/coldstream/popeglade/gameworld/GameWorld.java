@@ -24,7 +24,7 @@ public class GameWorld {
     public GameWorld(int midX, int midY) {
         Gdx.app.log("GameWorld", "Attached");
 
-        player = new Player(300, 300, 24, 32);
+        player = new Player(300, 700, 24, 32);
         level = new Level(1);
         collisionHandler = new CollisionHandler();
     }
@@ -49,9 +49,13 @@ public class GameWorld {
                 break;
         }*/
 
-        player.update(delta);
+        //player.updateX(delta);
 
-        collisionHandler.collision(player, level);
+        collisionHandler.collision(delta, player, level);
+
+        //player.updateY(delta);
+
+        //collisionHandler.collisionY(player, level);
 
     }
 
