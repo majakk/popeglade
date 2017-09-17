@@ -17,18 +17,18 @@ public class CollisionHandler {
 
     public void collision(float delta, Player player, Level level) {
 
+        //X-axis collisions
         player.updateX(delta);
 
         if(!Intersector.overlaps(player.getBoundingRect(), level.getRect1())){
             player.makeMoveX();
-            //Gdx.app.log("GameWorld", "CollisionY!! " + intersectionY.area() + "   " + intersectionY.getAspectRatio() + "   " );
         }
 
+        //Y-axis collisions
         player.updateY(delta);
 
         if(!Intersector.overlaps(player.getBoundingRect(), level.getRect1())){
             player.makeMoveY();
-            //Gdx.app.log("GameWorld", "CollisionX!! " + intersectionX.area() + "   " + intersectionX.getAspectRatio());
         }
     }
 

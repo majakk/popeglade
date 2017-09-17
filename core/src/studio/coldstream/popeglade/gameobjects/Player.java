@@ -32,7 +32,7 @@ public class Player {
         position = new Vector2(x, y);
         tempPosition = new Vector2(x, y);
         rotation = 0;
-        velocity = 1.5f;
+        velocity = 1.3f;
         boundingRect = new Rectangle();
     }
 
@@ -50,7 +50,7 @@ public class Player {
         else if (this.moveX > 0)
             tempPosition.add(velocity * speedFactor, 0);
 
-        boundingRect.set(tempPosition.x + width * 0.25f, tempPosition.y - height * 0.05f, width * (1.0f - 0.5f), height * 0.4f);
+        boundingRect.set(tempPosition.x - width * 0.25f, tempPosition.y - height * 0.05f, width * (1.0f - 0.5f), height * 0.4f);
 
         return;
 
@@ -70,7 +70,7 @@ public class Player {
         else if (this.moveY > 0 )
             tempPosition.add(0, -velocity * speedFactor );
 
-        boundingRect.set(tempPosition.x + width * 0.25f, tempPosition.y - height * 0.05f, width * (1.0f - 0.5f), height * 0.4f);
+        boundingRect.set(tempPosition.x - width * 0.25f, tempPosition.y - height * 0.05f, width * (1.0f - 0.5f), height * 0.4f);
 
         return;
     }

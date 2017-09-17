@@ -44,6 +44,8 @@ public class Level {
         numOfTilesY = tiledMapProp.get("height", Integer.class);
         width = singleTileWidth * numOfTilesX;
         height = singleTileHeight * numOfTilesY;
+
+
     }
 
     public Rectangle getRect1() { return rect1; }
@@ -53,4 +55,14 @@ public class Level {
     public MapProperties getTiledMapProp() { return tiledMapProp; }
     public int getWidth() { return width; }
     public int getHeight() { return height; }
+
+    public int getSingleTileWidth() {
+        return singleTileWidth;
+    }
+
+    public int getSingleTileHeight() {
+        return singleTileHeight;
+    }
+
+
 }

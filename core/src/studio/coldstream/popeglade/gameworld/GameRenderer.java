@@ -18,6 +18,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 import studio.coldstream.popeglade.gamehelpers.AssetLoader;
+import studio.coldstream.popeglade.gamehelpers.LocationHandler;
 import studio.coldstream.popeglade.gameobjects.Level;
 import studio.coldstream.popeglade.gameobjects.Player;
 
@@ -38,9 +39,10 @@ public class GameRenderer {
     //Game Objects
     private Player player;
 
-
     //Game Assets
     private Animation playerAnimation[];
+
+    private LocationHandler locationHandler;
 
     public GameRenderer(GameWorld world, int midPointX, int midPointY) {
         myWorld = world;
@@ -55,6 +57,8 @@ public class GameRenderer {
 
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(cam.combined);
+
+        locationHandler = new LocationHandler();
 
         initGameObjects();
         initAssets();
@@ -86,7 +90,7 @@ public class GameRenderer {
 
             //Draw Player
             batcher.draw((TextureRegion) playerAnimation[player.getRotation()].getKeyFrame(runTime),
-                player.getX(), player.getY(), player.getWidth(), player.getHeight());
+                player.getX()- player.getWidth() / 2, player.getY(), player.getWidth(), player.getHeight());
 
         batcher.end();
 
@@ -101,9 +105,24 @@ public class GameRenderer {
             shapeRenderer.rect(myWorld.getLevel().getRect1().x, myWorld.getLevel().getRect1().y, myWorld.getLevel().getRect1().width, myWorld.getLevel().getRect1().height);
             //shapeRenderer.rect(myWorld.getRect2().x, myWorld.getRect2().y, myWorld.getRect2().width, myWorld.getRect2().height);
 
-
+            /*for(int i = 0; i < 1; i++){
+                shapeRenderer.rect(locationHandler.playerTileRect(player,level).x, locationHandler.playerTileRect(player,level).y, locationHandler.playerTileRect(player,level).width, locationHandler.playerTileRect(player,level).height);
+            }*/
 
         shapeRenderer.end();
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            /*for(int i = 0; i < 1; i++){
+                shapeRenderer.rect(locationHandler.playerTileRect(player,level).x, locationHandler.playerTileRect(player,level).y, locationHandler.playerTileRect(player,level).width, locationHandler.playerTileRect(player,level).height);
+            }*/
+
+            for(int i = 0; i < 8; i++){
+                shapeRenderer.rect(locationHandler.playerOctaTileRect(player,level).get(i).x, locationHandler.playerOctaTileRect(player,level).get(i).y, locationHandler.playerOctaTileRect(player,level).get(i).width, locationHandler.playerOctaTileRect(player,level).get(i).height);
+            }
+
+        shapeRenderer.end();
+
+
 
     }
 
