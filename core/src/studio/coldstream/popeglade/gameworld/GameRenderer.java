@@ -42,7 +42,7 @@ public class GameRenderer {
     //Game Assets
     private Animation playerAnimation[];
 
-    private LocationHandler locationHandler;
+    private LocationHandler lh;
 
     public GameRenderer(GameWorld world, int midPointX, int midPointY) {
         myWorld = world;
@@ -58,7 +58,7 @@ public class GameRenderer {
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(cam.combined);
 
-        locationHandler = new LocationHandler();
+        lh = new LocationHandler();
 
         initGameObjects();
         initAssets();
@@ -106,18 +106,19 @@ public class GameRenderer {
             //shapeRenderer.rect(myWorld.getRect2().x, myWorld.getRect2().y, myWorld.getRect2().width, myWorld.getRect2().height);
 
             /*for(int i = 0; i < 1; i++){
-                shapeRenderer.rect(locationHandler.playerTileRect(player,level).x, locationHandler.playerTileRect(player,level).y, locationHandler.playerTileRect(player,level).width, locationHandler.playerTileRect(player,level).height);
+                shapeRenderer.rect(lh.playerTileRect(player,level).x, lh.playerTileRect(player,level).y, lh.playerTileRect(player,level).width, lh.playerTileRect(player,level).height);
             }*/
 
         shapeRenderer.end();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             /*for(int i = 0; i < 1; i++){
-                shapeRenderer.rect(locationHandler.playerTileRect(player,level).x, locationHandler.playerTileRect(player,level).y, locationHandler.playerTileRect(player,level).width, locationHandler.playerTileRect(player,level).height);
+                shapeRenderer.rect(lh.playerTileRect(player,level).x, lh.playerTileRect(player,level).y, lh.playerTileRect(player,level).width, lh.playerTileRect(player,level).height);
             }*/
 
-            for(int i = 0; i < 8; i++){
-                shapeRenderer.rect(locationHandler.playerOctaTileRect(player,level).get(i).x, locationHandler.playerOctaTileRect(player,level).get(i).y, locationHandler.playerOctaTileRect(player,level).get(i).width, locationHandler.playerOctaTileRect(player,level).get(i).height);
+            for(int i = 0; i < 9; i++){
+                if(lh.isTileWall(lh.playerNineTile(player,level).get(i)))
+                    shapeRenderer.rect(lh.playerNineTileRect(player,level).get(i).x, lh.playerNineTileRect(player,level).get(i).y, lh.playerNineTileRect(player,level).get(i).width, lh.playerNineTileRect(player,level).get(i).height);
             }
 
         shapeRenderer.end();

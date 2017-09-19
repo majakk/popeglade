@@ -13,23 +13,41 @@ import studio.coldstream.popeglade.gameobjects.Player;
 
 public class CollisionHandler {
 
-    public CollisionHandler() {}
+    private LocationHandler lh;
+
+    public CollisionHandler() {
+        lh = new LocationHandler();
+    }
 
     public void collision(float delta, Player player, Level level) {
 
-        //X-axis collisions
         player.updateX(delta);
 
-        if(!Intersector.overlaps(player.getBoundingRect(), level.getRect1())){
+        //X-axis collisions
+
+        if(!anyWallCollision(player, level)){
             player.makeMoveX();
         }
 
         //Y-axis collisions
         player.updateY(delta);
 
-        if(!Intersector.overlaps(player.getBoundingRect(), level.getRect1())){
+        if(!anyWallCollision(player, level)){
             player.makeMoveY();
         }
+
     }
+
+    public boolean anyWallCollision(Player player, Level level) {
+        for(int i = 0; i < 9; i++){
+            if(lh.isTileWall(lh.playerNineTile(player,level).get(i))) {
+                if(Intersector.overlaps(player.getBoundingRect(), lh.playerNineTileRect(player, level).get(i)))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+
 
 }
