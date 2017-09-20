@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -32,6 +33,7 @@ public class GameRenderer {
     private OrthographicCamera cam;
     private ShapeRenderer shapeRenderer;
     private SpriteBatch batcher;
+    private BitmapFont font;
 
     //Game Level
     private Level level;
@@ -47,6 +49,9 @@ public class GameRenderer {
     public GameRenderer(GameWorld world, int midPointX, int midPointY) {
         myWorld = world;
         midPoints = new Vector2(midPointX,midPointY);
+
+        font = new BitmapFont();
+        font.getData().setScale(.4f);
 
         cam = new OrthographicCamera();
         cam.setToOrtho(false, midPointX, midPointY);
@@ -123,6 +128,12 @@ public class GameRenderer {
 
         shapeRenderer.end();
 
+        batcher.begin();
+
+            for(int i = 0; i < 9; i++){
+                font.draw(batcher, lh.playerNineTile(player, level).get(i).getTile().getId() + "", lh.playerNineTileRect(player,level).get(i).x + 2, lh.playerNineTileRect(player,level).get(i).y + 8);
+            }
+        batcher.end();
 
 
     }
