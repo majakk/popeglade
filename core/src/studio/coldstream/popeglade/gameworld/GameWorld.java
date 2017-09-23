@@ -11,6 +11,7 @@ import studio.coldstream.popeglade.gamehelpers.CollisionHandler;
 import studio.coldstream.popeglade.gamehelpers.LocationHandler;
 import studio.coldstream.popeglade.gameobjects.Level;
 import studio.coldstream.popeglade.gameobjects.Player;
+import studio.coldstream.popeglade.gameobjects.Pointer;
 
 
 /**
@@ -21,6 +22,7 @@ public class GameWorld {
 
     private Player player;
     private Level level;
+    private Pointer pointer;
     private CollisionHandler collisionHandler;
     private LocationHandler locationHandler;
 
@@ -31,6 +33,7 @@ public class GameWorld {
 
         player = new Player(300, 700, 24, 32);
         level = new Level(1);
+        pointer = new Pointer();
         collisionHandler = new CollisionHandler();
         locationHandler = new LocationHandler();
 
@@ -81,10 +84,13 @@ public class GameWorld {
         //this is where you get the properties of the tile
         tile.getProperties().get("propertiename");*/
 
+        pointer.update(delta);
+
     }
 
     public Player getPlayer() { return player; }
     public Level getLevel() { return level; }
+    public Pointer getPointer() { return pointer; }
 
 
 }

@@ -1,27 +1,21 @@
 package studio.coldstream.popeglade.gameworld;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.MapProperties;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 
 import studio.coldstream.popeglade.gamehelpers.AssetLoader;
 import studio.coldstream.popeglade.gamehelpers.LocationHandler;
 import studio.coldstream.popeglade.gameobjects.Level;
 import studio.coldstream.popeglade.gameobjects.Player;
+import studio.coldstream.popeglade.gameobjects.Pointer;
 
 /**
  * Created by Scalar on 01/08/2017.
@@ -40,6 +34,7 @@ public class GameRenderer {
 
     //Game Objects
     private Player player;
+    private Pointer pointer;
 
     //Game Assets
     private Animation playerAnimation[];
@@ -77,8 +72,6 @@ public class GameRenderer {
         Gdx.gl.glClearColor(0.6f, 0.6f, 0.8f, 1);
         Gdx.gl.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
         Gdx.gl20.glEnable(Gdx.gl20.GL_BLEND);
-
-        //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //Constrain the camera to the map area
         cam.position.x = MathUtils.clamp(player.getX(), cam.viewportWidth / 2, level.getWidth() - cam.viewportWidth / 2);
@@ -128,6 +121,12 @@ public class GameRenderer {
 
         shapeRenderer.end();
 
+        //shapeRenderer.setProjectionMatrix(cam.projection);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            shapeRenderer.setColor(0.5f,1,0.5f,0.2f);
+            shapeRenderer.rect(pointer.getPosition().x, pointer.getPosition().y, 10, 10);
+        shapeRenderer.end();
+
         batcher.begin();
 
             for(int i = 0; i < 9; i++){
@@ -138,13 +137,14 @@ public class GameRenderer {
 
     }
 
-    /*public OrthographicCamera getCamera(){
+    public OrthographicCamera getCamera(){
         return cam;
-    }*/
+    }
 
     private void initGameObjects() {
         player = myWorld.getPlayer();
         level = myWorld.getLevel();
+        pointer = myWorld.getPointer();
     }
 
     private void initAssets() {

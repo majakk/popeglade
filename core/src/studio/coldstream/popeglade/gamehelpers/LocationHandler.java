@@ -96,13 +96,17 @@ public class LocationHandler {
         //tempNineCell.set(0, new Cell());
         tileLayer = (TiledMapTileLayer) level.getTiledMap().getLayers().get(0);
         for(int i = 0; i < 9; i++) {
-            tempNineCell.set(i,
-                    tileLayer.getCell(
-                            (int) Math.floor((double) player.getX() / (double) level.getSingleTileWidth()) + (int) nd.get(i).x,
-                            (int) Math.floor((double) player.getY() / (double) level.getSingleTileHeight()) + (int) nd.get(i).y
-                    )
-            );
-
+            if(tileLayer.getCell(
+                    (int) Math.floor((double) player.getX() / (double) level.getSingleTileWidth()) + (int) nd.get(i).x,
+                    (int) Math.floor((double) player.getY() / (double) level.getSingleTileHeight()) + (int) nd.get(i).y
+            ) != null) {
+                tempNineCell.set(i,
+                        tileLayer.getCell(
+                                (int) Math.floor((double) player.getX() / (double) level.getSingleTileWidth()) + (int) nd.get(i).x,
+                                (int) Math.floor((double) player.getY() / (double) level.getSingleTileHeight()) + (int) nd.get(i).y
+                        )
+                );
+            }
         }
 
         return tempNineCell;

@@ -1,10 +1,15 @@
 package studio.coldstream.popeglade.gamehelpers;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 
 import studio.coldstream.popeglade.gameobjects.Player;
+import studio.coldstream.popeglade.gameobjects.Pointer;
+import studio.coldstream.popeglade.gameworld.GameRenderer;
 
 /**
  * Created by Scalar on 01/08/2017.
@@ -13,12 +18,15 @@ import studio.coldstream.popeglade.gameobjects.Player;
 public class InputHandler implements InputProcessor {
 
     private Player myPlayer;
-    private OrthographicCamera camera;
+    private Pointer myPointer;
+    private OrthographicCamera myCamera;
     private int keycountX, keycountY;
 
-    public InputHandler(Player player) {
+    public InputHandler(Player player, Pointer pointer, OrthographicCamera cam) {
         myPlayer = player;
-        //camera = cam;
+        myPointer = pointer;
+        myCamera = cam;
+
         keycountX = 0;
         keycountY = 0;
     }
@@ -26,6 +34,10 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        if (button == Input.Buttons.LEFT) {
+            // Some stuff
+            return true;
+        }
         return false;
     }
 
@@ -54,6 +66,8 @@ public class InputHandler implements InputProcessor {
             myPlayer.moveY(1);
         }
 
+
+
         return true;
 
     }
@@ -81,6 +95,8 @@ public class InputHandler implements InputProcessor {
             myPlayer.moveY(0);
         }
 
+
+
         return true;
     }
 
@@ -91,6 +107,8 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        if(button == Input.Buttons.LEFT)
+            myPointer.click();
         return false;
     }
 
@@ -101,12 +119,18 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
+        myPointer.setPosition(new Vector2(getMousePosInGameWorld().x, getMousePosInGameWorld().y));
+
         return false;
     }
 
     @Override
     public boolean scrolled(int amount) {
         return false;
+    }
+
+    Vector3 getMousePosInGameWorld() {
+        return myCamera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
     }
 
 }

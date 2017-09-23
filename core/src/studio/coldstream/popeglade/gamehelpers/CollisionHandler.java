@@ -15,6 +15,8 @@ public class CollisionHandler {
 
     private LocationHandler lh;
 
+    private boolean wallsEnabled = false;
+
     public CollisionHandler() {
         lh = new LocationHandler();
     }
@@ -39,10 +41,12 @@ public class CollisionHandler {
     }
 
     public boolean anyWallCollision(Player player, Level level) {
-        for(int i = 0; i < 9; i++){
-            if(lh.isTileWall(lh.playerNineTile(player,level).get(i))) {
-                if(Intersector.overlaps(player.getBoundingRect(), lh.playerNineTileRect(player, level).get(i)))
-                    return true;
+        if(wallsEnabled) {
+            for (int i = 0; i < 9; i++) {
+                if (lh.isTileWall(lh.playerNineTile(player, level).get(i))) {
+                    if (Intersector.overlaps(player.getBoundingRect(), lh.playerNineTileRect(player, level).get(i)))
+                        return true;
+                }
             }
         }
         return false;
