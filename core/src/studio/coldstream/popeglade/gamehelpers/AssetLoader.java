@@ -1,6 +1,7 @@
 package studio.coldstream.popeglade.gamehelpers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -11,12 +12,13 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class AssetLoader {
 
-    public static Texture texture;
+    private static Texture texture;
     //public static TextureRegion bg, grass;
 
     public static Animation playerAnimation[];
-    public static TextureRegion player[][];
+    private static TextureRegion player[][];
 
+    private static Pixmap pm;
 
     //public static TextureRegion skullUp, skullDown, bar;
 
@@ -41,11 +43,17 @@ public class AssetLoader {
             playerAnimation[i].setPlayMode(Animation.PlayMode.LOOP_PINGPONG);
         }
 
+        pm = new Pixmap(Gdx.files.internal("android/assets/gfx/cursor_image.png"));
+        /*pm.setBlending(Pixmap.Blending.SourceOver);
+        pm.fill();*/
+        Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, 0, 0));
+
     }
 
 
     public static void dispose() {
         // We must dispose of the texture when we are finished.
         texture.dispose();
+        pm.dispose();
     }
 }

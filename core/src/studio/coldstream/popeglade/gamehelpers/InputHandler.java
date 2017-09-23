@@ -9,7 +9,6 @@ import com.badlogic.gdx.math.Vector3;
 
 import studio.coldstream.popeglade.gameobjects.Player;
 import studio.coldstream.popeglade.gameobjects.Pointer;
-import studio.coldstream.popeglade.gameworld.GameRenderer;
 
 /**
  * Created by Scalar on 01/08/2017.
@@ -36,6 +35,7 @@ public class InputHandler implements InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (button == Input.Buttons.LEFT) {
             // Some stuff
+            myPointer.leftClick();
             return true;
         }
         return false;
@@ -66,8 +66,6 @@ public class InputHandler implements InputProcessor {
             myPlayer.moveY(1);
         }
 
-
-
         return true;
 
     }
@@ -95,8 +93,6 @@ public class InputHandler implements InputProcessor {
             myPlayer.moveY(0);
         }
 
-
-
         return true;
     }
 
@@ -107,8 +103,7 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        if(button == Input.Buttons.LEFT)
-            myPointer.click();
+
         return false;
     }
 
@@ -120,7 +115,6 @@ public class InputHandler implements InputProcessor {
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
         myPointer.setPosition(new Vector2(getMousePosInGameWorld().x, getMousePosInGameWorld().y));
-
         return false;
     }
 
@@ -129,7 +123,7 @@ public class InputHandler implements InputProcessor {
         return false;
     }
 
-    Vector3 getMousePosInGameWorld() {
+    private Vector3 getMousePosInGameWorld() {
         return myCamera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
     }
 

@@ -13,9 +13,9 @@ import studio.coldstream.popeglade.gameobjects.Player;
 
 public class CollisionHandler {
 
-    private LocationHandler lh;
+    private boolean wallsEnabled = true;
 
-    private boolean wallsEnabled = false;
+    private LocationHandler lh;
 
     public CollisionHandler() {
         lh = new LocationHandler();
@@ -23,9 +23,8 @@ public class CollisionHandler {
 
     public void collision(float delta, Player player, Level level) {
 
-        player.updateX(delta);
-
         //X-axis collisions
+        player.updateX(delta);
 
         if(!anyWallCollision(player, level)){
             player.makeMoveX();
@@ -40,7 +39,7 @@ public class CollisionHandler {
 
     }
 
-    public boolean anyWallCollision(Player player, Level level) {
+    private boolean anyWallCollision(Player player, Level level) {
         if(wallsEnabled) {
             for (int i = 0; i < 9; i++) {
                 if (lh.isTileWall(lh.playerNineTile(player, level).get(i))) {

@@ -36,8 +36,6 @@ public class GameWorld {
         pointer = new Pointer();
         collisionHandler = new CollisionHandler();
         locationHandler = new LocationHandler();
-
-
     }
 
 
@@ -84,7 +82,7 @@ public class GameWorld {
         //this is where you get the properties of the tile
         tile.getProperties().get("propertiename");*/
 
-        pointer.update(delta);
+        pointer.update(delta, player, level);
 
     }
 

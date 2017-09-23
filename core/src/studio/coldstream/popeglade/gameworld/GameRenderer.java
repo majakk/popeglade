@@ -9,13 +9,14 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 
 import studio.coldstream.popeglade.gamehelpers.AssetLoader;
 import studio.coldstream.popeglade.gamehelpers.LocationHandler;
 import studio.coldstream.popeglade.gameobjects.Level;
 import studio.coldstream.popeglade.gameobjects.Player;
 import studio.coldstream.popeglade.gameobjects.Pointer;
+
+
 
 /**
  * Created by Scalar on 01/08/2017.
@@ -92,27 +93,17 @@ public class GameRenderer {
 
         batcher.end();
 
+        //Draw collision rects
         shapeRenderer.setProjectionMatrix(cam.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
-            //Draw Player Collision Circle
+            //Draw Player Collision Rect
             shapeRenderer.setColor(1,0,0,0.2f);
             shapeRenderer.rect(player.getBoundingRect().x, player.getBoundingRect().y, player.getBoundingRect().width, player.getBoundingRect().height);
-            //shapeRenderer.rect(player.getBoundingRectY().x, player.getBoundingRectY().y, player.getBoundingRectY().width, player.getBoundingRectY().height);
-
-            shapeRenderer.rect(myWorld.getLevel().getRect1().x, myWorld.getLevel().getRect1().y, myWorld.getLevel().getRect1().width, myWorld.getLevel().getRect1().height);
-            //shapeRenderer.rect(myWorld.getRect2().x, myWorld.getRect2().y, myWorld.getRect2().width, myWorld.getRect2().height);
-
-            /*for(int i = 0; i < 1; i++){
-                shapeRenderer.rect(lh.playerTileRect(player,level).x, lh.playerTileRect(player,level).y, lh.playerTileRect(player,level).width, lh.playerTileRect(player,level).height);
-            }*/
 
         shapeRenderer.end();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-            /*for(int i = 0; i < 1; i++){
-                shapeRenderer.rect(lh.playerTileRect(player,level).x, lh.playerTileRect(player,level).y, lh.playerTileRect(player,level).width, lh.playerTileRect(player,level).height);
-            }*/
 
             for(int i = 0; i < 9; i++){
                 if(lh.isTileWall(lh.playerNineTile(player,level).get(i)))
@@ -121,18 +112,28 @@ public class GameRenderer {
 
         shapeRenderer.end();
 
-        //shapeRenderer.setProjectionMatrix(cam.projection);
+        //Draw pointer rect
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-            shapeRenderer.setColor(0.5f,1,0.5f,0.2f);
-            shapeRenderer.rect(pointer.getPosition().x, pointer.getPosition().y, 10, 10);
+
+            shapeRenderer.setColor(0.3f,1,0.3f,0.2f);
+            //shapeRenderer.rect(pointer.getPosition().x, pointer.getPosition().y, 10, 10);
+            shapeRenderer.rect(lh.pointerTileRect(pointer,level).x, lh.pointerTileRect(pointer,level).y, lh.pointerTileRect(pointer,level).width, lh.pointerTileRect(pointer,level).height);
+
         shapeRenderer.end();
 
+        //Draw values in rects
         batcher.begin();
 
+            //Ninerect
             for(int i = 0; i < 9; i++){
                 font.draw(batcher, lh.playerNineTile(player, level).get(i).getTile().getId() + "", lh.playerNineTileRect(player,level).get(i).x + 2, lh.playerNineTileRect(player,level).get(i).y + 8);
             }
+
+            //Pointerrect
+            font.draw(batcher, lh.pointerTile(pointer, level).getTile().getId() + "", lh.pointerTileRect(pointer,level).x + 2, lh.pointerTileRect(pointer,level).y + 8);
+
         batcher.end();
+
 
 
     }

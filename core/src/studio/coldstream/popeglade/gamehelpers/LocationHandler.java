@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.Array;
 
 import studio.coldstream.popeglade.gameobjects.Level;
 import studio.coldstream.popeglade.gameobjects.Player;
+import studio.coldstream.popeglade.gameobjects.Pointer;
 
 /**
  * Created by Scalar on 17/09/2017.
@@ -64,17 +65,36 @@ public class LocationHandler {
         return cell;
     }
 
+    public Cell pointerTile(Pointer pointer, Level level) {
+        tileLayer = (TiledMapTileLayer) level.getTiledMap().getLayers().get(0);
+        cell = tileLayer.getCell((int)Math.floor((double)pointer.getX()/(double)level.getSingleTileWidth()),(int)Math.floor((double)pointer.getY()/(double)level.getSingleTileHeight()));
+
+
+        //Gdx.app.log("LocationHandler", cell.getTile().getId() + "");
+        return cell;
+    }
+
     public boolean isTileWall(Cell cell){
-        if(cell.getTile().getProperties().get("wall") != null)
+        /*if(cell.getTile().getProperties().get("wall") != null)
             return true;
         else
-            return false;
+            return false;*/
+        return cell.getTile().getProperties().get("wall") != null;
     }
 
     public Rectangle playerTileRect(Player player, Level level) {
         tempRect.set(
                 (float)Math.floor((double)player.getX()/(double)level.getSingleTileWidth()) * level.getSingleTileWidth(),
                 (float)Math.floor((double)player.getY()/(double)level.getSingleTileHeight()) * level.getSingleTileHeight(),
+                level.getSingleTileWidth(),
+                level.getSingleTileHeight());
+        return tempRect;
+    }
+
+    public Rectangle pointerTileRect(Pointer pointer, Level level) {
+        tempRect.set(
+                (float)Math.floor((double)pointer.getX()/(double)level.getSingleTileWidth()) * level.getSingleTileWidth(),
+                (float)Math.floor((double)pointer.getY()/(double)level.getSingleTileHeight()) * level.getSingleTileHeight(),
                 level.getSingleTileWidth(),
                 level.getSingleTileHeight());
         return tempRect;

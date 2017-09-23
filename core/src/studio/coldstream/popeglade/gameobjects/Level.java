@@ -25,8 +25,8 @@ public class Level {
     private int height;
 
     private int currentLevel;
-    private Rectangle rect1 = new Rectangle(100,200,32,32);
-    private Rectangle rect2 = new Rectangle(132,200,32,32);
+    /*private Rectangle rect1 = new Rectangle(100,200,32,32);
+    private Rectangle rect2 = new Rectangle(132,200,32,32);*/
 
     public Level(int clvl) {
         currentLevel = clvl;
@@ -45,11 +45,10 @@ public class Level {
         width = singleTileWidth * numOfTilesX;
         height = singleTileHeight * numOfTilesY;
 
-
     }
 
-    public Rectangle getRect1() { return rect1; }
-    public Rectangle getRect2() { return rect2; }
+    /*public Rectangle getRect1() { return rect1; }
+    public Rectangle getRect2() { return rect2; }*/
     public TiledMap getTiledMap() { return tiledMap; }
     public TiledMapRenderer getTiledMapRenderer() { return tiledMapRenderer; }
     public MapProperties getTiledMapProp() { return tiledMapProp; }

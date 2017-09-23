@@ -1,7 +1,5 @@
 package studio.coldstream.popeglade.gameobjects;
 
-import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.math.Ellipse;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -32,7 +30,7 @@ public class Player {
         position = new Vector2(x, y);
         tempPosition = new Vector2(x, y);
         rotation = 0;
-        velocity = 1.3f;
+        velocity = 2.3f;
         boundingRect = new Rectangle();
     }
 
@@ -51,9 +49,6 @@ public class Player {
             tempPosition.add(velocity * speedFactor, 0);
 
         boundingRect.set(tempPosition.x - width * 0.25f, tempPosition.y - height * 0.05f, width * (1.0f - 0.5f), height * 0.4f);
-
-        return;
-
     }
 
     public void updateY(float delta) {
@@ -71,18 +66,14 @@ public class Player {
             tempPosition.add(0, -velocity * speedFactor );
 
         boundingRect.set(tempPosition.x - width * 0.25f, tempPosition.y - height * 0.05f, width * (1.0f - 0.5f), height * 0.4f);
-
-        return;
     }
 
     public void moveX(int m) {
         this.moveX = m;
-        return;
     }
 
     public void moveY(int m) {
         this.moveY = m;
-        return;
     }
 
     public Vector2 getPosition() { return position; }
