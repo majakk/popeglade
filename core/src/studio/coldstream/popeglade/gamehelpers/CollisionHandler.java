@@ -1,10 +1,8 @@
 package studio.coldstream.popeglade.gamehelpers;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.Rectangle;
 
-import studio.coldstream.popeglade.gameobjects.Level;
+import studio.coldstream.popeglade.gameobjects.Terrain;
 import studio.coldstream.popeglade.gameobjects.Player;
 
 /**
@@ -21,29 +19,29 @@ public class CollisionHandler {
         lh = new LocationHandler();
     }
 
-    public void update(float delta, Player player, Level level) {
+    public void update(float delta, Player player, Terrain terrain) {
 
         //X-axis collisions
         player.updateX(delta);
 
-        if(!anyWallCollision(player, level)){
+        if(!anyWallCollision(player, terrain)){
             player.makeMoveX();
         }
 
         //Y-axis collisions
         player.updateY(delta);
 
-        if(!anyWallCollision(player, level)){
+        if(!anyWallCollision(player, terrain)){
             player.makeMoveY();
         }
 
     }
 
-    private boolean anyWallCollision(Player player, Level level) {
+    private boolean anyWallCollision(Player player, Terrain terrain) {
         if(wallsEnabled) {
             for (int i = 0; i < 9; i++) {
-                if (lh.isTileWall(lh.playerNineTile(player, level).get(i))) {
-                    if (Intersector.overlaps(player.getBoundingRect(), lh.playerNineTileRect(player, level).get(i)))
+                if (lh.isTileWall(lh.playerNineTile(player, terrain).get(i))) {
+                    if (Intersector.overlaps(player.getBoundingRect(), lh.playerNineTileRect(player, terrain).get(i)))
                         return true;
                 }
             }

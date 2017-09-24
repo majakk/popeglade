@@ -1,15 +1,10 @@
 package studio.coldstream.popeglade.gameworld;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.tiled.TiledMapTile;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.Rectangle;
 
 import studio.coldstream.popeglade.gamehelpers.CollisionHandler;
 import studio.coldstream.popeglade.gamehelpers.LocationHandler;
-import studio.coldstream.popeglade.gameobjects.Level;
+import studio.coldstream.popeglade.gameobjects.Terrain;
 import studio.coldstream.popeglade.gameobjects.Player;
 import studio.coldstream.popeglade.gameobjects.Pointer;
 
@@ -21,7 +16,7 @@ import studio.coldstream.popeglade.gameobjects.Pointer;
 public class GameWorld {
 
     private Player player;
-    private Level level;
+    private Terrain terrain;
     private Pointer pointer;
     private CollisionHandler collisionHandler;
     private LocationHandler locationHandler;
@@ -30,7 +25,7 @@ public class GameWorld {
         Gdx.app.log("GameWorld", "Attached");
 
         player = new Player(300, 700, 24, 32);
-        level = new Level(1);
+        terrain = new Terrain(1);
         pointer = new Pointer();
         collisionHandler = new CollisionHandler();
         locationHandler = new LocationHandler();
@@ -56,13 +51,13 @@ public class GameWorld {
                 break;
         }*/
 
-        collisionHandler.update(delta, player, level);
-        pointer.update(delta, player, level);
+        collisionHandler.update(delta, player, terrain);
+        pointer.update(delta, player, terrain);
 
     }
 
     public Player getPlayer() { return player; }
-    public Level getLevel() { return level; }
+    public Terrain getTerrain() { return terrain; }
     public Pointer getPointer() { return pointer; }
 
 

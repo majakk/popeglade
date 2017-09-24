@@ -1,5 +1,6 @@
 package studio.coldstream.popeglade.gameobjects;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -13,21 +14,32 @@ import static studio.coldstream.popeglade.gamehelpers.AssetLoader.playerAnimatio
 
 public class Player {
 
+    //Statics
+    private int width;
+    private int height;
+    private Rectangle boundingRect;
+
+    //Dynamics
     private Vector2 position;
     private Vector2 tempPosition;
     private int rotation;
-
-    private int width;
-    private int height;
-
     private int moveX, moveY;
 
     private float velocity;
-    private Rectangle boundingRect;
     private float speedFactor;
 
+    //Data
     private Inventory inventory;
-    private int health;
+
+    private int maxHealth;
+    private int currentHealth;
+    private int maxStamina;
+    private int currentStamina;
+    private int maxMana;
+    private int currentMana;
+
+    private int currentLevel;
+    private int currentExperience;
 
     public Player(float x, float y, int w, int h) {
         width = w;
@@ -41,7 +53,7 @@ public class Player {
         boundingRect = new Rectangle();
 
         inventory = new Inventory(10);
-        health = 6;
+        currentHealth = 6;
     }
 
     public void updateX(float delta) {
@@ -124,13 +136,34 @@ public class Player {
     public void makeMoveX() {
         position.set(tempPosition.x, position.y);
     }
-    public void makeMoveY() {
-        position.set(position.x, tempPosition.y);
+    public void makeMoveY() { position.set(position.x, tempPosition.y); }
 
+    public void pickUpCollectable(Collectable item) {
+        boolean foundItem = false;
+        //Check inventory for stackables
+        if(item.isStackable()) {
+            for (int i = 0; i < inventory.getPocket().size(); i++) {
+                if (inventory.getPocket().get(i).getId() == item.getId()) {
+                    inventory.getPocket().get(i).StackInc();
+                    foundItem = true;
+                    //Gdx.app.log("Pointer", inventory.getPocket().get(i).getStackSize() + "");
+                }
+            }
+        }
+        //new item!
+        if(!foundItem)
+            inventory.addToPocket(item);
     }
-
 
     public Inventory getInventory() {
         return inventory;
+    }
+
+    public int getCurrentHealth() {
+        return currentHealth;
+    }
+
+    public void setCurrentHealth(int currentHealth) {
+        this.currentHealth = currentHealth;
     }
 }

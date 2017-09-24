@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -13,7 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import studio.coldstream.popeglade.gamehelpers.AssetLoader;
 import studio.coldstream.popeglade.gamehelpers.LocationHandler;
 import studio.coldstream.popeglade.gameobjects.HeadUpDisplay;
-import studio.coldstream.popeglade.gameobjects.Level;
+import studio.coldstream.popeglade.gameobjects.Terrain;
 import studio.coldstream.popeglade.gameobjects.Player;
 import studio.coldstream.popeglade.gameobjects.Pointer;
 
@@ -31,8 +30,8 @@ public class GameRenderer {
     private SpriteBatch batcher;
     private BitmapFont font;
 
-    //Game Level
-    private Level level;
+    //Game Terrain
+    private Terrain terrain;
 
     //Game Objects
     private Player player;
@@ -77,13 +76,13 @@ public class GameRenderer {
         Gdx.gl20.glEnable(Gdx.gl20.GL_BLEND);
 
         //Constrain the camera to the map area
-        cam.position.x = MathUtils.clamp(player.getX(), cam.viewportWidth / 2, level.getWidth() - cam.viewportWidth / 2);
-        cam.position.y = MathUtils.clamp(player.getY(), cam.viewportHeight / 2, level.getHeight() - cam.viewportHeight / 2);
+        cam.position.x = MathUtils.clamp(player.getX(), cam.viewportWidth / 2, terrain.getWidth() - cam.viewportWidth / 2);
+        cam.position.y = MathUtils.clamp(player.getY(), cam.viewportHeight / 2, terrain.getHeight() - cam.viewportHeight / 2);
         cam.update();
 
         //Draw map
-        level.getTiledMapRenderer().setView(cam);
-        level.getTiledMapRenderer().render();
+        terrain.getTiledMapRenderer().setView(cam);
+        terrain.getTiledMapRenderer().render();
 
         //Draw all sprites
 
@@ -96,7 +95,7 @@ public class GameRenderer {
         batcher.end();
 
         //Draw HUD
-        hud.render(delta, runTime, batcher, shapeRenderer, cam);
+        hud.render(delta, runTime, batcher, shapeRenderer, font, cam);
 
 
         /*** *************************************
@@ -120,8 +119,8 @@ public class GameRenderer {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 
             for(int i = 0; i < 9; i++){
-                if(lh.isTileWall(lh.playerNineTile(player,level).get(i)))
-                    shapeRenderer.rect(lh.playerNineTileRect(player,level).get(i).x, lh.playerNineTileRect(player,level).get(i).y, lh.playerNineTileRect(player,level).get(i).width, lh.playerNineTileRect(player,level).get(i).height);
+                if(lh.isTileWall(lh.playerNineTile(player, terrain).get(i)))
+                    shapeRenderer.rect(lh.playerNineTileRect(player, terrain).get(i).x, lh.playerNineTileRect(player, terrain).get(i).y, lh.playerNineTileRect(player, terrain).get(i).width, lh.playerNineTileRect(player, terrain).get(i).height);
             }
 
         shapeRenderer.end();
@@ -130,7 +129,7 @@ public class GameRenderer {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 
             shapeRenderer.setColor(0.3f,1,0.3f,0.2f);
-            shapeRenderer.rect(lh.pointerTileRect(pointer,level).x, lh.pointerTileRect(pointer,level).y, lh.pointerTileRect(pointer,level).width, lh.pointerTileRect(pointer,level).height);
+            shapeRenderer.rect(lh.pointerTileRect(pointer, terrain).x, lh.pointerTileRect(pointer, terrain).y, lh.pointerTileRect(pointer, terrain).width, lh.pointerTileRect(pointer, terrain).height);
 
         shapeRenderer.end();
 
@@ -139,11 +138,11 @@ public class GameRenderer {
 
             //Ninerect
             for(int i = 0; i < 9; i++){
-                font.draw(batcher, lh.playerNineTile(player, level).get(i).getTile().getId() + "", lh.playerNineTileRect(player,level).get(i).x + 2, lh.playerNineTileRect(player,level).get(i).y + 8);
+                font.draw(batcher, lh.playerNineTile(player, terrain).get(i).getTile().getId() + "", lh.playerNineTileRect(player, terrain).get(i).x + 2, lh.playerNineTileRect(player, terrain).get(i).y + 8);
             }
 
             //Pointerrect
-            font.draw(batcher, lh.pointerTile(pointer, level).getTile().getId() + "", lh.pointerTileRect(pointer,level).x + 2, lh.pointerTileRect(pointer,level).y + 8);
+            font.draw(batcher, lh.pointerTile(pointer, terrain).getTile().getId() + "", lh.pointerTileRect(pointer, terrain).x + 2, lh.pointerTileRect(pointer, terrain).y + 8);
 
         batcher.end();
 
@@ -157,7 +156,7 @@ public class GameRenderer {
 
     private void initGameObjects() {
         player = myWorld.getPlayer();
-        level = myWorld.getLevel();
+        terrain = myWorld.getTerrain();
         pointer = myWorld.getPointer();
         hud = new HeadUpDisplay(player);
     }

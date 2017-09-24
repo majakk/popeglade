@@ -11,7 +11,7 @@ import com.badlogic.gdx.math.Rectangle;
  * Created by Scalar on 16/09/2017.
  */
 
-public class Level {
+public class Terrain {
 
     private TiledMap tiledMap;
     private MapProperties tiledMapProp;
@@ -24,13 +24,13 @@ public class Level {
     private int width;
     private int height;
 
-    private int currentLevel;
+    private int currentMap;
     /*private Rectangle rect1 = new Rectangle(100,200,32,32);
     private Rectangle rect2 = new Rectangle(132,200,32,32);*/
 
-    public Level(int clvl) {
-        currentLevel = clvl;
-        switch(currentLevel){
+    public Terrain(int cMap) {
+        currentMap = cMap;
+        switch(currentMap){
             case 1:
                 tiledMap = new TmxMapLoader().load("android/assets/tmx/level1.tmx");
             default:

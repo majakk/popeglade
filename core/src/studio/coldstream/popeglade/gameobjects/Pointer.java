@@ -1,8 +1,5 @@
 package studio.coldstream.popeglade.gameobjects;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.maps.tiled.TiledMapTile;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 
 import studio.coldstream.popeglade.gamehelpers.LocationHandler;
@@ -23,12 +20,28 @@ public class Pointer {
         lh = new LocationHandler();
     }
 
-    public void update(float delta, Player player, Level level) {
+    public void update(float delta, Player player, Terrain terrain) {
         //Gdx.app.log("Pointer","Click!");
 
         if(leftClicked){
-            if(lh.pointerTile(this, level).getTile().getId() == 1)
-                lh.pointerTile(this, level).setTile(level.getTiledMap().getTileSets().getTile(30));
+            if(lh.pointerTile(this, terrain).getTile().getId() == 1) {
+                lh.pointerTile(this, terrain).setTile(terrain.getTiledMap().getTileSets().getTile(30));
+                if(player.getInventory().getPocket().size() < player.getInventory().getMaxItemSlots())
+                    player.pickUpCollectable(new Collectable(0));
+            }
+
+            if(lh.pointerTile(this, terrain).getTile().getId() == 33) {
+                lh.pointerTile(this, terrain).setTile(terrain.getTiledMap().getTileSets().getTile(30));
+                if(player.getInventory().getPocket().size() < player.getInventory().getMaxItemSlots())
+                    player.pickUpCollectable(new Collectable(2));
+            }
+
+            if(lh.pointerTile(this, terrain).getTile().getId() == 50) {
+                lh.pointerTile(this, terrain).setTile(terrain.getTiledMap().getTileSets().getTile(30));
+                if(player.getInventory().getPocket().size() < player.getInventory().getMaxItemSlots())
+                    player.pickUpCollectable(new Collectable(1));
+            }
+
             leftClicked = false;
         }
     }

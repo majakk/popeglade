@@ -12,8 +12,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class AssetLoader {
 
-    private static Texture texture;
-    //public static TextureRegion bg, grass;
+    private static Texture playerTexture, itemTexture;
+    public static TextureRegion items[];
 
     public static Animation playerAnimation[];
     private static TextureRegion player[][];
@@ -27,12 +27,12 @@ public class AssetLoader {
         //player[direction][animation]
         player = new TextureRegion[4][3];
         playerAnimation = new Animation[4];
-        texture = new Texture(Gdx.files.internal("android/assets/gfx/player_second.png"));
-        texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+        playerTexture = new Texture(Gdx.files.internal("android/assets/gfx/player_second.png"));
+        playerTexture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
         for(int i = 0; i < 4; i++){
             for(int j = 0; j < 3; j++){
-                player[i][j] = new TextureRegion(texture, j * 24, i * 32, 24, 32);
+                player[i][j] = new TextureRegion(playerTexture, j * 24, i * 32, 24, 32);
                 //player[i][j].flip(false, true);
             }
         }
@@ -43,9 +43,19 @@ public class AssetLoader {
             playerAnimation[i].setPlayMode(Animation.PlayMode.LOOP_PINGPONG);
         }
 
+        //Items
+        itemTexture = new Texture(Gdx.files.internal("android/assets/gfx/items.png"));
+        itemTexture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+
+        items = new TextureRegion[4];
+        for(int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                items[i *2 +j] = new TextureRegion(itemTexture, j*32, i*32, 32, 32);
+            }
+        }
+
+        //Cursor
         pm = new Pixmap(Gdx.files.internal("android/assets/gfx/cursor_image.png"));
-        /*pm.setBlending(Pixmap.Blending.SourceOver);
-        pm.fill();*/
         Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, 0, 0));
 
     }
@@ -53,7 +63,8 @@ public class AssetLoader {
 
     public static void dispose() {
         // We must dispose of the texture when we are finished.
-        texture.dispose();
+        playerTexture.dispose();
+        itemTexture.dispose();
         pm.dispose();
     }
 }

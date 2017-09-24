@@ -8,7 +8,7 @@ import java.util.LinkedList;
 
 public class Inventory {
 
-    private static int pocketSize = 10;
+    private int pocketSize = 10;
     private static int gearSize = 4;
     private int backpackSize;
 
@@ -20,22 +20,37 @@ public class Inventory {
     private LinkedList<Collectable> gear;
 
     public Inventory(int bSize) {
-        this.backpackSize = bSize;
+        this.pocketSize = bSize;
         activeItemSlot = 0;
+
+        pocket = new LinkedList<Collectable>();
+        backpack = new LinkedList<Collectable>();
+        gear = new LinkedList<Collectable>();
     }
 
 
     public void moveActiveItem(int amount) {
         activeItemSlot += amount;
         while (activeItemSlot < 0)
-            activeItemSlot += 10;
+            activeItemSlot += pocketSize;
 
-        //activeItemSlot = Math.abs(activeItemSlot);
-        activeItemSlot %= 10;
+        activeItemSlot %= pocketSize;
 
     }
 
     public int getActiveItemSlot() {
         return activeItemSlot;
+    }
+
+    public int getMaxItemSlots() {
+        return pocketSize;
+    }
+
+    public LinkedList<Collectable> getPocket() {
+        return pocket;
+    }
+
+    public void addToPocket(Collectable item) {
+        pocket.add(item);
     }
 }
