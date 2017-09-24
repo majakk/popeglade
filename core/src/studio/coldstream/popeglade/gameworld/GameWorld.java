@@ -26,8 +26,6 @@ public class GameWorld {
     private CollisionHandler collisionHandler;
     private LocationHandler locationHandler;
 
-
-
     public GameWorld(int midX, int midY) {
         Gdx.app.log("GameWorld", "Attached");
 
@@ -58,30 +56,7 @@ public class GameWorld {
                 break;
         }*/
 
-        //player.updateX(delta);
-
-        collisionHandler.collision(delta, player, level);
-        //Gdx.app.log("GameWorld", level.getTiledMap().getLayers().get(0).getName());
-        //Gdx.app.log("GameWorld", locationHandler.playerTile(player,level).getTile().getProperties().get("wall") + "");
-
-        //aTile.getId();
-        //player.updateY(delta);
-
-        //collisionHandler.collisionY(player, level);
-
-
-        /*TiledMapTileLayer tileLayer;
-
-        //define the layer where you select the tile
-        tileLayer = (TiledMapTileLayer) level.getTiledMap().getLayers().get(0);
-
-        //get the tile that you want
-        TiledMapTileLayer.Cell cell = tileLayer.getCell(x,y);
-        TiledMapTile tile = cell.getTile();
-
-        //this is where you get the properties of the tile
-        tile.getProperties().get("propertiename");*/
-
+        collisionHandler.update(delta, player, level);
         pointer.update(delta, player, level);
 
     }

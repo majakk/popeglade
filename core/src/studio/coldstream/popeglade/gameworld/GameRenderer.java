@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import studio.coldstream.popeglade.gamehelpers.AssetLoader;
 import studio.coldstream.popeglade.gamehelpers.LocationHandler;
+import studio.coldstream.popeglade.gameobjects.HeadUpDisplay;
 import studio.coldstream.popeglade.gameobjects.Level;
 import studio.coldstream.popeglade.gameobjects.Player;
 import studio.coldstream.popeglade.gameobjects.Pointer;
@@ -36,6 +37,7 @@ public class GameRenderer {
     //Game Objects
     private Player player;
     private Pointer pointer;
+    private HeadUpDisplay hud;
 
     //Game Assets
     private Animation playerAnimation[];
@@ -84,14 +86,26 @@ public class GameRenderer {
         level.getTiledMapRenderer().render();
 
         //Draw all sprites
+
         batcher.setProjectionMatrix(cam.combined); //Super important line!
         batcher.begin();
 
             //Draw Player
-            batcher.draw((TextureRegion) playerAnimation[player.getRotation()].getKeyFrame(runTime),
-                player.getX()- player.getWidth() / 2, player.getY(), player.getWidth(), player.getHeight());
+            player.render(delta, runTime, batcher);
 
         batcher.end();
+
+        //Draw HUD
+        hud.render(delta, runTime, batcher, shapeRenderer, cam);
+
+
+        /*** *************************************
+         *
+         *  The code below is for debugging only
+         *
+         * **************************************/
+
+        Gdx.gl.glLineWidth(2);
 
         //Draw collision rects
         shapeRenderer.setProjectionMatrix(cam.combined);
@@ -116,7 +130,6 @@ public class GameRenderer {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 
             shapeRenderer.setColor(0.3f,1,0.3f,0.2f);
-            //shapeRenderer.rect(pointer.getPosition().x, pointer.getPosition().y, 10, 10);
             shapeRenderer.rect(lh.pointerTileRect(pointer,level).x, lh.pointerTileRect(pointer,level).y, lh.pointerTileRect(pointer,level).width, lh.pointerTileRect(pointer,level).height);
 
         shapeRenderer.end();
@@ -146,6 +159,7 @@ public class GameRenderer {
         player = myWorld.getPlayer();
         level = myWorld.getLevel();
         pointer = myWorld.getPointer();
+        hud = new HeadUpDisplay(player);
     }
 
     private void initAssets() {

@@ -21,7 +21,7 @@ public class CollisionHandler {
         lh = new LocationHandler();
     }
 
-    public void collision(float delta, Player player, Level level) {
+    public void update(float delta, Player player, Level level) {
 
         //X-axis collisions
         player.updateX(delta);

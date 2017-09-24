@@ -1,7 +1,11 @@
 package studio.coldstream.popeglade.gameobjects;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+
+import static studio.coldstream.popeglade.gamehelpers.AssetLoader.playerAnimation;
 
 /**
  * Created by Scalar on 02/09/2017.
@@ -22,6 +26,9 @@ public class Player {
     private Rectangle boundingRect;
     private float speedFactor;
 
+    private Inventory inventory;
+    private int health;
+
     public Player(float x, float y, int w, int h) {
         width = w;
         height = h;
@@ -32,6 +39,9 @@ public class Player {
         rotation = 0;
         velocity = 2.3f;
         boundingRect = new Rectangle();
+
+        inventory = new Inventory(10);
+        health = 6;
     }
 
     public void updateX(float delta) {
@@ -66,6 +76,11 @@ public class Player {
             tempPosition.add(0, -velocity * speedFactor );
 
         boundingRect.set(tempPosition.x - width * 0.25f, tempPosition.y - height * 0.05f, width * (1.0f - 0.5f), height * 0.4f);
+    }
+
+    public void render(float delta, float runTime, SpriteBatch batcher) {
+        batcher.draw((TextureRegion) playerAnimation[this.getRotation()].getKeyFrame(runTime),
+                this.getX()- this.getWidth() / 2, this.getY(), this.getWidth(), this.getHeight());
     }
 
     public void moveX(int m) {
@@ -115,4 +130,7 @@ public class Player {
     }
 
 
+    public Inventory getInventory() {
+        return inventory;
+    }
 }

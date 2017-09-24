@@ -120,7 +120,8 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean scrolled(int amount) {
-        return false;
+        myPlayer.getInventory().moveActiveItem(amount);
+        return true;
     }
 
     private Vector3 getMousePosInGameWorld() {
