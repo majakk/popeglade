@@ -24,22 +24,22 @@ public class Pointer {
         //Gdx.app.log("Pointer","Click!");
 
         if(leftClicked){
-            if(lh.pointerTile(this, terrain).getTile().getId() == 1) {
-                lh.pointerTile(this, terrain).setTile(terrain.getTiledMap().getTileSets().getTile(30));
+            if(lh.pointerTile(this, terrain).getTile().getId() == 600) {
+                lh.pointerTile(this, terrain).setTile(terrain.getTiledMap().getTileSets().getTile(119));
                 if(player.getInventory().getPocket().size() < player.getInventory().getMaxItemSlots())
                     player.pickUpCollectable(new Collectable(0));
             }
 
-            if(lh.pointerTile(this, terrain).getTile().getId() == 33) {
-                lh.pointerTile(this, terrain).setTile(terrain.getTiledMap().getTileSets().getTile(30));
-                if(player.getInventory().getPocket().size() < player.getInventory().getMaxItemSlots())
-                    player.pickUpCollectable(new Collectable(2));
-            }
-
-            if(lh.pointerTile(this, terrain).getTile().getId() == 50) {
-                lh.pointerTile(this, terrain).setTile(terrain.getTiledMap().getTileSets().getTile(30));
+            if(lh.pointerTile(this, terrain).getTile().getId() == 924) {
+                lh.pointerTile(this, terrain).setTile(terrain.getTiledMap().getTileSets().getTile(119));
                 if(player.getInventory().getPocket().size() < player.getInventory().getMaxItemSlots())
                     player.pickUpCollectable(new Collectable(1));
+            }
+
+            if(lh.pointerTile(this, terrain).getTile().getId() == 497) {
+                lh.pointerTile(this, terrain).setTile(terrain.getTiledMap().getTileSets().getTile(119));
+                if(player.getInventory().getPocket().size() < player.getInventory().getMaxItemSlots())
+                    player.pickUpCollectable(new Collectable(2));
             }
 
             leftClicked = false;

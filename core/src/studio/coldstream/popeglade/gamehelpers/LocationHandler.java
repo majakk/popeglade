@@ -1,5 +1,6 @@
 package studio.coldstream.popeglade.gamehelpers;
 
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.math.Rectangle;
@@ -56,7 +57,7 @@ public class LocationHandler {
     }
 
     public Cell playerTile(Player player, Terrain terrain) {
-        tileLayer = (TiledMapTileLayer) terrain.getTiledMap().getLayers().get(0);
+        tileLayer = (TiledMapTileLayer) terrain.getTiledMap().getLayers().get(1);
         cell = tileLayer.getCell((int)Math.floor((double)player.getX()/(double) terrain.getSingleTileWidth()),(int)Math.floor((double)player.getY()/(double) terrain.getSingleTileHeight()));
 
 
@@ -65,12 +66,15 @@ public class LocationHandler {
     }
 
     public Cell pointerTile(Pointer pointer, Terrain terrain) {
-        tileLayer = (TiledMapTileLayer) terrain.getTiledMap().getLayers().get(0);
+        tileLayer = (TiledMapTileLayer) terrain.getTiledMap().getLayers().get(2);
         cell = tileLayer.getCell((int)Math.floor((double)pointer.getX()/(double) terrain.getSingleTileWidth()),(int)Math.floor((double)pointer.getY()/(double) terrain.getSingleTileHeight()));
-
+        //cell.getTile().setBlendMode(TiledMapTile.BlendMode.ALPHA);
 
         //Gdx.app.log("LocationHandler", cell.getTile().getId() + "");
-        return cell;
+        if(cell != null)
+            return cell;
+        else
+            return new Cell();
     }
 
     public boolean isTileWall(Cell cell){
@@ -78,7 +82,11 @@ public class LocationHandler {
             return true;
         else
             return false;*/
-        return cell.getTile().getProperties().get("wall") != null;
+        //try {
+            return cell.getTile().getProperties().get("wall") != null;
+        //} catch(Exception e){
+        //    return false;
+        //}
     }
 
     public Rectangle playerTileRect(Player player, Terrain terrain) {
@@ -113,7 +121,7 @@ public class LocationHandler {
 
     public Array<Cell> playerNineTile(Player player, Terrain terrain) {
         //tempNineCell.set(0, new Cell());
-        tileLayer = (TiledMapTileLayer) terrain.getTiledMap().getLayers().get(0);
+        tileLayer = (TiledMapTileLayer) terrain.getTiledMap().getLayers().get(1);
         for(int i = 0; i < 9; i++) {
             if(tileLayer.getCell(
                     (int) Math.floor((double) player.getX() / (double) terrain.getSingleTileWidth()) + (int) nd.get(i).x,

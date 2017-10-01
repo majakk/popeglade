@@ -70,7 +70,7 @@ public class Player {
         else if (this.moveX > 0)
             tempPosition.add(velocity * speedFactor, 0);
 
-        boundingRect.set(tempPosition.x - width * 0.25f, tempPosition.y - height * 0.05f, width * (1.0f - 0.5f), height * 0.4f);
+        boundingRect.set(tempPosition.x - width * 0.3f, tempPosition.y - height * 0.05f, width * (1.0f - 0.4f), height * 0.2f);
     }
 
     public void updateY(float delta) {
@@ -87,7 +87,7 @@ public class Player {
         else if (this.moveY > 0 )
             tempPosition.add(0, -velocity * speedFactor );
 
-        boundingRect.set(tempPosition.x - width * 0.25f, tempPosition.y - height * 0.05f, width * (1.0f - 0.5f), height * 0.4f);
+        boundingRect.set(tempPosition.x - width * 0.3f, tempPosition.y - height * 0.05f, width * (1.0f - 0.4f), height * 0.2f);
     }
 
     public void render(float delta, float runTime, SpriteBatch batcher) {
