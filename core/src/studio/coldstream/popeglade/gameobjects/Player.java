@@ -91,8 +91,10 @@ public class Player {
     }
 
     public void render(float delta, float runTime, SpriteBatch batcher) {
+        batcher.begin();
         batcher.draw((TextureRegion) playerAnimation[this.getRotation()].getKeyFrame(runTime),
                 this.getX()- this.getWidth() / 2, this.getY(), this.getWidth(), this.getHeight());
+        batcher.end();
     }
 
     public void moveX(int m) {

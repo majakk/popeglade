@@ -1,16 +1,25 @@
 package studio.coldstream.popeglade.gamehelpers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.TextureLoader;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 
 /**
  * Created by Scalar on 01/08/2017.
  */
 
 public class AssetLoader {
+    private static final String TAG = AssetLoader.class.getSimpleName();
+
+    public static final AssetManager assetManager = new AssetManager();
+    private static InternalFileHandleResolver filePathResolver = new InternalFileHandleResolver();
 
     private static Texture playerTexture, itemTexture;
     public static TextureRegion items[];
@@ -67,4 +76,83 @@ public class AssetLoader {
         itemTexture.dispose();
         pm.dispose();
     }
+
+
+    public static void loadTextureAsset(String textureFilenamePath){
+        if( textureFilenamePath == null || textureFilenamePath.isEmpty() ){
+            return;
+        }
+
+        if( assetManager.isLoaded(textureFilenamePath) ){
+            Gdx.app.debug(TAG, "Texture loaded: " + textureFilenamePath );
+            return;
+        }
+
+        //load asset
+        if( filePathResolver.resolve(textureFilenamePath).exists() ){
+            assetManager.setLoader(Texture.class, new TextureLoader(filePathResolver));
+            assetManager.load(textureFilenamePath, Texture.class);
+            //Until we add loading screen, just block until we load the map
+            assetManager.finishLoadingAsset(textureFilenamePath);
+        }
+        else{
+            Gdx.app.debug(TAG, "Texture doesn't exist!: " + textureFilenamePath );
+        }
+    }
+
+    public static Texture getTextureAsset(String textureFilenamePath){
+        Texture texture = null;
+
+        // once the asset manager is done loading
+        if( assetManager.isLoaded(textureFilenamePath) ){
+            texture = assetManager.get(textureFilenamePath,Texture.class);
+        } else {
+            Gdx.app.debug(TAG, "Texture is not loaded: " + textureFilenamePath );
+        }
+
+        return texture;
+    }
+
+    public static boolean isAssetLoaded(String fileName){
+        return assetManager.isLoaded(fileName);
+
+    }
+
+    public static void loadMapAsset(String mapFilenamePath){
+        if( mapFilenamePath == null || mapFilenamePath.isEmpty() ){
+            return;
+        }
+
+        if( assetManager.isLoaded(mapFilenamePath) ){
+            return;
+        }
+
+        //load asset
+        if( filePathResolver.resolve(mapFilenamePath).exists() ){
+            assetManager.setLoader(TiledMap.class, new TmxMapLoader(filePathResolver));
+            assetManager.load(mapFilenamePath, TiledMap.class);
+            //Until we add loading screen, just block until we load the map
+            assetManager.finishLoadingAsset(mapFilenamePath);
+            Gdx.app.debug(TAG, "Map loaded!: " + mapFilenamePath);
+        }
+        else{
+            Gdx.app.debug(TAG, "Map doesn't exist!: " + mapFilenamePath );
+        }
+    }
+
+
+    public static TiledMap getMapAsset(String mapFilenamePath){
+        TiledMap map = null;
+
+        // once the asset manager is done loading
+        if( assetManager.isLoaded(mapFilenamePath) ){
+            map = assetManager.get(mapFilenamePath, TiledMap.class);
+        } else {
+            Gdx.app.debug(TAG, "Map is not loaded: " + mapFilenamePath );
+        }
+
+        return map;
+    }
+
+
 }
