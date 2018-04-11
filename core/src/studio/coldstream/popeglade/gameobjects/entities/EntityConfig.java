@@ -1,10 +1,14 @@
 package studio.coldstream.popeglade.gameobjects.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.GridPoint2;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 
 public class EntityConfig {
+    private static final String TAG = EntityConfig.class.getSimpleName();
+
     private Array<AnimationConfig> animationConfig;
     //private Array<ItemTypeID> inventory;
     private Entity.State state = Entity.State.IDLE;
@@ -14,7 +18,11 @@ public class EntityConfig {
     private String questConfigPath;
     private String currentQuestID;
     private String itemTypeID;
+    private String frameWidth;
+    private String frameHeight;
     private ObjectMap<String, String> entityProperties;
+
+
 
     //Ok so different entities might have different types of "health", eg. SAW_HEALTH, WATER_HEALTH, etc
     public enum EntityProperties{
@@ -28,9 +36,11 @@ public class EntityConfig {
     }
 
     EntityConfig(){
-        animationConfig = new Array<AnimationConfig>();
+        animationConfig = new Array<>();
         //inventory = new Array<ItemTypeID>();
-        entityProperties = new ObjectMap<String, String>();
+        entityProperties = new ObjectMap<>();
+        //Gdx.app.log(TAG, "End of constructor: " + entityProperties.get(""));
+
     }
 
     EntityConfig(EntityConfig config){
@@ -41,6 +51,8 @@ public class EntityConfig {
         questConfigPath = config.getQuestConfigPath();
         currentQuestID = config.getCurrentQuestID();
         itemTypeID = config.getItemTypeID();
+        frameWidth = config.getFrameWidth();
+        frameHeight = config.getFrameHeight();
 
         animationConfig = new Array<AnimationConfig>();
         animationConfig.addAll(config.getAnimationConfig());
@@ -50,6 +62,30 @@ public class EntityConfig {
 
         entityProperties = new ObjectMap<String, String>();
         entityProperties.putAll(config.entityProperties);
+
+    }
+
+    public String getFrameHeight() {
+        return frameHeight;
+    }
+
+    public Vector2 getFrameDimensions() {
+        Gdx.app.log(TAG, "Created " + getFrameWidth() + " : " + getFrameHeight());
+        //return new Vector2(Integer.decode(frameWidth), Integer.decode(frameHeight));
+
+        return new Vector2(Integer.valueOf(getFrameWidth()),Integer.valueOf(getFrameHeight()));
+    }
+
+    public String getFrameWidth() {
+        return frameWidth;
+    }
+
+    public void setFrameWidth(String frameWidth) {
+        this.frameWidth = frameWidth;
+    }
+
+    public void setFrameHeight(String frameHeight) {
+        this.frameHeight = frameHeight;
     }
 
     public ObjectMap<String, String> getEntityProperties() {
@@ -119,6 +155,7 @@ public class EntityConfig {
     }
 
     public Entity.State getState() {
+
         return state;
     }
 
@@ -151,8 +188,10 @@ public class EntityConfig {
 
         public AnimationConfig(){
             animationType = Entity.AnimationType.IDLE;
-            texturePaths = new Array<String>();
-            gridPoints = new Array<GridPoint2>();
+            texturePaths = new Array<>();
+            gridPoints = new Array<>();
+            //Gdx.app.log(TAG, "Attached");
+
         }
 
         public float getFrameDuration() {

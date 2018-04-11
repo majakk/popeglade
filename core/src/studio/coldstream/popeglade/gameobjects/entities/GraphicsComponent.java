@@ -41,7 +41,7 @@ public abstract class GraphicsComponent implements Component {
     public abstract void update(Entity entity, MapManager mapManager, Batch batch, float delta);
 
     protected void updateAnimations(float delta){
-        frameTime = (frameTime + delta)%5; //Want to avoid overflow
+        frameTime = (frameTime + delta) % 5; //Want to avoid overflow
 
         //Look into the appropriate variable when changing position
         switch (currentDirection) {
@@ -118,8 +118,8 @@ public abstract class GraphicsComponent implements Component {
         AssetLoader.loadTextureAsset(secondTexture);
         Texture texture2 = AssetLoader.getTextureAsset(secondTexture);
 
-        TextureRegion[][] texture1Frames = TextureRegion.split(texture1, Entity.FRAME_WIDTH, Entity.FRAME_HEIGHT);
-        TextureRegion[][] texture2Frames = TextureRegion.split(texture2, Entity.FRAME_WIDTH, Entity.FRAME_HEIGHT);
+        TextureRegion[][] texture1Frames = TextureRegion.split(texture1, (int)Entity.frameDimensions.x, (int)Entity.frameDimensions.y);
+        TextureRegion[][] texture2Frames = TextureRegion.split(texture2, (int)Entity.frameDimensions.x, (int)Entity.frameDimensions.y);
 
         GridPoint2 point = points.first();
 
@@ -133,7 +133,7 @@ public abstract class GraphicsComponent implements Component {
         AssetLoader.loadTextureAsset(textureName);
         Texture texture = AssetLoader.getTextureAsset(textureName);
 
-        TextureRegion[][] textureFrames = TextureRegion.split(texture, Entity.FRAME_WIDTH, Entity.FRAME_HEIGHT);
+        TextureRegion[][] textureFrames = TextureRegion.split(texture, (int)Entity.frameDimensions.x, (int)Entity.frameDimensions.y);
 
         TextureRegion[] animationKeyFrames = new TextureRegion[points.size];
 

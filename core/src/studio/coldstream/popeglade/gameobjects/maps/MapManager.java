@@ -26,17 +26,17 @@ public class MapManager {
             return;
         }
 
-        if( currentMap != null ){
+        /*if( currentMap != null ){
             //currentMap.unloadMusic();
-            /*if( _previousLightMap != null ){
+            if( _previousLightMap != null ){
                 _previousLightMap.setOpacity(0);
                 _previousLightMap = null;
             }
             if( _currentLightMap != null ){
                 _currentLightMap.setOpacity(1);
                 _currentLightMap = null;
-            }*/
-        }
+            }
+        }*/
 
         //map.loadMusic();
 

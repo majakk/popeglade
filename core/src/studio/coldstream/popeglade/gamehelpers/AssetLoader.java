@@ -34,7 +34,7 @@ public class AssetLoader {
     public static void load() {
 
         //player[direction][animation]
-        player = new TextureRegion[4][3];
+        /*player = new TextureRegion[4][3];
         playerAnimation = new Animation[4];
         playerTexture = new Texture(Gdx.files.internal("android/assets/gfx/player_second.png"));
         playerTexture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
@@ -61,7 +61,7 @@ public class AssetLoader {
             for (int j = 0; j < 2; j++) {
                 items[i *2 +j] = new TextureRegion(itemTexture, j*32, i*32, 32, 32);
             }
-        }
+        }*/
 
         //Cursor
         pm = new Pixmap(Gdx.files.internal("android/assets/gfx/cursor_image.png"));
@@ -72,8 +72,8 @@ public class AssetLoader {
 
     public static void dispose() {
         // We must dispose of the texture when we are finished.
-        playerTexture.dispose();
-        itemTexture.dispose();
+        //playerTexture.dispose();
+        //itemTexture.dispose();
         pm.dispose();
     }
 

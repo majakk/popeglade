@@ -21,9 +21,9 @@ public abstract class InputComponent implements Component, InputProcessor {
         SELECT, DOACTION, SCROLL
     }
 
-    protected static Map<Keys, Boolean> keys = new HashMap<Keys, Boolean>();
+    protected static Map<Keys, Boolean> keys = new HashMap<>();
 
-    protected static Map<Mouse, Boolean> mouseButtons = new HashMap<Mouse, Boolean>();
+    protected static Map<Mouse, Boolean> mouseButtons = new HashMap<>();
 
     //Initialize HashMaps
     static {

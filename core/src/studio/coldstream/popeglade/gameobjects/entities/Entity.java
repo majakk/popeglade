@@ -41,7 +41,7 @@ public class Entity {
         IDLE,
         WALKING,
 
-        IMMOBILE; //Should always be last
+        IMMOBILE //Should always be last
     }
 
     public enum AnimationType {
@@ -50,11 +50,13 @@ public class Entity {
         WALK_DOWN,
         WALK_LEFT,
         IDLE,
-        IMMOBILE;
+        IMMOBILE
     }
 
-    public static final int FRAME_WIDTH = 16;
-    public static final int FRAME_HEIGHT = 16;
+    public static Vector2 frameDimensions;
+    //public static final int FRAME_WIDTH = 18;
+    //public static final int FRAME_HEIGHT = 18;
+
     private static final int MAX_COMPONENTS = 5;
     private Array<Component> componentArray;
 
@@ -68,7 +70,8 @@ public class Entity {
         entityConfig = new EntityConfig();
         json = new Json();
 
-        componentArray = new Array<Component>(MAX_COMPONENTS);
+        //frameDimensions = entityConfig.getFrameDimensions();
+        componentArray = new Array<>(MAX_COMPONENTS);
 
         inputComponent = iC;
         physicsComponent = pC;
@@ -125,7 +128,7 @@ public class Entity {
 
     static public Array<EntityConfig> getEntityConfigs(String configFilePath){
         Json j = new Json();
-        Array<EntityConfig> configs = new Array<EntityConfig>();
+        Array<EntityConfig> configs = new Array<>();
 
         ArrayList<JsonValue> list = j.fromJson(ArrayList.class, Gdx.files.internal(configFilePath));
 
@@ -139,6 +142,10 @@ public class Entity {
     public static EntityConfig loadEntityConfigByPath(String entityConfigPath){
         EntityConfig entityConfig = Entity.getEntityConfig(entityConfigPath);
         EntityConfig serializedConfig = ProfileManager.getInstance().getProperty(entityConfig.getEntityID(), EntityConfig.class);
+
+        Gdx.app.log(TAG, "" + Integer.valueOf(entityConfig.getFrameWidth()));
+
+        frameDimensions = new Vector2(Integer.valueOf(entityConfig.getFrameWidth()),Integer.valueOf(entityConfig.getFrameHeight()));
 
         if( serializedConfig == null ){
             return entityConfig;

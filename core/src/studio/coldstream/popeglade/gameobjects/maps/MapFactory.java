@@ -4,9 +4,9 @@ import java.util.Hashtable;
 
 public class MapFactory {
 
-    private static Hashtable<MapType, Map> mapTable = new Hashtable<MapType, Map>();
+    private static Hashtable<MapType, Map> mapTable = new Hashtable<>();
 
-    public static enum MapType{
+    public enum MapType{
         STUBBEN,
         FOREST,
         LAKE

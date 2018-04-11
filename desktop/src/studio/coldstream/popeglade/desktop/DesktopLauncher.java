@@ -16,7 +16,7 @@ public class DesktopLauncher {
 		config.width = 960;
 		config.addIcon("android/assets/gfx/box.png", Files.FileType.Internal); //Main Window Icon
 
-		Application app = new LwjglApplication(new MyGdxGame(), config);
+		LwjglApplication app = new LwjglApplication(new MyGdxGame(), config);
 		Gdx.app = app;
 
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);

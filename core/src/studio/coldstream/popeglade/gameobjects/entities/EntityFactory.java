@@ -6,18 +6,19 @@ import com.badlogic.gdx.utils.Json;
 import java.util.Hashtable;
 
 public class EntityFactory {
+    private static final String TAG = EntityFactory.class.getSimpleName();
 
     private static EntityFactory instance = null;
     private static Json json = new Json();
     private Hashtable<String, EntityConfig> entities;
 
-    public enum EnityType{
+    public enum EntityType{
         PLAYER,
         DEMO_PLAYER,
         NPC
     }
 
-    public static enum EntityName{
+    public enum EntityName{
         PLAYER_GNOME,
         TOWN_GUARD_WALKING,
         TOWN_BLACKSMITH,
@@ -32,7 +33,7 @@ public class EntityFactory {
     public static String PLAYER_CONFIG = "android/assets/scripts/player.json";
 
     private EntityFactory(){
-        entities = new Hashtable<String, EntityConfig>();
+        entities = new Hashtable<>();
 
         /*Array<EntityConfig> townFolkConfigs = Entity.getEntityConfigs(TOWN_FOLK_CONFIGS);
         for( EntityConfig config: townFolkConfigs){
@@ -59,9 +60,9 @@ public class EntityFactory {
         return instance;
     }
 
-    static public Entity getEntity(EnityType enityType) {
+    static public Entity getEntity(EntityType entityType) {
         Entity entity = null;
-        switch (enityType) {
+        switch (entityType) {
             case PLAYER:
                 entity = new Entity(
                         new PlayerInputComponent(),

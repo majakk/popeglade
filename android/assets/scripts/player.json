@@ -1,135 +1,132 @@
 {
-  entityID: PLAYER
-  state: IDLE
-  direction: DOWN
-  animationConfig: [
+  "state": "IDLE",
+  "entityID": "PLAYER",
+  "direction": "DOWN",
+  "frameWidth": 24,
+  "frameHeight": 32,
+  "animationConfig": [
     {
-      frameDuration: 0.25
-      animationType: IDLE
-      texturePaths: [
-        android/assets/gfx/player_second.png
+      "frameDuration": 0.05,
+      "animationType": "IDLE",
+      "texturePaths": [
+        "android/assets/gfx/player_second.png"
+      ],
+      "gridPoints": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        },
+        {
+          "x": 2,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        }
       ]
-      gridPoints: [
-        {
-          x: 0
-          y: 0
-        }
-
-        {
-          x: 0
-          y: 1
-        }
-        {
-          x: 0
-          y: 2
-        }
-        {
-          x: 0
-          y: 3
-        }
-      ]
-    }
+    },
     {
-      frameDuration: 0.25
-      animationType: WALK_DOWN
-      texturePaths: [
-        android/assets/gfx/player_second.png
+      "frameDuration": 0.05,
+      "animationType": "WALK_DOWN",
+      "texturePaths": [
+        "android/assets/gfx/player_second.png"
+      ],
+      "gridPoints": [
+        {
+          "x": 2,
+          "y": 0
+        },
+        {
+          "x": 2,
+          "y": 1
+        },
+        {
+          "x": 2,
+          "y": 2
+        },
+        {
+          "x": 2,
+          "y": 0
+        }
       ]
-      gridPoints: [
-        {
-          x: 0
-          y: 0
-        }
-
-        {
-          x: 0
-          y: 1
-        }
-        {
-          x: 0
-          y: 2
-        }
-        {
-          x: 0
-          y: 3
-        }
-      ]
-    }
+    },
     {
-      frameDuration: 0.25
-      animationType: WALK_LEFT
-      texturePaths: [
-        android/assets/gfx/player_second.png
+      "frameDuration": 0.05,
+      "animationType": "WALK_LEFT",
+      "texturePaths": [
+        "android/assets/gfx/player_second.png"
+      ],
+      "gridPoints": [
+        {
+          "x": 3,
+          "y": 0
+        },
+        {
+          "x": 3,
+          "y": 1
+        },
+        {
+          "x": 3,
+          "y": 2
+        },
+        {
+          "x": 3,
+          "y": 0
+        }
       ]
-      gridPoints: [
-        {
-          x: 1
-          y: 0
-        }
-
-        {
-          x: 1
-          y: 1
-        }
-        {
-          x: 1
-          y: 2
-        }
-        {
-          x: 1
-          y: 3
-        }
-      ]
-    }
+    },
     {
-      frameDuration: 0.25
-      animationType: WALK_RIGHT
-      texturePaths: [
-        android/assets/gfx/player_second.png
+      "frameDuration": 0.05,
+      "animationType": "WALK_RIGHT",
+      "texturePaths": [
+        "android/assets/gfx/player_second.png"
+      ],
+      "gridPoints": [
+        {
+          "x": 1,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 1
+        },
+        {
+          "x": 1,
+          "y": 2
+        },
+        {
+          "x": 1,
+          "y": 0
+        }
       ]
-      gridPoints: [
-        {
-          x: 2
-          y: 0
-        }
-
-        {
-          x: 2
-          y: 1
-        }
-        {
-          x: 2
-          y: 2
-        }
-        {
-          x: 2
-          y: 3
-        }
-      ]
-    }
+    },
     {
-      frameDuration: 0.25
-      animationType: WALK_UP
-      texturePaths: [
-        android/assets/gfx/player_second.png
-      ]
-      gridPoints: [
+      "frameDuration": 0.05,
+      "animationType": "WALK_UP",
+      "texturePaths": [
+        "android/assets/gfx/player_second.png"
+      ],
+      "gridPoints": [
         {
-          x: 3
-          y: 0
-        }
-
+          "x": 0,
+          "y": 0
+        },
         {
-          x: 3
-          y: 1
-        }
+          "x": 0,
+          "y": 1
+        },
         {
-          x: 3
-          y: 2
-        }
+          "x": 0,
+          "y": 2
+        },
         {
-          x: 3
-          y: 3
+          "x": 0,
+          "y": 0
         }
       ]
     }

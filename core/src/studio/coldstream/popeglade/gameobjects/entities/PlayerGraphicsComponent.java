@@ -79,17 +79,20 @@ public class PlayerGraphicsComponent extends GraphicsComponent {
         camera.position.set(currentPosition.x, currentPosition.y, 0f);
         camera.update();
 
-        batch.begin();
-        batch.draw(currentFrame, currentPosition.x, currentPosition.y, 1, 1);
-        batch.end();
+
 
         //NOTE: Code used to graphically debug boundingboxes
         Rectangle rect = entity.getCurrentBoundingBox();
         shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.RED);
-        shapeRenderer.rect(rect.getX() * Map.UNIT_SCALE, rect.getY() * Map.UNIT_SCALE, rect.getWidth() * Map.UNIT_SCALE, rect.getHeight()*Map.UNIT_SCALE);
+        //shapeRenderer.rect(rect.getX() * Map.UNIT_SCALE, rect.getY() * Map.UNIT_SCALE, rect.getWidth() * Map.UNIT_SCALE, rect.getHeight()* Map.UNIT_SCALE);
+        shapeRenderer.rect(rect.getX() * Map.UNIT_SCALE, rect.getY() * Map.UNIT_SCALE, rect.getWidth() * Map.UNIT_SCALE , rect.getHeight() * Map.UNIT_SCALE);
         shapeRenderer.end();
+
+        batch.begin();
+        batch.draw(currentFrame, currentPosition.x, currentPosition.y, 1, 1);
+        batch.end();
     }
 
     @Override

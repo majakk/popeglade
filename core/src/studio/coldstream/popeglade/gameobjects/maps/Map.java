@@ -57,7 +57,6 @@ public abstract class Map {
             mapDimensions = new Vector2(tileDimension.x * numOfTiles.x, tileDimension.y * numOfTiles.y);
         }else{
             Gdx.app.debug(TAG, "Map not loaded");
-            return;
         }
     }
 

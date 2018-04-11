@@ -164,23 +164,23 @@ public abstract class PhysicsComponent implements Component {
         //Update the current bounding box
         float width;
         float height;
-
-        float origWidth =  Entity.FRAME_WIDTH;
-        float origHeight = Entity.FRAME_HEIGHT;
+        Gdx.app.debug(TAG, "frameDimension: " + Entity.frameDimensions.x + ":" + Entity.frameDimensions.y);
+        float origWidth =  Entity.frameDimensions.x;
+        float origHeight = Entity.frameDimensions.y;
 
         float widthReductionAmount = 1.0f - percentageWidthReduced; //.8f for 20% (1 - .20)
         float heightReductionAmount = 1.0f - percentageHeightReduced; //.8f for 20% (1 - .20)
 
         if( widthReductionAmount > 0 && widthReductionAmount < 1){
-            width = Entity.FRAME_WIDTH * widthReductionAmount;
+            width = Entity.frameDimensions.x * widthReductionAmount;
         }else{
-            width = Entity.FRAME_WIDTH;
+            width = Entity.frameDimensions.x;
         }
 
         if( heightReductionAmount > 0 && heightReductionAmount < 1){
-            height = Entity.FRAME_HEIGHT * heightReductionAmount;
+            height = Entity.frameDimensions.y * heightReductionAmount;
         }else{
-            height = Entity.FRAME_HEIGHT;
+            height = Entity.frameDimensions.y;
         }
 
         if( width == 0 || height == 0){
@@ -201,6 +201,8 @@ public abstract class PhysicsComponent implements Component {
 
         boundingBox.setWidth(width);
         boundingBox.setHeight(height);
+
+        Gdx.app.debug(TAG, "Width and Height are NAUGHTY!! " + width + ":" + height);
 
         switch(boundingBoxLocation){
             case BOTTOM_LEFT:
@@ -235,10 +237,10 @@ public abstract class PhysicsComponent implements Component {
                 boundingBox.set(minX, minY, boundingBox.getWidth(), boundingBox.getHeight());
                 break;
             case BOTTOM_CENTER:
-                boundingBox.setCenter(minX + Entity.FRAME_WIDTH/2, minY + Entity.FRAME_HEIGHT/4);
+                boundingBox.setCenter(minX + Entity.frameDimensions.x/2, minY + Entity.frameDimensions.y/4);
                 break;
             case CENTER:
-                boundingBox.setCenter(minX + Entity.FRAME_WIDTH/2, minY + Entity.FRAME_HEIGHT/2);
+                boundingBox.setCenter(minX + Entity.frameDimensions.x/2, minY + Entity.frameDimensions.y/2);
                 break;
         }
 

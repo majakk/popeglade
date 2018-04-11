@@ -38,8 +38,9 @@ public class GameWorld {
 
         //Add world objects, Map, the Player and all entities (loaded)
         mapMgr = new MapManager();
-        player = EntityFactory.getInstance().getEntity(EntityFactory.EnityType.PLAYER);
+        player = EntityFactory.getInstance().getEntity(EntityFactory.EntityType.PLAYER);
         mapMgr.setPlayer(player);
+
 
         //player = new Player(300, 700, 24, 32);
         //terrain = new Terrain(1);
