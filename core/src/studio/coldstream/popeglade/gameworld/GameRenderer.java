@@ -1,6 +1,7 @@
 package studio.coldstream.popeglade.gameworld;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Json;
 
@@ -23,6 +25,7 @@ import studio.coldstream.popeglade.gameobjects.entities.Entity;
 import studio.coldstream.popeglade.gameobjects.maps.Map;
 import studio.coldstream.popeglade.gameobjects.maps.MapManager;
 import studio.coldstream.popeglade.screens.MainGameScreen;
+import studio.coldstream.popeglade.userinterfaces.PlayerHUD;
 
 /**
  * Created by Scalar on 01/08/2017.
@@ -45,7 +48,10 @@ public class GameRenderer {
     //Game Objects
     //private Player player;
     private Pointer pointer;
-    private HeadUpDisplay hud;
+    //private HeadUpDisplay hud;
+
+    private OrthographicCamera hudCamera;
+    private static PlayerHUD playerHUD;
 
     //Game Assets
     //private Animation playerAnimation[];
@@ -72,6 +78,11 @@ public class GameRenderer {
         //midPoints = new Vector2(midPointX, midPointY);
         json = new Json();
 
+        hudCamera = new OrthographicCamera();
+        hudCamera.setToOrtho(false, myScreen.getPhysicalViewport().x, myScreen.getPhysicalViewport().y);
+
+        playerHUD = new PlayerHUD(hudCamera, player);
+
         mapMgr = screen.getWorld().getMapMgr();
         player = screen.getWorld().getPlayerEntity();
         pointer = new Pointer();
@@ -92,8 +103,11 @@ public class GameRenderer {
         batcher = new SpriteBatch();
         batcher.setProjectionMatrix(cam.combined);
 
-        shapeRenderer = new ShapeRenderer();
-        shapeRenderer.setProjectionMatrix(cam.combined);
+
+
+
+        /*shapeRenderer = new ShapeRenderer();
+        shapeRenderer.setProjectionMatrix(cam.combined);*/
 
         //lh = new LocationHandler();
 
@@ -101,7 +115,7 @@ public class GameRenderer {
 
         //initGameObjects();
         //initAssets();
-        Gdx.app.log(TAG, "Mapsize X: " + mapMgr.getMapDimensions().x);
+        //Gdx.app.log(TAG, "Mapsize X: " + mapMgr.getMapDimensions().x);
     }
 
 
@@ -213,6 +227,7 @@ public class GameRenderer {
 
         //Draw HUD
         //hud.render(delta, runTime, batcher, shapeRenderer, font, cam);
+        playerHUD.render(delta);
 
 
         /*** *************************************
@@ -223,7 +238,7 @@ public class GameRenderer {
 
 
         //Used to graphically debug boundingboxes
-        /*Rectangle rect = _player.getCurrentBoundingBox();
+        /*Rectangle rect = player.getCurrentBoundingBox();
         shapeRenderer.setProjectionMatrix(cam.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.RED);

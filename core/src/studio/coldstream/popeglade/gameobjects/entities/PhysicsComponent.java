@@ -20,7 +20,7 @@ public abstract class PhysicsComponent implements Component {
 
     public abstract void update(Entity entity, MapManager mapMgr, float delta);
 
-    public static enum BoundingBoxLocation{
+    public enum BoundingBoxLocation{
         BOTTOM_LEFT,
         BOTTOM_CENTER,
         CENTER,
@@ -44,7 +44,7 @@ public abstract class PhysicsComponent implements Component {
         this.velocity = new Vector2(5.0f,5.0f);
         this.boundingBox = new Rectangle();
         this.json = new Json();
-        this.tempEntities = new Array<Entity>();
+        this.tempEntities = new Array<>();
         boundingBoxLocation = BoundingBoxLocation.BOTTOM_LEFT;
         //_selectionRay = new Ray(new Vector3(), new Vector3());
     }
@@ -190,6 +190,7 @@ public abstract class PhysicsComponent implements Component {
         //Need to account for the unitscale, since the map coordinates will be in pixels
         float minX;
         float minY;
+        float ratio = origWidth / origHeight;
 
         if( Map.UNIT_SCALE > 0 ) {
             minX = nextEntityPosition.x / Map.UNIT_SCALE;
@@ -237,13 +238,23 @@ public abstract class PhysicsComponent implements Component {
                 boundingBox.set(minX, minY, boundingBox.getWidth(), boundingBox.getHeight());
                 break;
             case BOTTOM_CENTER:
-                boundingBox.setCenter(minX + Entity.frameDimensions.x/2, minY + Entity.frameDimensions.y/4);
+                boundingBox.setCenter(minX + Entity.frameDimensions.x/(2), minY + Entity.frameDimensions.y/(4));
                 break;
             case CENTER:
-                boundingBox.setCenter(minX + Entity.frameDimensions.x/2, minY + Entity.frameDimensions.y/2);
+                boundingBox.setCenter(minX + Entity.frameDimensions.x/(2), minY + Entity.frameDimensions.y/(2));
                 break;
         }
 
+
+
+
         //Gdx.app.debug(TAG, "SETTING Bounding Box for " + entity.getEntityConfig().getEntityID() + ": (" + minX + "," + minY + ")  width: " + width + " height: " + height);
+    }
+
+    protected void mattiasBoundingBox(float percentageWidth, float percentageHeight){
+        float newUnitScaleX = (Entity.frameDimensions.x / Entity.frameDimensions.y) * (Map.TILE_SIZE * Map.UNIT_SCALE);
+        float newUnitScaleY = (Entity.frameDimensions.y / Entity.frameDimensions.y) * (Map.TILE_SIZE * Map.UNIT_SCALE);
+        boundingBox.set(nextEntityPosition.x / Map.UNIT_SCALE, nextEntityPosition.y / Map.UNIT_SCALE, Entity.frameDimensions.x * percentageWidth / newUnitScaleX, Entity.frameDimensions.y * percentageHeight / newUnitScaleY);
+        return;
     }
 }

@@ -7,9 +7,11 @@ import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 /**
  * Created by Scalar on 01/08/2017.
@@ -21,17 +23,22 @@ public class AssetLoader {
     public static final AssetManager assetManager = new AssetManager();
     private static InternalFileHandleResolver filePathResolver = new InternalFileHandleResolver();
 
-    private static Texture playerTexture, itemTexture;
-    public static TextureRegion items[];
+    private static final String STATUSUI_TEXTURE_ATLAS_PATH = "android/assets/ui/statusui.atlas";
+    private static final String STATUSUI_SKIN_PATH = "android/assets/ui/statusui.json";
 
+    public static TextureAtlas STATUSUI_TEXTURE_ATLAS = new TextureAtlas(STATUSUI_TEXTURE_ATLAS_PATH);
+    public static Skin STATUSUI_SKIN = new Skin(Gdx.files.internal(STATUSUI_SKIN_PATH),STATUSUI_TEXTURE_ATLAS);
+
+    //private static Texture playerTexture, itemTexture;
+    public static TextureRegion items[];
     public static Animation playerAnimation[];
-    private static TextureRegion player[][];
+    //private static TextureRegion player[][];
 
     private static Pixmap pm;
 
     //public static TextureRegion skullUp, skullDown, bar;
 
-    public static void load() {
+    //public static void load() {
 
         //player[direction][animation]
         /*player = new TextureRegion[4][3];
@@ -63,10 +70,10 @@ public class AssetLoader {
             }
         }*/
 
-        //Cursor
+    //Cursor
+    public static void loadPointer() {
         pm = new Pixmap(Gdx.files.internal("android/assets/gfx/cursor_image.png"));
         Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, 0, 0));
-
     }
 
 
@@ -74,6 +81,7 @@ public class AssetLoader {
         // We must dispose of the texture when we are finished.
         //playerTexture.dispose();
         //itemTexture.dispose();
+        assetManager.dispose();
         pm.dispose();
     }
 

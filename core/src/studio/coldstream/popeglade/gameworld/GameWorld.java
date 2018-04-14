@@ -42,6 +42,7 @@ public class GameWorld {
         mapMgr.setPlayer(player);
 
 
+
         //player = new Player(300, 700, 24, 32);
         //terrain = new Terrain(1);
         //pointer = new Pointer();

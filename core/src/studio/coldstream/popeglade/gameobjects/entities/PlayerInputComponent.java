@@ -8,7 +8,6 @@ import com.badlogic.gdx.math.Vector3;
 import studio.coldstream.popeglade.screens.MainGameScreen;
 
 public class PlayerInputComponent extends InputComponent {
-
     private final static String TAG = PlayerInputComponent.class.getSimpleName();
     private Vector2 lastMouseCoordinates;
 
@@ -133,7 +132,7 @@ public class PlayerInputComponent extends InputComponent {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if( button == Input.Buttons.LEFT || button == Input.Buttons.RIGHT ){
-            Gdx.app.debug(TAG, "GameScreen: MOUSE DOWN........: (" + screenX + "," + screenY + ")" );
+            //Gdx.app.debug(TAG, "MOUSE DOWN........: (" + screenX + "," + screenY + ")" );
             this.setClickedMouseCoordinates(screenX, screenY);
             //lastMouseCoordinates.set(screenX,screenY);
         }
@@ -203,7 +202,7 @@ public class PlayerInputComponent extends InputComponent {
         //lastMouseCoordinates = new Vector2(0,0);
         lastMouseCoordinates.set(x,y);
         //this.lastMouseCoordinates.add(x, y, 0.0f);
-        Gdx.app.debug(TAG, "GameScreen: MOUSE DOWN SET........: (" + lastMouseCoordinates.x + "," + y + ")" );
+        //Gdx.app.debug(TAG, "MOUSE DOWN SET........: (" + lastMouseCoordinates.x + "," + y + ")" );
     }
 
     public void selectMouseButtonPressed(int x, int y){

@@ -12,12 +12,15 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
     private Entity.State state;
 
     public PlayerPhysicsComponent(){
-        boundingBoxLocation = BoundingBoxLocation.BOTTOM_CENTER;
-        initBoundingBox(0.0f, 0.0f);
+        boundingBoxLocation = BoundingBoxLocation.BOTTOM_LEFT;
+        //initBoundingBox(0.5f, 0.5f);
+        mattiasBoundingBox(1.0f,1.0f);
         //_previousDiscovery = "";
         //_previousEnemySpawn = "0";
         //_mouseSelectCoordinates = new Vector3(0,0,0);
     }
+
+
 
     @Override
     public void receiveMessage(String message) {
