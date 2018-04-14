@@ -54,30 +54,84 @@ public abstract class PhysicsComponent implements Component {
 
     }
 
-    protected void setNextPositionToCurrent(Entity entity){
+    protected void setNextPositionToCurrentX(Entity entity){
         this.currentEntityPosition.x = nextEntityPosition.x;
+        //this.currentEntityPosition.y = nextEntityPosition.y;
+
+        //Gdx.app.debug(TAG, "SETTING Current Position " + entity.getEntityConfig().getEntityID() + ": (" + currentEntityPosition.x + "," + currentEntityPosition.y + ")");
+        entity.sendMessage(MESSAGE.CURRENT_POSITION, json.toJson(currentEntityPosition));
+    }
+
+    protected void setNextPositionToCurrentY(Entity entity){
+        //this.currentEntityPosition.x = nextEntityPosition.x;
         this.currentEntityPosition.y = nextEntityPosition.y;
 
         //Gdx.app.debug(TAG, "SETTING Current Position " + entity.getEntityConfig().getEntityID() + ": (" + currentEntityPosition.x + "," + currentEntityPosition.y + ")");
         entity.sendMessage(MESSAGE.CURRENT_POSITION, json.toJson(currentEntityPosition));
     }
 
-    protected void calculateNextPosition(float deltaTime){
+    protected void calculateNextPositionX(float deltaTime){
         if( currentDirection == null ) return;
 
         if( deltaTime > .7) return;
 
         float testX = currentEntityPosition.x;
-        float testY = currentEntityPosition.y;
+        //float testY = currentEntityPosition.y;
 
         velocity.scl(deltaTime);
 
         switch (currentDirection) {
+            case LEFT_UP :
+                testX -= 0.67 * velocity.x;
+                break;
+            case RIGHT_UP :
+                testX += 0.67 * velocity.x;
+                break;
+            case LEFT_DOWN :
+                testX -= 0.67 * velocity.x;
+                break;
+            case RIGHT_DOWN :
+                testX += 0.67 * velocity.x;
+                break;
             case LEFT :
                 testX -=  velocity.x;
                 break;
             case RIGHT :
                 testX += velocity.x;
+                break;
+            default:
+                break;
+        }
+
+        nextEntityPosition.x = testX;
+        //nextEntityPosition.y = testY;
+
+        //velocity
+        velocity.scl(1 / deltaTime);
+    }
+
+    protected void calculateNextPositionY(float deltaTime){
+        if( currentDirection == null ) return;
+
+        if( deltaTime > .7) return;
+
+        //float testX = currentEntityPosition.x;
+        float testY = currentEntityPosition.y;
+
+        velocity.scl(deltaTime);
+
+        switch (currentDirection) {
+            case LEFT_UP :
+                testY += 0.67 * velocity.y;
+                break;
+            case RIGHT_UP :
+                testY += 0.67 * velocity.y;
+                break;
+            case LEFT_DOWN :
+                testY -= 0.67 * velocity.y;
+                break;
+            case RIGHT_DOWN :
+                testY -= 0.67 * velocity.y;
                 break;
             case UP :
                 testY += velocity.y;
@@ -89,7 +143,7 @@ public abstract class PhysicsComponent implements Component {
                 break;
         }
 
-        nextEntityPosition.x = testX;
+        //nextEntityPosition.x = testX;
         nextEntityPosition.y = testY;
 
         //velocity
@@ -244,6 +298,8 @@ public abstract class PhysicsComponent implements Component {
                 boundingBox.setCenter(minX + Entity.frameDimensions.x/(2), minY + Entity.frameDimensions.y/(2));
                 break;
         }
+
+
 
 
 

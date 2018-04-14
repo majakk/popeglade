@@ -23,7 +23,6 @@ public class PlayerHUD implements Screen, ProfileObserver{
         statusUI = new StatusUI();
 
         stage.addActor(statusUI);
-
     }
 
     @Override
@@ -65,5 +64,9 @@ public class PlayerHUD implements Screen, ProfileObserver{
     @Override
     public void onNotify(ProfileManager profileManager, ProfileEvent event) {
 
+    }
+
+    public Stage getStage() {
+        return stage;
     }
 }

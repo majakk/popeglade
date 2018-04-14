@@ -15,7 +15,7 @@ public class MyGdxGame extends Game {
 	public void create () {
 		Gdx.app.log(TAG, "Created");
 
-		AssetLoader.loadPointer();
+		//AssetLoader.loadPointer();
 		mainGameScreen = new MainGameScreen();
 		setScreen(mainGameScreen);
 	}

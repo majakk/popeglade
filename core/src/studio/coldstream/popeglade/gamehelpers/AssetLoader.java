@@ -76,13 +76,17 @@ public class AssetLoader {
         Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, 0, 0));
     }
 
+    public static void unloadPointer() {
+        pm.dispose();
+    }
+
 
     public static void dispose() {
         // We must dispose of the texture when we are finished.
         //playerTexture.dispose();
         //itemTexture.dispose();
         assetManager.dispose();
-        pm.dispose();
+        unloadPointer();
     }
 
 

@@ -19,7 +19,7 @@ public class CollisionHandler {
         lh = new LocationHandler();
     }
 
-    public void update(float delta, Player player, Terrain terrain) {
+    /*public void update(float delta, Player player, Terrain terrain) {
 
         //X-axis collisions
         player.updateX(delta);
@@ -35,9 +35,9 @@ public class CollisionHandler {
             player.makeMoveY();
         }
 
-    }
+    }*/
 
-    private boolean anyWallCollision(Player player, Terrain terrain) {
+    /*private boolean anyWallCollision(Player player, Terrain terrain) {
         if(wallsEnabled) {
             for (int i = 0; i < 9; i++) {
                 if (lh.isTileWall(lh.playerNineTile(player, terrain).get(i))) {
@@ -47,7 +47,7 @@ public class CollisionHandler {
             }
         }
         return false;
-    }
+    }*/
 
 
 

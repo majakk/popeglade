@@ -1,6 +1,7 @@
 package studio.coldstream.popeglade.gameworld;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -10,18 +11,14 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Json;
 
-import studio.coldstream.popeglade.gamehelpers.AssetLoader;
+
 import studio.coldstream.popeglade.gamehelpers.LocationHandler;
-import studio.coldstream.popeglade.gameobjects.HeadUpDisplay;
-import studio.coldstream.popeglade.gameobjects.Terrain;
-import studio.coldstream.popeglade.gameobjects.Player;
-import studio.coldstream.popeglade.gameobjects.Pointer;
 import studio.coldstream.popeglade.gameobjects.entities.Component;
 import studio.coldstream.popeglade.gameobjects.entities.Entity;
+import studio.coldstream.popeglade.gameobjects.entities.PlayerInputComponent;
+import studio.coldstream.popeglade.gameobjects.entities.PointerInputComponent;
 import studio.coldstream.popeglade.gameobjects.maps.Map;
 import studio.coldstream.popeglade.gameobjects.maps.MapManager;
 import studio.coldstream.popeglade.screens.MainGameScreen;
@@ -47,7 +44,7 @@ public class GameRenderer {
 
     //Game Objects
     //private Player player;
-    private Pointer pointer;
+    //private Entity pointer;
     //private HeadUpDisplay hud;
 
     private OrthographicCamera hudCamera;
@@ -56,7 +53,7 @@ public class GameRenderer {
     //Game Assets
     //private Animation playerAnimation[];
 
-    //private LocationHandler lh;
+    private LocationHandler lh;
 
     //private TiledMapTileLayer.Cell cell;
     //private TiledMapTileLayer tileLayer;
@@ -67,7 +64,10 @@ public class GameRenderer {
 
     private static MapManager mapMgr;
     private static Entity player;
+    private static Entity pointer;
     private OrthogonalTiledMapRenderer mapRenderer = null;
+
+    private InputMultiplexer multiplexer;
 
     public GameRenderer(MainGameScreen screen) {
         Gdx.app.log(TAG, "Attached");
@@ -85,7 +85,8 @@ public class GameRenderer {
 
         mapMgr = screen.getWorld().getMapMgr();
         player = screen.getWorld().getPlayerEntity();
-        pointer = new Pointer();
+        pointer = screen.getWorld().getPointerEntity();
+        //pointer = new Pointer();
 
         if( mapRenderer == null ){
             mapRenderer = new OrthogonalTiledMapRenderer(mapMgr.getCurrentTiledMap(), Map.UNIT_SCALE);
@@ -103,13 +104,17 @@ public class GameRenderer {
         batcher = new SpriteBatch();
         batcher.setProjectionMatrix(cam.combined);
 
+        multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(playerHUD.getStage());
+        multiplexer.addProcessor(new PlayerInputComponent());
+        multiplexer.addProcessor(new PointerInputComponent());
+        Gdx.input.setInputProcessor(multiplexer);
 
 
+        shapeRenderer = new ShapeRenderer();
+        shapeRenderer.setProjectionMatrix(cam.combined);
 
-        /*shapeRenderer = new ShapeRenderer();
-        shapeRenderer.setProjectionMatrix(cam.combined);*/
-
-        //lh = new LocationHandler();
+        lh = new LocationHandler();
 
         //toplayers = new int[]{2};
 
@@ -126,7 +131,7 @@ public class GameRenderer {
 
     public void render(float delta, float runTime) {
         //Gdx.app.log("GameRenderer", "render");
-        pointer.update(delta, player, mapMgr);
+        //pointer.update(delta, player, mapMgr);
         //Clear and draw background
         Gdx.gl.glClearColor(0.6f, 0.6f, 0.8f, 1);
         Gdx.gl.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
@@ -141,6 +146,8 @@ public class GameRenderer {
         cam.position.x = MathUtils.clamp(mapMgr.getPlayer().getCurrentPosition().x, cam.viewportWidth / 2, mapMgr.getMapDimensions().x * Map.UNIT_SCALE - cam.viewportWidth / 2);
         cam.position.y = MathUtils.clamp(mapMgr.getPlayer().getCurrentPosition().y, cam.viewportHeight / 2, mapMgr.getMapDimensions().y * Map.UNIT_SCALE - cam.viewportHeight / 2);
         cam.update();
+
+        //batcher.setProjectionMatrix(cam.combined); //Super important line!
 
         if( mapMgr.hasMapChanged() ) {
             mapRenderer.setMap(mapMgr.getCurrentTiledMap());
@@ -218,7 +225,7 @@ public class GameRenderer {
         }
         mapRenderer.getBatch().end();
 
-
+        pointer.update(mapMgr, batcher, delta);
 
         //mapMgr.updateCurrentMapEntities(mapMgr, mapRenderer.getBatch(), delta);
 
@@ -228,6 +235,8 @@ public class GameRenderer {
         //Draw HUD
         //hud.render(delta, runTime, batcher, shapeRenderer, font, cam);
         playerHUD.render(delta);
+
+
 
 
         /*** *************************************
@@ -265,18 +274,20 @@ public class GameRenderer {
                     shapeRenderer.rect(lh.playerNineTileRect(player, terrain).get(i).x, lh.playerNineTileRect(player, terrain).get(i).y, lh.playerNineTileRect(player, terrain).get(i).width, lh.playerNineTileRect(player, terrain).get(i).height);
             }
 
-        shapeRenderer.end();
+        shapeRenderer.end();*/
 
         //Draw pointer rect
+        /*shapeRenderer.setProjectionMatrix(cam.combined); //Super important line!
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 
             shapeRenderer.setColor(0.3f,1,0.3f,0.2f);
-            shapeRenderer.rect(lh.pointerTileRect(pointer, terrain).x, lh.pointerTileRect(pointer, terrain).y, lh.pointerTileRect(pointer, terrain).width, lh.pointerTileRect(pointer, terrain).height);
+            //shapeRenderer.rect(lh.pointerTileRect(pointer, terrain).x, lh.pointerTileRect(pointer, terrain).y, lh.pointerTileRect(pointer, terrain).width, lh.pointerTileRect(pointer, terrain).height);
+            shapeRenderer.rect(lh.pointerTileRect(pointer, mapMgr).x, lh.pointerTileRect(pointer, mapMgr).y, lh.pointerTileRect(pointer, mapMgr).width, lh.pointerTileRect(pointer, mapMgr).height);
 
-        shapeRenderer.end();
+        shapeRenderer.end();*/
 
         //Draw values in rects
-        batcher.begin();
+        /*batcher.begin();
 
             //Ninerect
             //for(int i = 0; i < 9; i++){
@@ -306,4 +317,8 @@ public class GameRenderer {
     /*private void initAssets() {
         //playerAnimation = AssetLoader.playerAnimation;
     }*/
+
+    public PlayerHUD getHUD(){
+        return playerHUD;
+    }
 }

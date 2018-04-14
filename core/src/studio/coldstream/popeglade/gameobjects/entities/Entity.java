@@ -20,12 +20,16 @@ public class Entity {
     private EntityConfig entityConfig;
 
     public enum Direction {
-        UP,
+        LEFT,
         RIGHT,
+        UP,
         DOWN,
-        LEFT;
+        LEFT_UP,
+        LEFT_DOWN,
+        RIGHT_UP,
+        RIGHT_DOWN;
 
-        public Direction getOpposite(){
+        /*public Direction getOpposite(){
             if(this == UP)
                 return DOWN;
             else if(this == RIGHT)
@@ -34,7 +38,7 @@ public class Entity {
                 return UP;
             else
                 return RIGHT;
-        }
+        }*/
     }
 
     public enum State {
@@ -115,6 +119,12 @@ public class Entity {
 
     public Vector2 getCurrentPosition(){
         return graphicsComponent.currentPosition;
+    }
+
+    public void setCurrentPosition(int x, int y) {
+        graphicsComponent.currentPosition.x = x;
+        graphicsComponent.currentPosition.y = y;
+
     }
 
     public void setEntityConfig(EntityConfig eC){

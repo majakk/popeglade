@@ -1,0 +1,22 @@
+{
+  "state": "IDLE",
+  "entityID": "POINTER",
+  "direction": "DOWN",
+  "frameWidth": 32,
+  "frameHeight": 32,
+  "animationConfig": [
+    {
+      "frameDuration": 0.05,
+      "animationType": "IDLE",
+      "texturePaths": [
+        "android/assets/gfx/pointer.png"
+      ],
+      "gridPoints": [
+        {
+          "x": 0,
+          "y": 0
+        }
+      ]
+    }
+  ]
+}

@@ -60,6 +60,8 @@ public abstract class GraphicsComponent implements Component {
                     currentFrame = animation.getKeyFrame(frameTime);
                 }
                 break;
+            case LEFT_DOWN:
+            case LEFT_UP:
             case LEFT:
                 if (currentState == Entity.State.WALKING) {
                     Animation<TextureRegion> animation = animations.get(Entity.AnimationType.WALK_LEFT);
@@ -90,6 +92,8 @@ public abstract class GraphicsComponent implements Component {
                     currentFrame = animation.getKeyFrame(frameTime);
                 }
                 break;
+            case RIGHT_DOWN:
+            case RIGHT_UP:
             case RIGHT:
                 if (currentState == Entity.State.WALKING) {
                     Animation<TextureRegion> animation = animations.get(Entity.AnimationType.WALK_RIGHT);

@@ -4,8 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.math.Vector2;
 
-import studio.coldstream.popeglade.gamehelpers.InputHandler;
-import studio.coldstream.popeglade.gameobjects.maps.MapManager;
 import studio.coldstream.popeglade.gameworld.GameRenderer;
 import studio.coldstream.popeglade.gameworld.GameWorld;
 import studio.coldstream.popeglade.profiles.ProfileManager;
@@ -37,17 +35,6 @@ public class MainGameScreen implements Screen {
 
         setGameState(GameState.RUNNING);
 
-        /*float screenWidth = Gdx.graphics.getWidth();
-        float screenHeight = Gdx.graphics.getHeight();
-        float gameWidth = Gdx.graphics.getWidth(); //Set this to the wanted width
-        float gameHeight = screenHeight / (screenWidth / gameWidth);*/
-
-        //mapMgr = new MapManager();
-
-
-
-        /*world = new GameWorld(midPointX, midPointY);
-        renderer = new GameRenderer(world, midPointX, midPointY);*/
     }
 
     public static void setGameState(GameState gameState){
@@ -135,6 +122,8 @@ public class MainGameScreen implements Screen {
         else
             Gdx.graphics.setWindowedMode((int)(height * ar), height);
         Gdx.graphics.setResizable(true);
+
+        //renderer.getHUD().resize((int) VIEWPORT.physicalWidth, (int) VIEWPORT.physicalHeight);
     }
 
     @Override
@@ -143,14 +132,8 @@ public class MainGameScreen implements Screen {
 
         setupViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-
-        //int midPointX = (int) (VIEWPORT.viewportWidth / 2);
-        //int midPointY = (int) (VIEWPORT.viewportHeight / 2);
-
         world = new GameWorld();
         renderer = new GameRenderer(this);
-
-        //Gdx.input.setInputProcessor(new InputHandler(world.getPlayer(), world.getPointer(), renderer.getCamera()));
     }
 
     @Override

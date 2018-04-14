@@ -14,12 +14,14 @@ public class EntityFactory {
 
     public enum EntityType{
         PLAYER,
+        POINTER,
         DEMO_PLAYER,
         NPC
     }
 
     public enum EntityName{
         PLAYER_GNOME,
+        POINTER_ARROW,
         TOWN_GUARD_WALKING,
         TOWN_BLACKSMITH,
         TOWN_MAGE,
@@ -31,6 +33,7 @@ public class EntityFactory {
     }
 
     public static String PLAYER_CONFIG = "android/assets/scripts/player.json";
+    public static String POINTER_CONFIG = "android/assets/scripts/pointer.json";
 
     private EntityFactory(){
         entities = new Hashtable<>();
@@ -50,6 +53,7 @@ public class EntityFactory {
         //entities.put(EntityName.TOWN_MAGE.toString(), Entity.loadEntityConfigByPath(TOWN_MAGE_CONFIG));
         //entities.put(EntityName.TOWN_INNKEEPER.toString(), Entity.loadEntityConfigByPath(TOWN_INNKEEPER_CONFIG));
         entities.put(EntityName.PLAYER_GNOME.toString(), Entity.loadEntityConfigByPath(PLAYER_CONFIG));
+        //entities.put(EntityName.POINTER_ARROW.toString(), Entity.loadEntityConfigByPath(POINTER_CONFIG));
     }
 
     public static EntityFactory getInstance() {
@@ -71,6 +75,14 @@ public class EntityFactory {
                 entity.setEntityConfig(
                         Entity.getEntityConfig(EntityFactory.PLAYER_CONFIG));
                 entity.sendMessage(Component.MESSAGE.LOAD_ANIMATIONS, json.toJson(entity.getEntityConfig()));
+                return entity;
+            case POINTER:
+                entity = new Entity(
+                        new PointerInputComponent(),
+                        new PointerPhysicsComponent(),
+                        new PointerGraphicsComponent());
+                entity.setEntityConfig(
+                        Entity.getEntityConfig(EntityFactory.POINTER_CONFIG));
                 return entity;
             case DEMO_PLAYER:
                 entity = new Entity(

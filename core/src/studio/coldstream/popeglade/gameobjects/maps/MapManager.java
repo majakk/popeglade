@@ -16,8 +16,6 @@ public class MapManager {
     private boolean mapChanged = false;
     private Map currentMap;
 
-
-
     public void loadMap(MapFactory.MapType mapType){
         Map map = MapFactory.getMap(mapType);
 
@@ -72,6 +70,8 @@ public class MapManager {
     public Vector2 getMapNumOfTiles() {
         return currentMap.getMapNumOfTiles();
     }
+
+    public Vector2 getMapTileDimension() { return currentMap.getMapTileDimension(); }
 
     /*public void disableCurrentmapMusic(){
         currentMap.unloadMusic();

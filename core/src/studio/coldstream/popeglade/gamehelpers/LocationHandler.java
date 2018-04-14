@@ -1,21 +1,27 @@
 package studio.coldstream.popeglade.gamehelpers;
 
-import com.badlogic.gdx.maps.tiled.TiledMapTile;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 
 import studio.coldstream.popeglade.gameobjects.Terrain;
 import studio.coldstream.popeglade.gameobjects.Player;
-import studio.coldstream.popeglade.gameobjects.Pointer;
+import studio.coldstream.popeglade.gameobjects.entities.Entity;
+import studio.coldstream.popeglade.gameobjects.maps.Map;
+import studio.coldstream.popeglade.gameobjects.maps.MapManager;
+
 
 /**
  * Created by Scalar on 17/09/2017.
  */
 
 public class LocationHandler {
+    private static final String TAG = LocationHandler.class.getSimpleName();
 
     private Rectangle tempRect;
     private Array<Rectangle> tempNineRect;
@@ -56,16 +62,16 @@ public class LocationHandler {
         //playerTile = new int[2];
     }
 
-    public Cell playerTile(Player player, Terrain terrain) {
+    /*public Cell playerTile(Player player, Terrain terrain) {
         tileLayer = (TiledMapTileLayer) terrain.getTiledMap().getLayers().get(1);
         cell = tileLayer.getCell((int)Math.floor((double)player.getX()/(double) terrain.getSingleTileWidth()),(int)Math.floor((double)player.getY()/(double) terrain.getSingleTileHeight()));
 
 
         //Gdx.app.log("LocationHandler", cell.getTile().getId() + "");
         return cell;
-    }
+    }*/
 
-    public Cell pointerTile(Pointer pointer, Terrain terrain) {
+    /*public Cell pointerTile(Pointer pointer, Terrain terrain) {
         tileLayer = (TiledMapTileLayer) terrain.getTiledMap().getLayers().get(2);
         cell = tileLayer.getCell((int)Math.floor((double)pointer.getX()/(double) terrain.getSingleTileWidth()),(int)Math.floor((double)pointer.getY()/(double) terrain.getSingleTileHeight()));
         //cell.getTile().setBlendMode(TiledMapTile.BlendMode.ALPHA);
@@ -75,39 +81,80 @@ public class LocationHandler {
             return cell;
         else
             return new Cell();
-    }
+    }*/
 
-    public boolean isTileWall(Cell cell){
+    /*public boolean isTileWall(Cell cell){
         /*if(cell.getTile().getProperties().get("wall") != null)
             return true;
         else
-            return false;*/
+            return false;
         //try {
             return cell.getTile().getProperties().get("wall") != null;
         //} catch(Exception e){
         //    return false;
         //}
-    }
+    }*/
 
-    public Rectangle playerTileRect(Player player, Terrain terrain) {
+    /*public Rectangle playerTileRect(Player player, Terrain terrain) {
         tempRect.set(
                 (float)Math.floor((double)player.getX()/(double) terrain.getSingleTileWidth()) * terrain.getSingleTileWidth(),
                 (float)Math.floor((double)player.getY()/(double) terrain.getSingleTileHeight()) * terrain.getSingleTileHeight(),
                 terrain.getSingleTileWidth(),
                 terrain.getSingleTileHeight());
         return tempRect;
-    }
+    }*/
 
-    public Rectangle pointerTileRect(Pointer pointer, Terrain terrain) {
+    /*public Rectangle pointerTileRect(Pointer pointer, Terrain terrain) {
         tempRect.set(
                 (float)Math.floor((double)pointer.getX()/(double) terrain.getSingleTileWidth()) * terrain.getSingleTileWidth(),
                 (float)Math.floor((double)pointer.getY()/(double) terrain.getSingleTileHeight()) * terrain.getSingleTileHeight(),
                 terrain.getSingleTileWidth(),
                 terrain.getSingleTileHeight());
         return tempRect;
+    }*/
+
+    public Rectangle pointerTileRect(Entity entity, MapManager mapMgr, Batch batch) {
+        //float numOfTilesX = mapMgr.getMapNumOfTiles().x;
+        //float numOfTilesY = mapMgr.getMapNumOfTiles().y;
+
+        float tileSizeX = mapMgr.getMapTileDimension().x;
+        float tileSizeY = mapMgr.getMapTileDimension().y;
+
+        float camPosX = -batch.getProjectionMatrix().getTranslation(new Vector3(0,0,0)).x - 1;
+        float camPosY = -batch.getProjectionMatrix().getTranslation(new Vector3(0,0,0)).y - 1;
+
+        float mouseX = entity.getCurrentPosition().x;
+        float mouseY = entity.getCurrentPosition().y;
+
+        float camWidth = mapMgr.getCamera().viewportWidth;
+        float camHeight = mapMgr.getCamera().viewportHeight;
+
+        float physicalWidth = Gdx.app.getGraphics().getWidth();
+        float physicalHeight = Gdx.app.getGraphics().getHeight();
+
+        float posX = ((mouseX / physicalWidth) * camWidth) + (camPosX * camWidth / 2);
+        float posY = (((physicalHeight - mouseY) / physicalHeight) * camHeight) + (camPosY * camHeight / 2);
+
+        //Gdx.app.log(TAG,"Dimensions: " + mapMgr.getCamera().viewportWidth + ":" + -mapMgr.getCamera().view.getTranslation(new Vector3(1,1,1)).x + ":" + mapMgr.getMapTileDimension().x);
+        //Gdx.app.log(TAG,"Dimensions: " + -mapMgr.getCamera().view.getTranslation(new Vector3(1,1,1)).x ); //This is where the player is in the world!!
+
+        //Gdx.app.log(TAG,"Dimensions: " + mapMgr.getCamera().position.x ); //This is also where the player is in the world!!
+        //Gdx.app.log(TAG,"Dimensions: " + -batch.getProjectionMatrix().getTranslation(new Vector3(0,0,0)).x + ":" + -batch.getProjectionMatrix().getTranslation(new Vector3(0,0,0)).y); //This is camera position
+        //Gdx.app.log(TAG,"Dimensions: " + -batch.getProjectionMatrix().getTranslation(new Vector3(0,0,0)).x + ":" + -batch.getProjectionMatrix().getTranslation(new Vector3(0,0,0)).y);
+
+        tempRect.set(
+                (float)Math.floor((double)posX),
+                (float)Math.floor((double)posY),
+                //10,10,
+                //((mouseX / Gdx.app.getGraphics().getWidth()) * camWidth) + (camPosX * camWidth / 2), //Working X
+                //(((Gdx.app.getGraphics().getHeight() - mouseY) / Gdx.app.getGraphics().getHeight()) * camHeight) + (camPosY * camHeight / 2), //Working Y
+
+                tileSizeX * Map.UNIT_SCALE,
+                tileSizeY * Map.UNIT_SCALE);
+        return tempRect;
     }
 
-    public Array<Rectangle> playerNineTileRect(Player player, Terrain terrain) {
+    /*public Array<Rectangle> playerNineTileRect(Player player, Terrain terrain) {
         for(int i = 0; i < 9; i++) {
             tempNineRect.set(i, new Rectangle(
                     ((float)Math.floor((double)player.getX()/(double) terrain.getSingleTileWidth()) + nd.get(i).x) * terrain.getSingleTileWidth(),
@@ -117,9 +164,9 @@ public class LocationHandler {
         }
 
         return tempNineRect;
-    }
+    }*/
 
-    public Array<Cell> playerNineTile(Player player, Terrain terrain) {
+    /*public Array<Cell> playerNineTile(Player player, Terrain terrain) {
         //tempNineCell.set(0, new Cell());
         tileLayer = (TiledMapTileLayer) terrain.getTiledMap().getLayers().get(1);
         for(int i = 0; i < 9; i++) {
@@ -137,6 +184,6 @@ public class LocationHandler {
         }
 
         return tempNineCell;
-    }
+    }*/
 
 }

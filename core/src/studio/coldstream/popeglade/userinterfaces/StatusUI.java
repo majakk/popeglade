@@ -18,7 +18,7 @@ public class StatusUI extends Window {
     private int xpVal;
 
     public StatusUI(){
-        super("Stats", AssetLoader.STATUSUI_SKIN);
+        super("Stats:", AssetLoader.STATUSUI_SKIN);
 
 
         //groups
@@ -29,7 +29,7 @@ public class StatusUI extends Window {
 
         defaults().expand().fill();
 
-        this.pad(this.getPadTop()+ 10, 10, 10, 10);
+        this.pad(this.getPadTop()+ 16, 16, 16, 16);
         this.add();
         this.add(inventoryButton).align(Align.right);
         this.row();

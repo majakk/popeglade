@@ -37,11 +37,25 @@ public class PlayerInputComponent extends InputComponent {
 
     @Override
     public void update(Entity entity, float delta){
-        //Gdx.app.debug(TAG, "Mouse LEFT click at : (" + this.lastMouseCoordinates.x + "," + lastMouseCoordinates.y + ")" );
+        //Gdx.app.debug(TAG, "Key pressed : (" + keys.toString());
         //Keyboard input
         if(keys.get(Keys.PAUSE)) {
             MainGameScreen.setGameState(MainGameScreen.GameState.PAUSED);
             pauseReleased();
+
+        }else if( keys.get(Keys.LEFT) && keys.get(Keys.UP)){
+            entity.sendMessage(MESSAGE.CURRENT_STATE, json.toJson(Entity.State.WALKING));
+            entity.sendMessage(MESSAGE.CURRENT_DIRECTION, json.toJson(Entity.Direction.LEFT_UP));
+        }else if( keys.get(Keys.RIGHT) && keys.get(Keys.UP)){
+            entity.sendMessage(MESSAGE.CURRENT_STATE, json.toJson(Entity.State.WALKING));
+            entity.sendMessage(MESSAGE.CURRENT_DIRECTION, json.toJson(Entity.Direction.RIGHT_UP));
+        }else if( keys.get(Keys.LEFT) && keys.get(Keys.DOWN)){
+            entity.sendMessage(MESSAGE.CURRENT_STATE, json.toJson(Entity.State.WALKING));
+            entity.sendMessage(MESSAGE.CURRENT_DIRECTION, json.toJson(Entity.Direction.LEFT_DOWN));
+        }else if(keys.get(Keys.RIGHT) && keys.get(Keys.DOWN)){
+            entity.sendMessage(MESSAGE.CURRENT_STATE, json.toJson(Entity.State.WALKING));
+            entity.sendMessage(MESSAGE.CURRENT_DIRECTION, json.toJson(Entity.Direction.RIGHT_DOWN));
+
         }else if( keys.get(Keys.LEFT)){
             entity.sendMessage(MESSAGE.CURRENT_STATE, json.toJson(Entity.State.WALKING));
             entity.sendMessage(MESSAGE.CURRENT_DIRECTION, json.toJson(Entity.Direction.LEFT));
@@ -54,9 +68,11 @@ public class PlayerInputComponent extends InputComponent {
         }else if(keys.get(Keys.DOWN)){
             entity.sendMessage(MESSAGE.CURRENT_STATE, json.toJson(Entity.State.WALKING));
             entity.sendMessage(MESSAGE.CURRENT_DIRECTION, json.toJson(Entity.Direction.DOWN));
+
         }else if(keys.get(Keys.QUIT)) {
             quitReleased();
             Gdx.app.exit();
+
         }else{
             entity.sendMessage(MESSAGE.CURRENT_STATE, json.toJson(Entity.State.IDLE));
             if( currentDirection == null ){
@@ -65,14 +81,14 @@ public class PlayerInputComponent extends InputComponent {
         }
 
         //Mouse input
-        if( mouseButtons.get(Mouse.SELECT)) {
+        /*if( mouseButtons.get(Mouse.SELECT)) {
             lastMouseCoordinates.set(Gdx.input.getX(), Gdx.input.getY()); //Something fishy since we need this here again!
 
-            Gdx.app.debug(TAG, "Mouse LEFT click at : (" + lastMouseCoordinates.x + "," + lastMouseCoordinates.y + ")" ); //Something fishy
+            //Gdx.app.debug(TAG, "Mouse LEFT click at : (" + lastMouseCoordinates.x + "," + lastMouseCoordinates.y + ")" ); //Something fishy
 
             entity.sendMessage(MESSAGE.INIT_SELECT_ENTITY, json.toJson(lastMouseCoordinates));
             mouseButtons.put(Mouse.SELECT, false);
-        }
+        }*/
 
 
     }
@@ -131,7 +147,7 @@ public class PlayerInputComponent extends InputComponent {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if( button == Input.Buttons.LEFT || button == Input.Buttons.RIGHT ){
+        /*if( button == Input.Buttons.LEFT || button == Input.Buttons.RIGHT ){
             //Gdx.app.debug(TAG, "MOUSE DOWN........: (" + screenX + "," + screenY + ")" );
             this.setClickedMouseCoordinates(screenX, screenY);
             //lastMouseCoordinates.set(screenX,screenY);
@@ -144,19 +160,21 @@ public class PlayerInputComponent extends InputComponent {
         if( button == Input.Buttons.RIGHT){
             this.doActionMouseButtonPressed(screenX, screenY);
         }
-        return true;
+        return true;*/
+        return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         //left is selection, right is context menu
-        if( button == Input.Buttons.LEFT){
+        /*if( button == Input.Buttons.LEFT){
             this.selectMouseButtonReleased(screenX, screenY);
         }
         if( button == Input.Buttons.RIGHT){
             this.doActionMouseButtonReleased(screenX, screenY);
         }
-        return true;
+        return true;*/
+        return false;
     }
 
     @Override
@@ -198,7 +216,7 @@ public class PlayerInputComponent extends InputComponent {
         keys.put(Keys.PAUSE, true);
     }
 
-    public void setClickedMouseCoordinates(int x, int y){
+    /*public void setClickedMouseCoordinates(int x, int y){
         //lastMouseCoordinates = new Vector2(0,0);
         lastMouseCoordinates.set(x,y);
         //this.lastMouseCoordinates.add(x, y, 0.0f);
@@ -211,7 +229,7 @@ public class PlayerInputComponent extends InputComponent {
 
     public void doActionMouseButtonPressed(int x, int y){
         mouseButtons.put(Mouse.DOACTION, true);
-    }
+    }*/
 
     //Releases
 
@@ -237,13 +255,13 @@ public class PlayerInputComponent extends InputComponent {
 
     public void pauseReleased() { keys.put(Keys.PAUSE, false);}
 
-    public void selectMouseButtonReleased(int x, int y){
+    /*public void selectMouseButtonReleased(int x, int y){
         mouseButtons.put(Mouse.SELECT, false);
     }
 
     public void doActionMouseButtonReleased(int x, int y){
         mouseButtons.put(Mouse.DOACTION, false);
-    }
+    }*/
 
     public static void clear(){
         keys.put(Keys.LEFT, false);

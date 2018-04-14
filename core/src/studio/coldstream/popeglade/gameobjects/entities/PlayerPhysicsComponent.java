@@ -39,7 +39,7 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
             } else if(string[0].equalsIgnoreCase(MESSAGE.CURRENT_DIRECTION.toString())) {
                 currentDirection = json.fromJson(Entity.Direction.class, string[1]);
             } else if(string[0].equalsIgnoreCase(MESSAGE.INIT_SELECT_ENTITY.toString())) {
-                Gdx.app.log(TAG, "Init select Entity Message ends here");
+                //Gdx.app.log(TAG, "Init select Entity Message ends here");
             }
             //Gdx.app.log(TAG, "Key Pressed: " + currentEntityPosition + " : " + currentDirection);
         }
@@ -62,20 +62,63 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
             _isMouseSelectEnabled = false;
         }*/
 
+        //X-axis collisions
+        //updateX(entity, delta);
+
+        /*if(!anyWallCollision(player, terrain)){
+            player.makeMoveX();
+        }*/
+
+        //Y-axis collisions
+        //updateY(entity, delta);
+
+        /*if(!anyWallCollision(player, terrain)){
+            player.makeMoveY();
+        }*/
+
+
+        //X-axis collisions
+        calculateNextPositionX(delta);
+
+        //updateBoundingBoxPosition(currentEntityPosition);
         if (    !isCollisionWithMapLayer(entity, mapMgr) &&
                 !isCollisionWithMapEntities(entity, mapMgr) &&
                 state == Entity.State.WALKING){
-            setNextPositionToCurrent(entity);
+
+            setNextPositionToCurrentX(entity);
 
             Camera camera = mapMgr.getCamera();
             camera.position.set(currentEntityPosition.x, currentEntityPosition.y, 0f);
             camera.update();
         }else{
-            updateBoundingBoxPosition(currentEntityPosition);
+            //updateBoundingBoxPosition(currentEntityPosition);
         }
+        //calculateNextPositionX(delta);
 
-        calculateNextPosition(delta);
+
+        //Y-axis collisions
+
+        calculateNextPositionY(delta);
+        //updateBoundingBoxPosition(currentEntityPosition);
+        if (    !isCollisionWithMapLayer(entity, mapMgr) &&
+                !isCollisionWithMapEntities(entity, mapMgr) &&
+                state == Entity.State.WALKING){
+
+            setNextPositionToCurrentY(entity);
+
+            Camera camera = mapMgr.getCamera();
+            camera.position.set(currentEntityPosition.x, currentEntityPosition.y, 0f);
+            camera.update();
+        }else{
+            //updateBoundingBoxPosition(currentEntityPosition);
+        }
+        //calculateNextPositionY(delta);
+        updateBoundingBoxPosition(currentEntityPosition);
+
+
     }
+
+
 
 
 
