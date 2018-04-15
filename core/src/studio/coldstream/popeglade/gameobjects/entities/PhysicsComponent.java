@@ -41,7 +41,7 @@ public abstract class PhysicsComponent implements Component {
     PhysicsComponent(){
         this.nextEntityPosition = new Vector2(0,0);
         this.currentEntityPosition = new Vector2(0,0);
-        this.velocity = new Vector2(5.0f,5.0f);
+        this.velocity = new Vector2(3.0f,3.0f);
         this.boundingBox = new Rectangle();
         this.json = new Json();
         this.tempEntities = new Array<>();
@@ -308,8 +308,8 @@ public abstract class PhysicsComponent implements Component {
     }
 
     protected void mattiasBoundingBox(float percentageWidth, float percentageHeight){
-        float newUnitScaleX = (Entity.frameDimensions.x / Entity.frameDimensions.y) * (Map.TILE_SIZE * Map.UNIT_SCALE);
-        float newUnitScaleY = (Entity.frameDimensions.y / Entity.frameDimensions.y) * (Map.TILE_SIZE * Map.UNIT_SCALE);
+        float newUnitScaleX = (Entity.frameDimensions.x / Entity.frameDimensions.x) ;
+        float newUnitScaleY = (Entity.frameDimensions.y / Entity.frameDimensions.y) ;
         boundingBox.set(nextEntityPosition.x / Map.UNIT_SCALE, nextEntityPosition.y / Map.UNIT_SCALE, Entity.frameDimensions.x * percentageWidth / newUnitScaleX, Entity.frameDimensions.y * percentageHeight / newUnitScaleY);
         return;
     }

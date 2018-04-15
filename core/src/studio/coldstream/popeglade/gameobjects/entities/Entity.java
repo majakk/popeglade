@@ -153,7 +153,7 @@ public class Entity {
         EntityConfig entityConfig = Entity.getEntityConfig(entityConfigPath);
         EntityConfig serializedConfig = ProfileManager.getInstance().getProperty(entityConfig.getEntityID(), EntityConfig.class);
 
-        Gdx.app.log(TAG, "" + Integer.valueOf(entityConfig.getFrameWidth()));
+        Gdx.app.log(TAG, "FrameDimensions: " + Integer.valueOf(entityConfig.getFrameWidth()) + ":" + Integer.valueOf(entityConfig.getFrameHeight()));
 
         frameDimensions = new Vector2(Integer.valueOf(entityConfig.getFrameWidth()),Integer.valueOf(entityConfig.getFrameHeight()));
 

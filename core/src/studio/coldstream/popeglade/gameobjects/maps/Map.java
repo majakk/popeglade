@@ -11,8 +11,8 @@ import studio.coldstream.popeglade.gamehelpers.AssetLoader;
 public abstract class Map {
     private static final String TAG = Map.class.getSimpleName();
 
-    public final static float UNIT_SCALE = 1/32f;
-    public final static float TILE_SIZE = 32.0f;
+    public final static float UNIT_SCALE = 1/16f;
+    //public final static float TILE_SIZE = 16.0f;
 
     //Map layers
     protected final static String COLLISION_LAYER = "MAP_COLLISION_LAYER";
@@ -40,7 +40,7 @@ public abstract class Map {
 
 
     Map( MapFactory.MapType mapType, String fullMapPath){
-        playerStart = new Vector2(64.0f,64.0f);
+        playerStart = new Vector2(16.0f,16.0f);
 
 
         if( fullMapPath == null || fullMapPath.isEmpty() ) {

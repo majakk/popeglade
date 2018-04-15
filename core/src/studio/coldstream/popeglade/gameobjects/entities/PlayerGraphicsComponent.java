@@ -15,9 +15,9 @@ import studio.coldstream.popeglade.gameobjects.maps.Map;
 import studio.coldstream.popeglade.gameobjects.maps.MapManager;
 
 public class PlayerGraphicsComponent extends GraphicsComponent {
-
     private static final String TAG = PlayerGraphicsComponent.class.getSimpleName();
 
+    public static final float PLAYER_SPRITE_SCALE = 1.0f;
     protected Vector2 previousPosition;
 
     public PlayerGraphicsComponent(){
@@ -82,17 +82,19 @@ public class PlayerGraphicsComponent extends GraphicsComponent {
 
 
         //NOTE: Code used to graphically debug boundingboxes
-        Rectangle rect = entity.getCurrentBoundingBox();
-        //shapeRenderer.setProjectionMatrix(camera.combined);
+        /*Rectangle rect = entity.getCurrentBoundingBox();
         shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.RED);
-        shapeRenderer.rect(rect.getX() * Map.UNIT_SCALE, rect.getY() * Map.UNIT_SCALE, rect.getWidth() * Map.UNIT_SCALE , rect.getHeight() * Map.UNIT_SCALE);
-        //shapeRenderer.rect(currentPosition.x, currentPosition.y, Integer.valueOf(entity.getEntityConfig().getFrameWidth()) * Map.UNIT_SCALE, Integer.valueOf(entity.getEntityConfig().getFrameHeight()) * Map.UNIT_SCALE);
-        shapeRenderer.end();
+        shapeRenderer.rect(rect.getX() * Map.UNIT_SCALE, rect.getY() * Map.UNIT_SCALE,
+                rect.getWidth() * Map.UNIT_SCALE * PLAYER_SPRITE_SCALE,
+                rect.getHeight() * Map.UNIT_SCALE * PLAYER_SPRITE_SCALE);
+        shapeRenderer.end();*/
 
         batch.begin();
-        batch.draw(currentFrame, currentPosition.x, currentPosition.y, 1 , 1 ); //Should it be compensated for the ratio between texture_width (player) and MapTileWidth?
+        batch.draw(currentFrame, currentPosition.x, currentPosition.y,
+                entity.getEntityConfig().getFrameDimensions().x * Map.UNIT_SCALE * PLAYER_SPRITE_SCALE,
+                entity.getEntityConfig().getFrameDimensions().y * Map.UNIT_SCALE * PLAYER_SPRITE_SCALE); //Should it be compensated for the ratio between texture_width (player) and MapTileWidth?
         batch.end();
 
 

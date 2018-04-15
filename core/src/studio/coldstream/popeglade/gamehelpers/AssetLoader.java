@@ -25,6 +25,7 @@ public class AssetLoader {
 
     private static final String STATUSUI_TEXTURE_ATLAS_PATH = "android/assets/ui/statusui.atlas";
     private static final String STATUSUI_SKIN_PATH = "android/assets/ui/statusui.json";
+    private static final String POINTER_ARROW_PATH = "android/assets/gfx/arrow32.png";
 
     public static TextureAtlas STATUSUI_TEXTURE_ATLAS = new TextureAtlas(STATUSUI_TEXTURE_ATLAS_PATH);
     public static Skin STATUSUI_SKIN = new Skin(Gdx.files.internal(STATUSUI_SKIN_PATH),STATUSUI_TEXTURE_ATLAS);
@@ -72,7 +73,7 @@ public class AssetLoader {
 
     //Cursor
     public static void loadPointer() {
-        pm = new Pixmap(Gdx.files.internal("android/assets/gfx/cursor_image.png"));
+        pm = new Pixmap(Gdx.files.internal(POINTER_ARROW_PATH));
         Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, 0, 0));
     }
 

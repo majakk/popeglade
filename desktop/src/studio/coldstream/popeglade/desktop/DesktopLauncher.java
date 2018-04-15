@@ -10,7 +10,7 @@ import studio.coldstream.popeglade.MyGdxGame;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.title = "The PopeGlade Gnome";
+		config.title = "PopeGlade Gnome Chronicles";
 		config.useGL30 = false;
 		config.height = 640;
 		config.width = 960;

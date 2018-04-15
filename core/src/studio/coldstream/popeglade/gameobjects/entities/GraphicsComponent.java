@@ -20,6 +20,8 @@ import static studio.coldstream.popeglade.gameobjects.entities.Entity.Direction.
 public abstract class GraphicsComponent implements Component {
     private static final String TAG = GraphicsComponent.class.getSimpleName();
 
+
+
     protected TextureRegion currentFrame = null;
     protected float frameTime = 0f;
     protected Entity.State currentState;

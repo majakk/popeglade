@@ -63,6 +63,7 @@ public class EntityConfig {
         entityProperties = new ObjectMap<String, String>();
         entityProperties.putAll(config.entityProperties);
 
+
     }
 
     public String getFrameHeight() {
@@ -70,7 +71,7 @@ public class EntityConfig {
     }
 
     public Vector2 getFrameDimensions() {
-        Gdx.app.log(TAG, "Created " + getFrameWidth() + " : " + getFrameHeight());
+        //Gdx.app.log(TAG, "Created " + getFrameWidth() + " : " + getFrameHeight());
         //return new Vector2(Integer.decode(frameWidth), Integer.decode(frameHeight));
 
         return new Vector2(Integer.valueOf(getFrameWidth()),Integer.valueOf(getFrameHeight()));
