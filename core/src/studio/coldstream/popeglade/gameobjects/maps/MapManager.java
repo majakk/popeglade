@@ -44,6 +44,14 @@ public class MapManager {
         Gdx.app.debug(TAG, "Current Map: " + mapType + ", Player Start: (" + currentMap.getPlayerStart().x + "," + currentMap.getPlayerStart().y + ")");
     }
 
+    public MapLayer getCollisionLayer(){
+        return currentMap.getCollisionLayer();
+    }
+
+    public MapLayer getPortalLayer(){
+        return currentMap.getPortalLayer();
+    }
+
     /*public MapLayer getEnemySpawnLayer(){
         return currentMap.getEnemySpawnLayer();
     }*/

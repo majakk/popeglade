@@ -82,20 +82,22 @@ public class PlayerGraphicsComponent extends GraphicsComponent {
 
 
         //NOTE: Code used to graphically debug boundingboxes
-        /*Rectangle rect = entity.getCurrentBoundingBox();
-        shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.RED);
-        shapeRenderer.rect(rect.getX() * Map.UNIT_SCALE, rect.getY() * Map.UNIT_SCALE,
-                rect.getWidth() * Map.UNIT_SCALE * PLAYER_SPRITE_SCALE,
-                rect.getHeight() * Map.UNIT_SCALE * PLAYER_SPRITE_SCALE);
-        shapeRenderer.end();*/
+
 
         batch.begin();
         batch.draw(currentFrame, currentPosition.x, currentPosition.y,
                 entity.getEntityConfig().getFrameDimensions().x * Map.UNIT_SCALE * PLAYER_SPRITE_SCALE,
                 entity.getEntityConfig().getFrameDimensions().y * Map.UNIT_SCALE * PLAYER_SPRITE_SCALE); //Should it be compensated for the ratio between texture_width (player) and MapTileWidth?
         batch.end();
+
+        Rectangle rect = entity.getCurrentBoundingBox();
+        shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(Color.RED);
+        shapeRenderer.rect(rect.getX() * Map.UNIT_SCALE, rect.getY() * Map.UNIT_SCALE,
+                rect.getWidth() * Map.UNIT_SCALE * PLAYER_SPRITE_SCALE,
+                rect.getHeight() * Map.UNIT_SCALE * PLAYER_SPRITE_SCALE);
+        shapeRenderer.end();
 
 
 

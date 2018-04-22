@@ -12,9 +12,9 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
     private Entity.State state;
 
     public PlayerPhysicsComponent(){
-        boundingBoxLocation = BoundingBoxLocation.BOTTOM_LEFT;
+        boundingBoxLocation = BoundingBoxLocation.BOTTOM_CENTER;
         //initBoundingBox(0.5f, 0.5f);
-        mattiasBoundingBox(1.0f,1.0f);
+        mattiasBoundingBox(0.5f,0.3f);
         //_previousDiscovery = "";
         //_previousEnemySpawn = "0";
         //_mouseSelectCoordinates = new Vector3(0,0,0);
@@ -63,23 +63,8 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
         }*/
 
         //X-axis collisions
-        //updateX(entity, delta);
-
-        /*if(!anyWallCollision(player, terrain)){
-            player.makeMoveX();
-        }*/
-
-        //Y-axis collisions
-        //updateY(entity, delta);
-
-        /*if(!anyWallCollision(player, terrain)){
-            player.makeMoveY();
-        }*/
-
-
-        //X-axis collisions
         calculateNextPositionX(delta);
-
+        updateBoundingBoxPosition(new Vector2(nextEntityPosition.x, currentEntityPosition.y));
         //updateBoundingBoxPosition(currentEntityPosition);
         if (    !isCollisionWithMapLayer(entity, mapMgr) &&
                 !isCollisionWithMapEntities(entity, mapMgr) &&
@@ -90,16 +75,11 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
             Camera camera = mapMgr.getCamera();
             camera.position.set(currentEntityPosition.x, currentEntityPosition.y, 0f);
             camera.update();
-        }else{
-            //updateBoundingBoxPosition(currentEntityPosition);
         }
-        //calculateNextPositionX(delta);
-
 
         //Y-axis collisions
-
         calculateNextPositionY(delta);
-        //updateBoundingBoxPosition(currentEntityPosition);
+        updateBoundingBoxPosition(new Vector2(currentEntityPosition.x, nextEntityPosition.y));
         if (    !isCollisionWithMapLayer(entity, mapMgr) &&
                 !isCollisionWithMapEntities(entity, mapMgr) &&
                 state == Entity.State.WALKING){
@@ -109,12 +89,7 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
             Camera camera = mapMgr.getCamera();
             camera.position.set(currentEntityPosition.x, currentEntityPosition.y, 0f);
             camera.update();
-        }else{
-            //updateBoundingBoxPosition(currentEntityPosition);
         }
-        //calculateNextPositionY(delta);
-        updateBoundingBoxPosition(currentEntityPosition);
-
 
     }
 

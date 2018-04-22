@@ -12,12 +12,14 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import studio.coldstream.popeglade.gameobjects.entities.Component;
 import studio.coldstream.popeglade.gameobjects.entities.Entity;
 import studio.coldstream.popeglade.gameobjects.items.InventoryItem;
 import studio.coldstream.popeglade.gameobjects.items.InventoryItemFactory;
 import studio.coldstream.popeglade.gameobjects.maps.Map;
 import studio.coldstream.popeglade.profiles.ProfileManager;
 import studio.coldstream.popeglade.profiles.ProfileObserver;
+import studio.coldstream.popeglade.screens.MainGameScreen;
 
 public class PlayerHUD implements Screen, ProfileObserver{
     private static final String TAG = PlayerHUD.class.getSimpleName();
@@ -54,8 +56,8 @@ public class PlayerHUD implements Screen, ProfileObserver{
 
         inventoryUI = new InventoryUI();
         inventoryUI.setPosition(
-                (cam.viewportWidth + inventoryUI.getWidth()) / 4,
-                (cam.viewportHeight + inventoryUI.getHeight()) / 4);
+                (cam.viewportWidth - inventoryUI.getWidth()) / 2,
+                (cam.viewportHeight - inventoryUI.getHeight()) / 2);
         inventoryUI.setMovable(false);
         inventoryUI.setVisible(false);
         inventoryUI.setKeepWithinStage(false);
@@ -73,6 +75,7 @@ public class PlayerHUD implements Screen, ProfileObserver{
         inventoryButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 inventoryUI.setVisible(inventoryUI.isVisible() ? false : true);
+
                 Gdx.app.log(TAG, event.toString() + "");
                 //inventoryItemFactory.testAllItemLoad();
                 //inventoryUI.getInventoryTable()..getCells().get(0)add(inventoryItemFactory.getInventoryItem(InventoryItem.ItemTypeID.ARMOR01)); //Kind of works

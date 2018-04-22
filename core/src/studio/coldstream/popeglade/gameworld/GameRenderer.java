@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Json;
@@ -191,20 +192,27 @@ public class GameRenderer {
 
         //Ground level stuff
         mapRenderer.getBatch().begin();
-        TiledMapTileLayer groundMapLayer = (TiledMapTileLayer)mapMgr.getCurrentTiledMap().getLayers().get(Map.GROUND_LAYER);
-        if( groundMapLayer != null ) {
-            mapRenderer.renderTileLayer(groundMapLayer);
-        }
 
-        TiledMapTileLayer backgroundMapLayer = (TiledMapTileLayer)mapMgr.getCurrentTiledMap().getLayers().get(Map.BACKGROUND_LAYER);
-        if( backgroundMapLayer != null ){
-            mapRenderer.renderTileLayer(backgroundMapLayer);
-        }
+            TiledMapTileLayer backgroundMapLayer = (TiledMapTileLayer)mapMgr.getCurrentTiledMap().getLayers().get(Map.BACKGROUND_LAYER);
+            if( backgroundMapLayer != null ){
+                mapRenderer.renderTileLayer(backgroundMapLayer);
+            }
 
-        TiledMapTileLayer decorationMapLayer = (TiledMapTileLayer)mapMgr.getCurrentTiledMap().getLayers().get(Map.DECORATION_LAYER);
-        if( decorationMapLayer != null ){
-            mapRenderer.renderTileLayer(decorationMapLayer);
-        }
+            TiledMapTileLayer groundMapLayer = (TiledMapTileLayer)mapMgr.getCurrentTiledMap().getLayers().get(Map.GROUND_LAYER);
+            if( groundMapLayer != null ) {
+                mapRenderer.renderTileLayer(groundMapLayer);
+            }
+
+            TiledMapTileLayer decorationMapLayer = (TiledMapTileLayer)mapMgr.getCurrentTiledMap().getLayers().get(Map.DECORATION_LAYER);
+            if( decorationMapLayer != null ){
+                mapRenderer.renderTileLayer(decorationMapLayer);
+            }
+
+            TiledMapTileLayer wallsMapLayer = (TiledMapTileLayer)mapMgr.getCurrentTiledMap().getLayers().get(Map.WALLS_LAYER);
+            if( wallsMapLayer != null ){
+                mapRenderer.renderTileLayer(wallsMapLayer);
+            }
+
         mapRenderer.getBatch().end();
 
         //Player
@@ -212,10 +220,12 @@ public class GameRenderer {
 
         //Top level stuff
         mapRenderer.getBatch().begin();
-        TiledMapTileLayer topMapLayer = (TiledMapTileLayer)mapMgr.getCurrentTiledMap().getLayers().get(Map.TOP_LAYER);
-        if( topMapLayer != null ){
-            mapRenderer.renderTileLayer(topMapLayer);
-        }
+
+            TiledMapTileLayer topMapLayer = (TiledMapTileLayer)mapMgr.getCurrentTiledMap().getLayers().get(Map.TOP_LAYER);
+            if( topMapLayer != null ){
+                mapRenderer.renderTileLayer(topMapLayer);
+            }
+
         mapRenderer.getBatch().end();
 
         pointer.update(mapMgr, batcher, delta);

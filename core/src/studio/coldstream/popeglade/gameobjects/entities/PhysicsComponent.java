@@ -191,7 +191,7 @@ public abstract class PhysicsComponent implements Component {
     }
 
     protected boolean isCollisionWithMapLayer(Entity entity, MapManager mapMgr){
-        /*MapLayer mapCollisionLayer =  mapMgr.getCollisionLayer();
+        MapLayer mapCollisionLayer =  mapMgr.getCollisionLayer();
 
         if( mapCollisionLayer == null ){
             return false;
@@ -208,7 +208,7 @@ public abstract class PhysicsComponent implements Component {
                     return true;
                 }
             }
-        }*/
+        }
 
         return false;
     }
