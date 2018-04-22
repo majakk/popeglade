@@ -14,7 +14,7 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
     public PlayerPhysicsComponent(){
         boundingBoxLocation = BoundingBoxLocation.BOTTOM_CENTER;
         //initBoundingBox(0.5f, 0.5f);
-        mattiasBoundingBox(0.5f,0.3f);
+        mattiasBoundingBox(0.5f,0.4f);
         //_previousDiscovery = "";
         //_previousEnemySpawn = "0";
         //_mouseSelectCoordinates = new Vector3(0,0,0);

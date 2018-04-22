@@ -107,7 +107,7 @@ public class LocationHandler {
         float posX = ((mouseX / physicalWidth) * camWidth) + (camPosX * camWidth / 2);
         float posY = (((physicalHeight - mouseY) / physicalHeight) * camHeight) + (camPosY * camHeight / 2);*/
 
-        tileLayer = (TiledMapTileLayer) mapMgr.getCurrentTiledMap().getLayers().get(Map.GROUND_LAYER);
+        tileLayer = (TiledMapTileLayer) mapMgr.getCurrentTiledMap().getLayers().get(Map.BACKGROUND_LAYER);
         cell = tileLayer.getCell(
                 (int)Math.floor(getPos(entity, mapMgr, batch).x),
                 (int)Math.floor(getPos(entity, mapMgr, batch).y));
