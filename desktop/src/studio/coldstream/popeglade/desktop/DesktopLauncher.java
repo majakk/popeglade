@@ -12,8 +12,8 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "PopeGlade Gnome Chronicles";
 		config.useGL30 = false;
-		config.height = 640;
-		config.width = 960;
+		config.height = 960; //Fixed height will be around 24 tiles that are 16x16
+		config.width = 1280;
 		config.addIcon("android/assets/gfx/box.png", Files.FileType.Internal); //Main Window Icon
 
 		LwjglApplication app = new LwjglApplication(new MyGdxGame(), config);

@@ -2,8 +2,7 @@ package studio.coldstream.popeglade.gamehelpers;
 
 import com.badlogic.gdx.math.Intersector;
 
-import studio.coldstream.popeglade.gameobjects.Terrain;
-import studio.coldstream.popeglade.gameobjects.Player;
+
 
 /**
  * Created by Scalar on 16/09/2017.

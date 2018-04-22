@@ -11,6 +11,10 @@ import studio.coldstream.popeglade.profiles.ProfileManager;
 public class MainGameScreen implements Screen {
     private static final String TAG = MainGameScreen.class.getSimpleName();
 
+    public static final int VIEWPORT_WIDTH = 28;
+    public static final int VIEWPORT_HEIGHT = 18;
+    private int firstResize = 2;
+
     public static class VIEWPORT {
         static float viewportWidth;
         static float viewportHeight;
@@ -32,6 +36,9 @@ public class MainGameScreen implements Screen {
 
     public MainGameScreen() {
         Gdx.app.log(TAG, "Attached");
+
+        //this.setupViewport(MainGameScreen.VIEWPORT_WIDTH, MainGameScreen.VIEWPORT_HEIGHT);
+        //this.resize((int)VIEWPORT.physicalWidth, (int)VIEWPORT.physicalHeight);
 
         setGameState(GameState.RUNNING);
 
@@ -114,41 +121,63 @@ public class MainGameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        Gdx.app.log(TAG, "resizing");
-        float ar = VIEWPORT.aspectRatio;
-        Gdx.graphics.setResizable(false);
-        if((width / height) != ar)
-            Gdx.graphics.setWindowedMode(width, (int)(width / ar));
-        else
-            Gdx.graphics.setWindowedMode((int)(height * ar), height);
-        Gdx.graphics.setResizable(true);
+        Gdx.app.log(TAG, "Resizing: " + width + ":" + height);
 
-        //renderer.getHUD().resize((int) VIEWPORT.physicalWidth, (int) VIEWPORT.physicalHeight);
+
+
+
+        /*float ar = VIEWPORT.aspectRatio;
+        //Gdx.graphics.setResizable(false);
+        if((width/height) == ar) {
+            this.setupViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+            //Gdx.graphics.setWindowedMode(width, (int) (width / ar));
+            Gdx.graphics.setWindowedMode((int)VIEWPORT.physicalWidth, (int)VIEWPORT.physicalHeight);
+            //
+        }
+        else {
+            //Gdx.graphics.setWindowedMode(width, height);
+            this.setupViewport(MainGameScreen.VIEWPORT_HEIGHT * (width/height), MainGameScreen.VIEWPORT_HEIGHT);
+            //Gdx.graphics.setWindowedMode(VIEWPORT_HEIGHT * (width/height), height);
+
+
+        }
+        //
+        firstResize--;*/
+
+        Gdx.graphics.setWindowedMode(width, height);
+        this.setupViewport(MainGameScreen.VIEWPORT_HEIGHT * (width/height), MainGameScreen.VIEWPORT_HEIGHT);
+        renderer.getCamera().setToOrtho(false, VIEWPORT.viewportWidth, VIEWPORT.viewportHeight);
+        renderer.getPlayerHUD().resize((int) VIEWPORT.physicalWidth, (int) VIEWPORT.physicalHeight);
+        //Gdx.graphics.setResizable(true);
+        //renderer.getPlayerHUD().resize(width, height);
+
+
     }
 
     @Override
     public void show() {
-        Gdx.app.log(TAG, "show called");
-
-        setupViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
+        Gdx.app.log(TAG, "Show called");
         world = new GameWorld();
         renderer = new GameRenderer(this);
     }
 
     @Override
     public void hide() {
-        Gdx.app.log(TAG, "hide called");
+        Gdx.app.log(TAG, "Hide called");
+
+        Gdx.input.setInputProcessor(null);
     }
 
     @Override
     public void pause() {
-        Gdx.app.log(TAG, "pause called");
+        Gdx.app.log(TAG, "Pause called");
+        renderer.getPlayerHUD().pause();
     }
 
     @Override
     public void resume() {
-        Gdx.app.log(TAG, "resume called");
+        Gdx.app.log(TAG, "Resume called");
+        renderer.getPlayerHUD().resume();
     }
 
     @Override
@@ -162,6 +191,10 @@ public class MainGameScreen implements Screen {
 
     public Vector2 getViewport(){
         return new Vector2(VIEWPORT.viewportWidth, VIEWPORT.viewportHeight);
+    }
+
+    public static GameState getGameState() {
+        return gameState;
     }
 }
 

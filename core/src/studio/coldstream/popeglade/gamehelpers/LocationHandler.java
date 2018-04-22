@@ -9,8 +9,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 
-import studio.coldstream.popeglade.gameobjects.Terrain;
-import studio.coldstream.popeglade.gameobjects.Player;
 import studio.coldstream.popeglade.gameobjects.entities.Entity;
 import studio.coldstream.popeglade.gameobjects.maps.Map;
 import studio.coldstream.popeglade.gameobjects.maps.MapManager;
@@ -71,17 +69,55 @@ public class LocationHandler {
         return cell;
     }*/
 
-    /*public Cell pointerTile(Pointer pointer, Terrain terrain) {
-        tileLayer = (TiledMapTileLayer) terrain.getTiledMap().getLayers().get(2);
-        cell = tileLayer.getCell((int)Math.floor((double)pointer.getX()/(double) terrain.getSingleTileWidth()),(int)Math.floor((double)pointer.getY()/(double) terrain.getSingleTileHeight()));
-        //cell.getTile().setBlendMode(TiledMapTile.BlendMode.ALPHA);
+    private Vector2 getPos(Entity entity, MapManager mapMgr, Batch batch){
+        float camPosX = -batch.getProjectionMatrix().getTranslation(new Vector3(0,0,0)).x - 1;
+        float camPosY = -batch.getProjectionMatrix().getTranslation(new Vector3(0,0,0)).y - 1;
 
-        //Gdx.app.log("LocationHandler", cell.getTile().getId() + "");
+        float mouseX = entity.getCurrentPosition().x;
+        float mouseY = entity.getCurrentPosition().y;
+
+        float camWidth = mapMgr.getCamera().viewportWidth;
+        float camHeight = mapMgr.getCamera().viewportHeight;
+
+        float physicalWidth = Gdx.app.getGraphics().getWidth();
+        float physicalHeight = Gdx.app.getGraphics().getHeight();
+
+        float posX = ((mouseX / physicalWidth) * camWidth) + (camPosX * camWidth / 2);
+        float posY = (((physicalHeight - mouseY) / physicalHeight) * camHeight) + (camPosY * camHeight / 2);
+
+        return new Vector2(posX, posY);
+    }
+
+    public Cell pointerTile(Entity entity, MapManager mapMgr, Batch batch) {
+        //float tileSizeX = mapMgr.getMapTileDimension().x;
+        //float tileSizeY = mapMgr.getMapTileDimension().y;
+
+        /*float camPosX = -batch.getProjectionMatrix().getTranslation(new Vector3(0,0,0)).x - 1;
+        float camPosY = -batch.getProjectionMatrix().getTranslation(new Vector3(0,0,0)).y - 1;
+
+        float mouseX = entity.getCurrentPosition().x;
+        float mouseY = entity.getCurrentPosition().y;
+
+        float camWidth = mapMgr.getCamera().viewportWidth;
+        float camHeight = mapMgr.getCamera().viewportHeight;
+
+        float physicalWidth = Gdx.app.getGraphics().getWidth();
+        float physicalHeight = Gdx.app.getGraphics().getHeight();
+
+        float posX = ((mouseX / physicalWidth) * camWidth) + (camPosX * camWidth / 2);
+        float posY = (((physicalHeight - mouseY) / physicalHeight) * camHeight) + (camPosY * camHeight / 2);*/
+
+        tileLayer = (TiledMapTileLayer) mapMgr.getCurrentTiledMap().getLayers().get(Map.GROUND_LAYER);
+        cell = tileLayer.getCell(
+                (int)Math.floor(getPos(entity, mapMgr, batch).x),
+                (int)Math.floor(getPos(entity, mapMgr, batch).y));
+
+        //Gdx.app.log(TAG, cell.getTile().getId() + "");
         if(cell != null)
             return cell;
         else
             return new Cell();
-    }*/
+    }
 
     /*public boolean isTileWall(Cell cell){
         /*if(cell.getTile().getProperties().get("wall") != null)
@@ -120,7 +156,7 @@ public class LocationHandler {
         float tileSizeX = mapMgr.getMapTileDimension().x;
         float tileSizeY = mapMgr.getMapTileDimension().y;
 
-        float camPosX = -batch.getProjectionMatrix().getTranslation(new Vector3(0,0,0)).x - 1;
+        /*float camPosX = -batch.getProjectionMatrix().getTranslation(new Vector3(0,0,0)).x - 1;
         float camPosY = -batch.getProjectionMatrix().getTranslation(new Vector3(0,0,0)).y - 1;
 
         float mouseX = entity.getCurrentPosition().x;
@@ -133,7 +169,7 @@ public class LocationHandler {
         float physicalHeight = Gdx.app.getGraphics().getHeight();
 
         float posX = ((mouseX / physicalWidth) * camWidth) + (camPosX * camWidth / 2);
-        float posY = (((physicalHeight - mouseY) / physicalHeight) * camHeight) + (camPosY * camHeight / 2);
+        float posY = (((physicalHeight - mouseY) / physicalHeight) * camHeight) + (camPosY * camHeight / 2);*/
 
         //Gdx.app.log(TAG,"Dimensions: " + mapMgr.getCamera().viewportWidth + ":" + -mapMgr.getCamera().view.getTranslation(new Vector3(1,1,1)).x + ":" + mapMgr.getMapTileDimension().x);
         //Gdx.app.log(TAG,"Dimensions: " + -mapMgr.getCamera().view.getTranslation(new Vector3(1,1,1)).x ); //This is where the player is in the world!!
@@ -143,12 +179,8 @@ public class LocationHandler {
         //Gdx.app.log(TAG,"Dimensions: " + -batch.getProjectionMatrix().getTranslation(new Vector3(0,0,0)).x + ":" + -batch.getProjectionMatrix().getTranslation(new Vector3(0,0,0)).y);
 
         tempRect.set(
-                (float)Math.floor((double)posX),
-                (float)Math.floor((double)posY),
-                //10,10,
-                //((mouseX / Gdx.app.getGraphics().getWidth()) * camWidth) + (camPosX * camWidth / 2), //Working X
-                //(((Gdx.app.getGraphics().getHeight() - mouseY) / Gdx.app.getGraphics().getHeight()) * camHeight) + (camPosY * camHeight / 2), //Working Y
-
+                (float)Math.floor(getPos(entity, mapMgr, batch).x),
+                (float)Math.floor(getPos(entity, mapMgr, batch).y),
                 tileSizeX * Map.UNIT_SCALE,
                 tileSizeY * Map.UNIT_SCALE);
         return tempRect;

@@ -41,7 +41,7 @@ public abstract class PhysicsComponent implements Component {
     PhysicsComponent(){
         this.nextEntityPosition = new Vector2(0,0);
         this.currentEntityPosition = new Vector2(0,0);
-        this.velocity = new Vector2(3.0f,3.0f);
+        this.velocity = new Vector2(4.0f,4.0f);
         this.boundingBox = new Rectangle();
         this.json = new Json();
         this.tempEntities = new Array<>();

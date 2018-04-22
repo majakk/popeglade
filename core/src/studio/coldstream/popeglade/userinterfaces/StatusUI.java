@@ -29,13 +29,18 @@ public class StatusUI extends Window {
 
         defaults().expand().fill();
 
-        this.pad(this.getPadTop()+ 16, 16, 16, 16);
+        this.pad(this.getPadTop() + 10, 32, 32, 32);
+        //this.add();
+        this.add(inventoryButton).align(Align.center);
         this.add();
-        this.add(inventoryButton).align(Align.right);
         this.row();
 
         this.pack();
 
+
+    }
+
+    public void resize(int width, int height) {
 
     }
 

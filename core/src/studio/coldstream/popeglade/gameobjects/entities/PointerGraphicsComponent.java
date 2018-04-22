@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 
 import studio.coldstream.popeglade.gamehelpers.AssetLoader;
@@ -15,6 +16,8 @@ public class PointerGraphicsComponent extends GraphicsComponent {
     private static final String TAG = PointerGraphicsComponent.class.getSimpleName();
 
     LocationHandler lh;
+    //private int cellID;
+    private boolean clickFlag = false;
 
     public PointerGraphicsComponent(){
         AssetLoader.loadPointer();
@@ -35,6 +38,10 @@ public class PointerGraphicsComponent extends GraphicsComponent {
                 currentPosition = json.fromJson(Vector2.class, string[1]);
             } else if (string[0].equalsIgnoreCase(MESSAGE.INIT_START_POSITION.toString())) {
                 currentPosition = json.fromJson(Vector2.class, string[1]);
+            } else if (string[0].equalsIgnoreCase(MESSAGE.INIT_SELECT_ENTITY.toString())) {
+                currentPosition = json.fromJson(Vector2.class, string[1]);
+                //Gdx.app.debug(TAG, "PRESSED!! " + currentPosition.x + ":" + currentPosition.y);
+                clickFlag = true;
             }
         }
     }
@@ -48,27 +55,16 @@ public class PointerGraphicsComponent extends GraphicsComponent {
     public void update(Entity entity, MapManager mapMgr, Batch batch, float delta){
         //Gdx.app.debug(TAG, "INFO " + entity.getCurrentPosition().x + ":" + entity.getCurrentPosition().y);
 
+        if(clickFlag) {
+            TiledMapTileLayer.Cell adam = lh.pointerTile(entity, mapMgr, batch);
+            Gdx.app.log(TAG,"Cell ID: " + adam.getTile().getId());
+            clickFlag = false;
+        }
 
-        /*shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.RED);
-        shapeRenderer.rect(rect.getX() * Map.UNIT_SCALE, rect.getY() * Map.UNIT_SCALE, rect.getWidth() * Map.UNIT_SCALE , rect.getHeight() * Map.UNIT_SCALE);
-        //shapeRenderer.rect(currentPosition.x, currentPosition.y, Integer.valueOf(entity.getEntityConfig().getFrameWidth()) * Map.UNIT_SCALE, Integer.valueOf(entity.getEntityConfig().getFrameHeight()) * Map.UNIT_SCALE);
-        shapeRenderer.end();*/
-
-        //Draw pointer rect
-        //shapeRenderer.setProjectionMatrix(mapMgr.getCamera().combined);
-        //shapeRenderer.setProjectionMatrix(mapMgr.getCamera().combined);
-
-        //shapeRenderer.setProjectionMatrix(mapMgr.getCamera().view);
         shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-
         shapeRenderer.setColor(0.3f,1,0.3f,0.2f);
-        //shapeRenderer.rect(entity.getCurrentPosition().x * Map.UNIT_SCALE * 0.5f, entity.getCurrentPosition().y * Map.UNIT_SCALE * 0.5f, lh.pointerTileRect(entity, mapMgr).width, lh.pointerTileRect(entity, mapMgr).height);
-
         shapeRenderer.rect(lh.pointerTileRect(entity, mapMgr, batch).x, lh.pointerTileRect(entity, mapMgr, batch).y, lh.pointerTileRect(entity, mapMgr, batch).width, lh.pointerTileRect(entity, mapMgr, batch).height);
-
         shapeRenderer.end();
 
     }

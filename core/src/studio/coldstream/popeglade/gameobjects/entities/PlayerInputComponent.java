@@ -12,7 +12,7 @@ public class PlayerInputComponent extends InputComponent {
     private Vector2 lastMouseCoordinates;
 
     public PlayerInputComponent(){
-        Gdx.app.debug(TAG, "Attached Controller!!!" );
+        Gdx.app.debug(TAG, "Attached" );
         this.lastMouseCoordinates = new Vector2(0, 0);
     }
 

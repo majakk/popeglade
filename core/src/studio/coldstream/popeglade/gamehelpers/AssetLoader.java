@@ -25,14 +25,20 @@ public class AssetLoader {
 
     private static final String STATUSUI_TEXTURE_ATLAS_PATH = "android/assets/ui/statusui.atlas";
     private static final String STATUSUI_SKIN_PATH = "android/assets/ui/statusui.json";
+
+    private final static String ITEMS_TEXTURE_ATLAS_PATH = "android/assets/ui/items.atlas";
+    private final static String ITEMS_SKIN_PATH = "android/assets/ui/items.json";
+
     private static final String POINTER_ARROW_PATH = "android/assets/gfx/arrow32.png";
 
     public static TextureAtlas STATUSUI_TEXTURE_ATLAS = new TextureAtlas(STATUSUI_TEXTURE_ATLAS_PATH);
+    public static TextureAtlas ITEMS_TEXTURE_ATLAS = new TextureAtlas(ITEMS_TEXTURE_ATLAS_PATH);
+
     public static Skin STATUSUI_SKIN = new Skin(Gdx.files.internal(STATUSUI_SKIN_PATH),STATUSUI_TEXTURE_ATLAS);
 
     //private static Texture playerTexture, itemTexture;
-    public static TextureRegion items[];
-    public static Animation playerAnimation[];
+    //public static TextureRegion items[];
+    //public static Animation playerAnimation[];
     //private static TextureRegion player[][];
 
     private static Pixmap pm;
@@ -146,7 +152,7 @@ public class AssetLoader {
             assetManager.load(mapFilenamePath, TiledMap.class);
             //Until we add loading screen, just block until we load the map
             assetManager.finishLoadingAsset(mapFilenamePath);
-            Gdx.app.debug(TAG, "Map loaded!: " + mapFilenamePath);
+            Gdx.app.debug(TAG, "Map loaded: " + mapFilenamePath);
         }
         else{
             Gdx.app.debug(TAG, "Map doesn't exist!: " + mapFilenamePath );

@@ -9,7 +9,7 @@ public class PointerInputComponent extends InputComponent {
     private Vector2 lastMouseCoordinates;
 
     public PointerInputComponent(){
-        Gdx.app.debug(TAG, "Attached Pointer Controller" );
+        Gdx.app.debug(TAG, "Attached" );
         this.lastMouseCoordinates = new Vector2(0, 0);
     }
 

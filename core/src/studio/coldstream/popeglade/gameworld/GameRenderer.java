@@ -32,36 +32,17 @@ public class GameRenderer {
     private static final String TAG = GameRenderer.class.getSimpleName();
 
     private MainGameScreen myScreen;
-    //private GameWorld myWorld;
-    //private Vector2 midPoints;
+
     private OrthographicCamera cam;
     private ShapeRenderer shapeRenderer;
     private SpriteBatch batcher;
-    //private BitmapFont font;
-
-    //Game Terrain
-    //private Terrain terrain;
-
-    //Game Objects
-    //private Player player;
-    //private Entity pointer;
-    //private HeadUpDisplay hud;
 
     private OrthographicCamera hudCamera;
     private static PlayerHUD playerHUD;
 
-    //Game Assets
-    //private Animation playerAnimation[];
-
-    private LocationHandler lh;
-
-    //private TiledMapTileLayer.Cell cell;
-    //private TiledMapTileLayer tileLayer;
-
-    //private int[] toplayers = new int[3];
-
     private Json json;
 
+    //Game Assets
     private static MapManager mapMgr;
     private static Entity player;
     private static Entity pointer;
@@ -69,24 +50,29 @@ public class GameRenderer {
 
     private InputMultiplexer multiplexer;
 
+    //private LocationHandler lh;
+
     public GameRenderer(MainGameScreen screen) {
         Gdx.app.log(TAG, "Attached");
 
-        myScreen = screen;
-        myScreen.setupViewport(16,10);
-
-        //midPoints = new Vector2(midPointX, midPointY);
         json = new Json();
 
-        hudCamera = new OrthographicCamera();
-        hudCamera.setToOrtho(false, myScreen.getPhysicalViewport().x, myScreen.getPhysicalViewport().y);
+        myScreen = screen;
+        myScreen.setupViewport(MainGameScreen.VIEWPORT_WIDTH, MainGameScreen.VIEWPORT_HEIGHT); //How many tiles wide and high to fit
 
-        playerHUD = new PlayerHUD(hudCamera, player);
+        Gdx.app.log(TAG, "ViewPort: " + myScreen.getViewport().x + ":" + myScreen.getViewport().y);
 
         mapMgr = screen.getWorld().getMapMgr();
         player = screen.getWorld().getPlayerEntity();
         pointer = screen.getWorld().getPointerEntity();
-        //pointer = new Pointer();
+
+        hudCamera = new OrthographicCamera();
+        hudCamera.setToOrtho(false, myScreen.getPhysicalViewport().x, myScreen.getPhysicalViewport().y);
+        //hudCamera.setToOrtho(false, myScreen.getViewport().x, myScreen.getViewport().y);
+
+        playerHUD = new PlayerHUD(hudCamera, player);
+        hudCamera.update();
+
 
         if( mapRenderer == null ){
             mapRenderer = new OrthogonalTiledMapRenderer(mapMgr.getCurrentTiledMap(), Map.UNIT_SCALE);
@@ -99,11 +85,19 @@ public class GameRenderer {
         cam.setToOrtho(false, myScreen.getViewport().x, myScreen.getViewport().y);
         cam.update();
 
+
+
         mapMgr.setCamera(cam);
 
         batcher = new SpriteBatch();
         batcher.setProjectionMatrix(cam.combined);
 
+        shapeRenderer = new ShapeRenderer();
+        shapeRenderer.setProjectionMatrix(cam.combined);
+
+        //playerHUD.getStage().getBatch().setProjectionMatrix(cam.combined); //Somehow the icons do not position themselves properly
+
+        //Input devices and their target processing classes
         multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(playerHUD.getStage());
         multiplexer.addProcessor(new PlayerInputComponent());
@@ -111,25 +105,23 @@ public class GameRenderer {
         Gdx.input.setInputProcessor(multiplexer);
 
 
-        shapeRenderer = new ShapeRenderer();
-        shapeRenderer.setProjectionMatrix(cam.combined);
 
-        lh = new LocationHandler();
+        //lh = new LocationHandler();
 
-        //toplayers = new int[]{2};
-
-        //initGameObjects();
-        //initAssets();
-        //Gdx.app.log(TAG, "Mapsize X: " + mapMgr.getMapDimensions().x);
+        //Gdx.app.log(TAG, "MapSize X: " + mapMgr.getMapDimensions().x);
     }
 
-
-
-
-
-
-
     public void render(float delta, float runTime) {
+        /*if( gameState == GameState.GAME_OVER ){
+            myScreen.setScreen(game.getScreenType(BludBourne.ScreenType.GameOver));
+        }*/
+
+        if( myScreen.getGameState() == MainGameScreen.GameState.PAUSED ){
+            //player.updateInput(delta);
+            playerHUD.render(delta);
+            return;
+        }
+
         //Gdx.app.log("GameRenderer", "render");
         //pointer.update(delta, player, mapMgr);
         //Clear and draw background
@@ -137,7 +129,7 @@ public class GameRenderer {
         Gdx.gl.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
         Gdx.gl20.glEnable(Gdx.gl20.GL_BLEND);
 
-        //mapRenderer.setView(cam);
+        mapRenderer.setView(cam);
 
         mapRenderer.getBatch().enableBlending();
         mapRenderer.getBatch().setBlendFunction(Gdx.gl20.GL_SRC_ALPHA, Gdx.gl20.GL_ONE_MINUS_SRC_ALPHA);
@@ -155,9 +147,10 @@ public class GameRenderer {
             //Gdx.app.log(TAG, "Mapsize X: " + mapMgr.getMapDimensions().x + ", cam.viewportWidth: " + cam.viewportWidth + ", CurrentPosX: " + mapMgr.getPlayer().getCurrentPosition().x);
             //cam.position.x = MathUtils.clamp(mapMgr.getPlayer().getCurrentPosition().x, cam.viewportWidth / 2, mapMgr.getMapDimensions().x - cam.viewportWidth / 2);
             //cam.position.y = MathUtils.clamp(mapMgr.getPlayer().getCurrentPosition().y, cam.viewportHeight / 2, mapMgr.getMapDimensions().y - cam.viewportHeight / 2);
-            //cam.update();
+            cam.update();
 
             mapMgr.setMapChanged(false);
+            //playerHUD.addTransitionToScreen();
         }
 
         mapRenderer.setView(cam);
@@ -230,7 +223,7 @@ public class GameRenderer {
         //mapMgr.updateCurrentMapEntities(mapMgr, mapRenderer.getBatch(), delta);
 
         //terrain.getTiledMapRenderer().render(new int[]{3});
-        Gdx.gl.glDisable(Gdx.gl20.GL_BLEND);
+        //Gdx.gl.glDisable(Gdx.gl20.GL_BLEND);
 
         //Draw HUD
         //hud.render(delta, runTime, batcher, shapeRenderer, font, cam);
@@ -318,7 +311,11 @@ public class GameRenderer {
         //playerAnimation = AssetLoader.playerAnimation;
     }*/
 
-    public PlayerHUD getHUD(){
+    public PlayerHUD getPlayerHUD(){
         return playerHUD;
+    }
+
+    public OrthographicCamera getCamera() {
+        return cam;
     }
 }
