@@ -11,6 +11,7 @@ import studio.coldstream.popeglade.gamehelpers.AssetLoader;
 import studio.coldstream.popeglade.gamehelpers.LocationHandler;
 import studio.coldstream.popeglade.gameobjects.maps.Map;
 import studio.coldstream.popeglade.gameobjects.maps.MapManager;
+import studio.coldstream.popeglade.screens.MainGameScreen;
 
 public class PointerGraphicsComponent extends GraphicsComponent {
     private static final String TAG = PointerGraphicsComponent.class.getSimpleName();
@@ -61,11 +62,13 @@ public class PointerGraphicsComponent extends GraphicsComponent {
             clickFlag = false;
         }
 
-        shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(0.3f,1,0.3f,0.2f);
-        shapeRenderer.rect(lh.pointerTileRect(entity, mapMgr, batch).x, lh.pointerTileRect(entity, mapMgr, batch).y, lh.pointerTileRect(entity, mapMgr, batch).width, lh.pointerTileRect(entity, mapMgr, batch).height);
-        shapeRenderer.end();
+        if(MainGameScreen.isCollisionGridEnabled()) {
+            shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            shapeRenderer.setColor(0.3f, 1, 0.3f, 0.2f);
+            shapeRenderer.rect(lh.pointerTileRect(entity, mapMgr, batch).x, lh.pointerTileRect(entity, mapMgr, batch).y, lh.pointerTileRect(entity, mapMgr, batch).width, lh.pointerTileRect(entity, mapMgr, batch).height);
+            shapeRenderer.end();
+        }
 
     }
 }

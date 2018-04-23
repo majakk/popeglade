@@ -15,6 +15,8 @@ public class MainGameScreen implements Screen {
     public static final int VIEWPORT_HEIGHT = 18;
     private int firstResize = 2;
 
+    private static boolean COLLISION_GRID_ENABLED;
+
     public static class VIEWPORT {
         static float viewportWidth;
         static float viewportHeight;
@@ -44,8 +46,8 @@ public class MainGameScreen implements Screen {
 
     }
 
-    public static void setGameState(GameState gameState){
-        switch(gameState){
+    public static void setGameState(GameState gs){
+        switch(gs){
             case RUNNING:
                 gameState = GameState.RUNNING;
                 break;
@@ -171,6 +173,7 @@ public class MainGameScreen implements Screen {
     @Override
     public void pause() {
         Gdx.app.log(TAG, "Pause called");
+        setGameState(GameState.SAVING);
         renderer.getPlayerHUD().pause();
     }
 
@@ -195,6 +198,15 @@ public class MainGameScreen implements Screen {
 
     public static GameState getGameState() {
         return gameState;
+    }
+
+    public static boolean isCollisionGridEnabled() {
+        return COLLISION_GRID_ENABLED;
+    }
+
+    public static void setCollisionGridEnabled(boolean collisionGridEnabled) {
+        COLLISION_GRID_ENABLED = collisionGridEnabled;
+        Gdx.app.log(TAG, "Grid: " + collisionGridEnabled);
     }
 }
 

@@ -214,7 +214,7 @@ public abstract class PhysicsComponent implements Component {
     }
 
 
-    protected void initBoundingBox(float percentageWidthReduced, float percentageHeightReduced){
+    /*protected void initBoundingBox(float percentageWidthReduced, float percentageHeightReduced){
         //Update the current bounding box
         float width;
         float height;
@@ -272,7 +272,7 @@ public abstract class PhysicsComponent implements Component {
         }
 
         //Gdx.app.debug(TAG, "SETTING Bounding Box for " + entity.getEntityConfig().getEntityID() + ": (" + minX + "," + minY + ")  width: " + width + " height: " + height);
-    }
+    }*/
 
     protected void updateBoundingBoxPosition(Vector2 position){
         //Need to account for the unitscale, since the map coordinates will be in pixels
@@ -292,7 +292,8 @@ public abstract class PhysicsComponent implements Component {
                 boundingBox.set(minX, minY, boundingBox.getWidth(), boundingBox.getHeight());
                 break;
             case BOTTOM_CENTER:
-                boundingBox.setCenter(minX + Entity.frameDimensions.x/(2), minY + Entity.frameDimensions.y/(4));
+                //boundingBox.setCenter(minX + Entity.frameDimensions.x/(2), minY + Entity.frameDimensions.y/(4));
+                boundingBox.set(minX + (Entity.frameDimensions.x - boundingBox.getWidth())/(2), minY, boundingBox.getWidth(), boundingBox.getHeight());
                 break;
             case CENTER:
                 boundingBox.setCenter(minX + Entity.frameDimensions.x/(2), minY + Entity.frameDimensions.y/(2));
@@ -307,7 +308,7 @@ public abstract class PhysicsComponent implements Component {
         //Gdx.app.debug(TAG, "SETTING Bounding Box for " + entity.getEntityConfig().getEntityID() + ": (" + minX + "," + minY + ")  width: " + width + " height: " + height);
     }
 
-    protected void mattiasBoundingBox(float percentageWidth, float percentageHeight){
+    protected void initBoundingBox(float percentageWidth, float percentageHeight){
         float newUnitScaleX = (Entity.frameDimensions.x / Entity.frameDimensions.x) ;
         float newUnitScaleY = (Entity.frameDimensions.y / Entity.frameDimensions.y) ;
         boundingBox.set(nextEntityPosition.x / Map.UNIT_SCALE, nextEntityPosition.y / Map.UNIT_SCALE, Entity.frameDimensions.x * percentageWidth / newUnitScaleX, Entity.frameDimensions.y * percentageHeight / newUnitScaleY);

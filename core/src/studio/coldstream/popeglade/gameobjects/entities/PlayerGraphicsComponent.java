@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Array;
 
 import studio.coldstream.popeglade.gameobjects.maps.Map;
 import studio.coldstream.popeglade.gameobjects.maps.MapManager;
+import studio.coldstream.popeglade.screens.MainGameScreen;
 
 public class PlayerGraphicsComponent extends GraphicsComponent {
     private static final String TAG = PlayerGraphicsComponent.class.getSimpleName();
@@ -90,14 +91,16 @@ public class PlayerGraphicsComponent extends GraphicsComponent {
                 entity.getEntityConfig().getFrameDimensions().y * Map.UNIT_SCALE * PLAYER_SPRITE_SCALE); //Should it be compensated for the ratio between texture_width (player) and MapTileWidth?
         batch.end();
 
-        Rectangle rect = entity.getCurrentBoundingBox();
-        shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.RED);
-        shapeRenderer.rect(rect.getX() * Map.UNIT_SCALE, rect.getY() * Map.UNIT_SCALE,
-                rect.getWidth() * Map.UNIT_SCALE * PLAYER_SPRITE_SCALE,
-                rect.getHeight() * Map.UNIT_SCALE * PLAYER_SPRITE_SCALE);
-        shapeRenderer.end();
+        if(MainGameScreen.isCollisionGridEnabled()) {
+            Rectangle rect = entity.getCurrentBoundingBox();
+            shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            shapeRenderer.setColor(Color.BLUE);
+            shapeRenderer.rect(rect.getX() * Map.UNIT_SCALE, rect.getY() * Map.UNIT_SCALE,
+                    rect.getWidth() * Map.UNIT_SCALE * PLAYER_SPRITE_SCALE,
+                    rect.getHeight() * Map.UNIT_SCALE * PLAYER_SPRITE_SCALE);
+            shapeRenderer.end();
+        }
 
 
 

@@ -8,10 +8,14 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Json;
 
 
@@ -113,12 +117,12 @@ public class GameRenderer {
     }
 
     public void render(float delta, float runTime) {
-        /*if( gameState == GameState.GAME_OVER ){
-            myScreen.setScreen(game.getScreenType(BludBourne.ScreenType.GameOver));
-        }*/
+        if( myScreen.getGameState() == MainGameScreen.GameState.GAMEOVER ){
+            //myScreen.setScreen(game.getScreenType(BludBourne.ScreenType.GameOver));
+        }
 
         if( myScreen.getGameState() == MainGameScreen.GameState.PAUSED ){
-            //player.updateInput(delta);
+            player.updateInput(delta);
             playerHUD.render(delta);
             return;
         }
@@ -129,6 +133,8 @@ public class GameRenderer {
         Gdx.gl.glClearColor(0.6f, 0.6f, 0.8f, 1);
         Gdx.gl.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
         Gdx.gl20.glEnable(Gdx.gl20.GL_BLEND);
+
+        Gdx.gl.glLineWidth(2);
 
         mapRenderer.setView(cam);
 
@@ -231,12 +237,33 @@ public class GameRenderer {
         pointer.update(mapMgr, batcher, delta);
 
         //mapMgr.updateCurrentMapEntities(mapMgr, mapRenderer.getBatch(), delta);
+        if(MainGameScreen.isCollisionGridEnabled()) {
+            MapObjects objects = mapMgr.getCollisionLayer().getObjects();
+            for (MapObject object : objects) {
+                if (object instanceof RectangleMapObject) {
+                    Rectangle rect = ((RectangleMapObject) object).getRectangle();
+                    // do something with rect...
+                    shapeRenderer.setProjectionMatrix(mapRenderer.getBatch().getProjectionMatrix());
+                    shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+                    shapeRenderer.setColor(Color.RED);
+                    shapeRenderer.rect(rect.getX() * Map.UNIT_SCALE, rect.getY() * Map.UNIT_SCALE, rect.getWidth() * Map.UNIT_SCALE, rect.getHeight() * Map.UNIT_SCALE);
+                    shapeRenderer.end();
+                }
+            /*else if (object instanceof PolygonMapObject) {
+                Polygon polygon = ((PolygonMapObject) object).getPolygon();
+                // do something with polygon...
+            }
+            else if (object instanceof PolylineMapObject) {
+                Polyline chain = ((PolylineMapObject) object).getPolyline();
+                // do something with chain...
+            }
+            else if (object instanceof CircleMapObject) {
+                Circle circle = ((CircleMapObject) object).getCircle();
+                // do something with circle...
+            }*/
+            }
+        }
 
-        //terrain.getTiledMapRenderer().render(new int[]{3});
-        //Gdx.gl.glDisable(Gdx.gl20.GL_BLEND);
-
-        //Draw HUD
-        //hud.render(delta, runTime, batcher, shapeRenderer, font, cam);
         playerHUD.render(delta);
 
 

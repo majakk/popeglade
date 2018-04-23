@@ -11,6 +11,7 @@ public class PlayerInputComponent extends InputComponent {
     private final static String TAG = PlayerInputComponent.class.getSimpleName();
     private Vector2 lastMouseCoordinates;
 
+
     public PlayerInputComponent(){
         Gdx.app.debug(TAG, "Attached" );
         this.lastMouseCoordinates = new Vector2(0, 0);
@@ -73,6 +74,13 @@ public class PlayerInputComponent extends InputComponent {
             quitReleased();
             Gdx.app.exit();
 
+        } else if(keys.get(Keys.F1)) {
+            if(MainGameScreen.isCollisionGridEnabled())
+                MainGameScreen.setCollisionGridEnabled(false);
+            else
+                MainGameScreen.setCollisionGridEnabled(true);
+            f1Released();
+
         }else{
             entity.sendMessage(MESSAGE.CURRENT_STATE, json.toJson(Entity.State.IDLE));
             if( currentDirection == null ){
@@ -107,11 +115,17 @@ public class PlayerInputComponent extends InputComponent {
         if( keycode == Input.Keys.DOWN || keycode == Input.Keys.S){
             this.downPressed();
         }
-        if( keycode == Input.Keys.Q){
+        if( keycode == Input.Keys.ESCAPE){
             this.quitPressed();
         }
         if( keycode == Input.Keys.P ){
             this.pausePressed();
+        }
+        if( keycode == Input.Keys.I ){
+            this.inventoryPressed();
+        }
+        if( keycode == Input.Keys.F1 ){
+            this.f1Pressed();
         }
 
         return true;
@@ -136,6 +150,12 @@ public class PlayerInputComponent extends InputComponent {
         }
         if( keycode == Input.Keys.P ){
             this.pauseReleased();
+        }
+        if( keycode == Input.Keys.I ){
+            this.inventoryReleased();
+        }
+        if( keycode == Input.Keys.F1 ){
+            this.f1Released();
         }
         return true;
     }
@@ -189,6 +209,7 @@ public class PlayerInputComponent extends InputComponent {
 
     @Override
     public boolean scrolled(int amount) {
+        Gdx.app.debug(TAG, "Scrolled: " + amount);
         return false;
     }
 
@@ -214,6 +235,12 @@ public class PlayerInputComponent extends InputComponent {
 
     public void pausePressed() {
         keys.put(Keys.PAUSE, true);
+    }
+    public void inventoryPressed() {
+        keys.put(Keys.INVENTORY, true);
+    }
+    public void f1Pressed() {
+        keys.put(Keys.F1, true);
     }
 
     /*public void setClickedMouseCoordinates(int x, int y){
@@ -253,7 +280,17 @@ public class PlayerInputComponent extends InputComponent {
         keys.put(Keys.QUIT, false);
     }
 
-    public void pauseReleased() { keys.put(Keys.PAUSE, false);}
+    public void pauseReleased() {
+        keys.put(Keys.PAUSE, false);
+    }
+
+    public void inventoryReleased(){
+        keys.put(Keys.INVENTORY, false);
+    }
+
+    public void f1Released(){
+        keys.put(Keys.F1, false);
+    }
 
     /*public void selectMouseButtonReleased(int x, int y){
         mouseButtons.put(Mouse.SELECT, false);

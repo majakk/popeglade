@@ -108,6 +108,10 @@ public class Entity {
         graphicsComponent.update(this, mapMgr, batch, delta);
     }
 
+    public void updateInput(float delta){
+        inputComponent.update(this, delta);
+    }
+
     public void dispose(){
         for(Component component: componentArray)
             component.dispose();
