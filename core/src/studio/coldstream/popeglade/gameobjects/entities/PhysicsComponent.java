@@ -20,6 +20,9 @@ public abstract class PhysicsComponent implements Component {
 
     public abstract void update(Entity entity, MapManager mapMgr, float delta);
 
+    private final static float DEFAULT_VELOCITY = 4.0f;
+    private final static float VELOCITY_DIAG_FACTOR = 0.7f;
+
     public enum BoundingBoxLocation{
         BOTTOM_LEFT,
         BOTTOM_CENTER,
@@ -41,7 +44,7 @@ public abstract class PhysicsComponent implements Component {
     PhysicsComponent(){
         this.nextEntityPosition = new Vector2(0,0);
         this.currentEntityPosition = new Vector2(0,0);
-        this.velocity = new Vector2(4.0f,4.0f);
+        this.velocity = new Vector2(DEFAULT_VELOCITY, DEFAULT_VELOCITY);
         this.boundingBox = new Rectangle();
         this.json = new Json();
         this.tempEntities = new Array<>();
@@ -82,16 +85,16 @@ public abstract class PhysicsComponent implements Component {
 
         switch (currentDirection) {
             case LEFT_UP :
-                testX -= 0.67 * velocity.x;
+                testX -= VELOCITY_DIAG_FACTOR * velocity.x;
                 break;
             case RIGHT_UP :
-                testX += 0.67 * velocity.x;
+                testX += VELOCITY_DIAG_FACTOR * velocity.x;
                 break;
             case LEFT_DOWN :
-                testX -= 0.67 * velocity.x;
+                testX -= VELOCITY_DIAG_FACTOR * velocity.x;
                 break;
             case RIGHT_DOWN :
-                testX += 0.67 * velocity.x;
+                testX += VELOCITY_DIAG_FACTOR * velocity.x;
                 break;
             case LEFT :
                 testX -=  velocity.x;
@@ -122,16 +125,16 @@ public abstract class PhysicsComponent implements Component {
 
         switch (currentDirection) {
             case LEFT_UP :
-                testY += 0.67 * velocity.y;
+                testY += VELOCITY_DIAG_FACTOR * velocity.y;
                 break;
             case RIGHT_UP :
-                testY += 0.67 * velocity.y;
+                testY += VELOCITY_DIAG_FACTOR * velocity.y;
                 break;
             case LEFT_DOWN :
-                testY -= 0.67 * velocity.y;
+                testY -= VELOCITY_DIAG_FACTOR * velocity.y;
                 break;
             case RIGHT_DOWN :
-                testY -= 0.67 * velocity.y;
+                testY -= VELOCITY_DIAG_FACTOR * velocity.y;
                 break;
             case UP :
                 testY += velocity.y;

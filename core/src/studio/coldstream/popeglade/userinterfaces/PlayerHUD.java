@@ -42,6 +42,8 @@ public class PlayerHUD implements Screen, ProfileObserver{
     private InventoryUI inventoryUI;
     private InventoryItemFactory inventoryItemFactory;
 
+    private int currentActiveSlot;
+
     public PlayerHUD(Camera c, Entity p){
         player = p;
         cam = c;
@@ -49,6 +51,8 @@ public class PlayerHUD implements Screen, ProfileObserver{
         viewport = new ScreenViewport(cam);
         stage = new Stage(viewport);
         inventoryItemFactory = InventoryItemFactory.getInstance();
+
+        currentActiveSlot = 0;
 
         statusUI = new StatusUI();
         statusUI.setPosition(10, cam.viewportHeight - statusUI.getHeight() - 10);
@@ -73,9 +77,7 @@ public class PlayerHUD implements Screen, ProfileObserver{
         stage.addActor(inventoryBarUI);
         stage.addActor(inventoryUI);
 
-        statusUI.validate();
-        inventoryBarUI.validate();
-        inventoryUI.validate();
+
 
         //Listeners
         ImageButton inventoryButton = statusUI.getInventoryButton();
@@ -95,35 +97,27 @@ public class PlayerHUD implements Screen, ProfileObserver{
 
         barSlotTable.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log(TAG, event.toString() + " Bubble");
+                //Gdx.app.log(TAG, event.toString() + " Bubble");
             }
-
-            /*public boolean scrolled(InputEvent event, float x, float y, int amount){
-                Gdx.app.log(TAG, event.toString() + " Bobble");
-                return true;
-            }*/
         });
 
         //This should handle scrolling properly!
         stage.addListener(new InputListener() {
             public boolean scrolled(InputEvent event, float x, float y, int amount){
-                Gdx.app.log(TAG, event.toString() + " Bobble");
+                //Gdx.app.log(TAG, event.toString() + " Bobble");
+                currentActiveSlot = (currentActiveSlot + InventoryBarUI.NUM_OF_SLOTS - amount) % InventoryBarUI.NUM_OF_SLOTS;
+                inventoryBarUI.setCurrentBarSlot(currentActiveSlot);
+
+                //inventoryBarUI.getBarSlotTable().getCells().get(4).setActorHeight(7);
+                //inventoryBarUI.getBarSlotTable().getCells().get(5).getActor();
+
                 return true;
             }
         });
 
-
-        /*barSlotTable.addListener(new ClickListener(){
-            public void clicked(InputEvent event, float x, float y) {
-                //inventoryBarUI.setVisible(inventoryBarUI.isVisible() ? false : true);
-
-                Gdx.app.log(TAG, event.toString() + "HUDDLE");
-                //inventoryItemFactory.testAllItemLoad();
-                //inventoryUI.getInventoryTable()..getCells().get(0)add(inventoryItemFactory.getInventoryItem(InventoryItem.ItemTypeID.ARMOR01)); //Kind of works
-                //inventoryUI.populateInventory(inventoryUI.getInventoryTable(), new Array<InventoryItemLocation>(2), new DragAndDrop(), "", true);
-            }
-
-        });*/
+        statusUI.validate();
+        inventoryBarUI.validate();
+        inventoryUI.validate();
     }
 
     @Override
@@ -141,7 +135,7 @@ public class PlayerHUD implements Screen, ProfileObserver{
         //dinventoryBarUI.getTitleLabel().setText("fps" + Math.round(1 / delta) );
         statusUI.setPosition(10, cam.viewportHeight - statusUI.getHeight() - 10);
 
-        inventoryBarUI.setPosition(viewport.getScreenWidth() / 2 - 5*32, yOffset);
+        inventoryBarUI.setPosition((viewport.getScreenWidth() / 2) - (InventoryBarUI.NUM_OF_SLOTS / 2) * InventoryBarUI.SLOT_WIDTH, yOffset);
     }
 
     @Override
