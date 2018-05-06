@@ -35,6 +35,7 @@ public class InventoryBarUI extends Window {
         this.pack();
     }
 
-
-
+    public Table getBarSlotTable() {
+        return barSlotTable;
+    }
 }

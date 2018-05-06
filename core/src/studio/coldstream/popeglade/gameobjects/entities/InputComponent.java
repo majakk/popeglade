@@ -11,6 +11,7 @@ public abstract class InputComponent implements Component, InputProcessor {
 
     protected Entity.Direction currentDirection = null;
     protected Entity.State currentState = null;
+
     protected Json json;
 
     protected enum Keys {
@@ -18,7 +19,7 @@ public abstract class InputComponent implements Component, InputProcessor {
     }
 
     protected enum Mouse {
-        SELECT, DOACTION, SCROLL
+        SELECT, DOACTION, SCROLL_UP, SCROLL_DOWN
     }
 
     protected static Map<Keys, Boolean> keys = new HashMap<>();
@@ -40,7 +41,8 @@ public abstract class InputComponent implements Component, InputProcessor {
     static {
         mouseButtons.put(Mouse.SELECT, false);
         mouseButtons.put(Mouse.DOACTION, false);
-        mouseButtons.put(Mouse.SCROLL, false);
+        mouseButtons.put(Mouse.SCROLL_UP, false);
+        mouseButtons.put(Mouse.SCROLL_DOWN, false);
     }
 
     InputComponent(){

@@ -10,11 +10,13 @@ import studio.coldstream.popeglade.screens.MainGameScreen;
 public class PlayerInputComponent extends InputComponent {
     private final static String TAG = PlayerInputComponent.class.getSimpleName();
     private Vector2 lastMouseCoordinates;
+    private int mouseScrollAmount;
 
 
     public PlayerInputComponent(){
         Gdx.app.debug(TAG, "Attached" );
         this.lastMouseCoordinates = new Vector2(0, 0);
+        //this.mouseScrollAmount = 0;
     }
 
     @Override
@@ -98,7 +100,23 @@ public class PlayerInputComponent extends InputComponent {
             mouseButtons.put(Mouse.SELECT, false);
         }*/
 
+        if(mouseButtons.get(Mouse.SCROLL_UP)){
+            //TODO Send a Message to HUD
+            Gdx.app.debug(TAG, "Scrolled UP!");
+            scrollReleased();
+        }
+        else if(mouseButtons.get(Mouse.SCROLL_DOWN)){
+            Gdx.app.debug(TAG, "Scrolled DOWN!");
+            scrollReleased();
+        }
 
+
+    }
+
+    private void scrollReleased() {
+        //mouseScrollAmount = 0;
+        mouseButtons.put(Mouse.SCROLL_UP, false);
+        mouseButtons.put(Mouse.SCROLL_DOWN, false);
     }
 
     @Override
@@ -210,7 +228,11 @@ public class PlayerInputComponent extends InputComponent {
     @Override
     public boolean scrolled(int amount) {
         Gdx.app.debug(TAG, "Scrolled: " + amount);
-        return false;
+        if(amount > 0)
+            mouseButtons.put(Mouse.SCROLL_UP, true);
+        else if(amount < 0)
+            mouseButtons.put(Mouse.SCROLL_DOWN, true);
+        return true;
     }
 
     //Key presses

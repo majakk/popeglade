@@ -3,11 +3,18 @@ package studio.coldstream.popeglade.userinterfaces;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
+import com.badlogic.gdx.scenes.scene2d.utils.DragScrollListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -82,6 +89,41 @@ public class PlayerHUD implements Screen, ProfileObserver{
                 //inventoryUI.populateInventory(inventoryUI.getInventoryTable(), new Array<InventoryItemLocation>(2), new DragAndDrop(), "", true);
             }
         });
+
+        //Handling clicks in barSlotTable
+        final Table barSlotTable = inventoryBarUI.getBarSlotTable();
+
+        barSlotTable.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log(TAG, event.toString() + " Bubble");
+            }
+
+            /*public boolean scrolled(InputEvent event, float x, float y, int amount){
+                Gdx.app.log(TAG, event.toString() + " Bobble");
+                return true;
+            }*/
+        });
+
+        //This should handle scrolling properly!
+        stage.addListener(new InputListener() {
+            public boolean scrolled(InputEvent event, float x, float y, int amount){
+                Gdx.app.log(TAG, event.toString() + " Bobble");
+                return true;
+            }
+        });
+
+
+        /*barSlotTable.addListener(new ClickListener(){
+            public void clicked(InputEvent event, float x, float y) {
+                //inventoryBarUI.setVisible(inventoryBarUI.isVisible() ? false : true);
+
+                Gdx.app.log(TAG, event.toString() + "HUDDLE");
+                //inventoryItemFactory.testAllItemLoad();
+                //inventoryUI.getInventoryTable()..getCells().get(0)add(inventoryItemFactory.getInventoryItem(InventoryItem.ItemTypeID.ARMOR01)); //Kind of works
+                //inventoryUI.populateInventory(inventoryUI.getInventoryTable(), new Array<InventoryItemLocation>(2), new DragAndDrop(), "", true);
+            }
+
+        });*/
     }
 
     @Override
