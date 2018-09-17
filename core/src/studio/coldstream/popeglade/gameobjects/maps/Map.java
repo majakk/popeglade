@@ -1,15 +1,20 @@
 package studio.coldstream.popeglade.gameobjects.maps;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 
+import java.util.Hashtable;
+
 import studio.coldstream.popeglade.gamehelpers.AssetLoader;
+import studio.coldstream.popeglade.gameobjects.entities.Entity;
 
 public abstract class Map {
     private static final String TAG = Map.class.getSimpleName();
@@ -20,6 +25,7 @@ public abstract class Map {
     //Map layers
     public final static String COLLISION_LAYER = "MAP_COLLISION_LAYER";
     protected final static String SPAWNS_LAYER = "MAP_SPAWNS_LAYER";
+    protected final static String OBJECTS_LAYER = "MAP_OBJECTS_LAYER";
     protected final static String PORTAL_LAYER = "MAP_PORTAL_LAYER";
 
     public final static String BACKGROUND_LAYER = "Background_Layer";
@@ -47,13 +53,19 @@ public abstract class Map {
 
     protected MapLayer collisionLayer = null;
     protected MapLayer portalLayer = null;
+    protected MapLayer objectsLayer = null;
     protected MapLayer spawnsLayer = null;
+
+    protected Array<Entity> mapEntities;
+    protected Array<Vector2> mapObjectsStartPositions;
 
 
     Map(MapFactory.MapType mapType, String fullMapPath){
         playerStart = new Vector2(0.0f,0.0f);
         playerStartPositionRect = new Vector2(0,0);
         closestPlayerStartPosition = new Vector2(0,0);
+
+        mapEntities = new Array<Entity>(10); //well... now we reserve space for 100 entities only...
 
         currentMapType = mapType;
 
@@ -84,6 +96,11 @@ public abstract class Map {
             Gdx.app.debug(TAG, "No portal layer!");
         }
 
+        objectsLayer = currentMap.getLayers().get(OBJECTS_LAYER);
+        if( objectsLayer == null ){
+            Gdx.app.debug(TAG, "No objects layer!");
+        }
+
         spawnsLayer = currentMap.getLayers().get(SPAWNS_LAYER);
         if( spawnsLayer == null ){
             Gdx.app.debug(TAG, "No spawn layer!");
@@ -91,7 +108,17 @@ public abstract class Map {
             setClosestStartPosition(playerStart);
         }
 
+        mapObjectsStartPositions = getMapObjectsStartPositions();
 
+    }
+
+    protected void updateMapEntities(MapManager mapMgr, Batch batch, float delta){
+        for( int i=0; i < mapEntities.size; i++){
+            mapEntities.get(i).update(mapMgr, batch, delta);
+        }
+        /*for( int i=0; i < _mapQuestEntities.size; i++){
+            _mapQuestEntities.get(i).update(mapMgr, batch, delta);
+        }*/
     }
 
     public TiledMap getCurrentTiledMap() {
@@ -148,8 +175,37 @@ public abstract class Map {
         playerStart =  closestPlayerStartPosition.cpy();
     }
 
+    private Array<Vector2> getMapObjectsStartPositions(){
+        Array<Vector2> npcStartPositions = new Array<Vector2>();
+
+        for( MapObject object: objectsLayer.getObjects()){
+            String objectName = object.getName();
+
+            if( objectName == null || objectName.isEmpty() ){
+                continue;
+            }
+
+            if( objectName.equalsIgnoreCase("SMALL_TREE") ){
+                //Get center of rectangle
+                float x = ((RectangleMapObject)object).getRectangle().getX();
+                float y = ((RectangleMapObject)object).getRectangle().getY();
+
+                //scale by the unit to convert from map coordinates
+                x *= UNIT_SCALE;
+                y *= UNIT_SCALE;
+
+                npcStartPositions.add(new Vector2(x,y));
+            }
+        }
+        return npcStartPositions;
+    }
+
     public MapLayer getCollisionLayer(){
         return collisionLayer;
+    }
+
+    public MapLayer getObjectsLayer(){
+        return objectsLayer;
     }
 
     public MapLayer getPortalLayer(){

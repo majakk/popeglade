@@ -16,13 +16,15 @@ public class EntityFactory {
         PLAYER,
         POINTER,
         DEMO_PLAYER,
-        NPC
+        NPC,
+        MAP_OBJECTS
     }
 
     public enum EntityName{
         PLAYER_GNOME,
         POINTER_ARROW,
         TOWN_GUARD_WALKING,
+        SMALL_TREE, MEDIUM_TREE, SHRUB,
         TOWN_BLACKSMITH,
         TOWN_MAGE,
         TOWN_INNKEEPER,
@@ -32,26 +34,29 @@ public class EntityFactory {
         FIRE
     }
 
+    public static String TREES_CONFIG = "android/assets/scripts/trees.json";
     public static String PLAYER_CONFIG = "android/assets/scripts/player.json";
     public static String POINTER_CONFIG = "android/assets/scripts/pointer.json";
 
     private EntityFactory(){
         entities = new Hashtable<>();
 
-        /*Array<EntityConfig> townFolkConfigs = Entity.getEntityConfigs(TOWN_FOLK_CONFIGS);
-        for( EntityConfig config: townFolkConfigs){
+        Array<EntityConfig> treesConfigs = Entity.getEntityConfigs(TREES_CONFIG);
+        for( EntityConfig config: treesConfigs){
             entities.put(config.getEntityID(), config);
-        }*/
+        }
 
         /*Array<EntityConfig> environmentalEntityConfigs = Entity.getEntityConfigs(ENVIRONMENTAL_ENTITY_CONFIGS);
         for( EntityConfig config: environmentalEntityConfigs){
             entities.put(config.getEntityID(), config);
         }*/
 
+
         //entities.put(EntityName.TOWN_GUARD_WALKING.toString(), Entity.loadEntityConfigByPath(TOWN_GUARD_WALKING_CONFIG));
         //entities.put(EntityName.TOWN_BLACKSMITH.toString(), Entity.loadEntityConfigByPath(TOWN_BLACKSMITH_CONFIG));
         //entities.put(EntityName.TOWN_MAGE.toString(), Entity.loadEntityConfigByPath(TOWN_MAGE_CONFIG));
         //entities.put(EntityName.TOWN_INNKEEPER.toString(), Entity.loadEntityConfigByPath(TOWN_INNKEEPER_CONFIG));
+        //entities.put(EntityName.TREES.toString(), Entity.loadEntityConfigByPath(TREES_CONFIG));
         entities.put(EntityName.PLAYER_GNOME.toString(), Entity.loadEntityConfigByPath(PLAYER_CONFIG));
         //entities.put(EntityName.POINTER_ARROW.toString(), Entity.loadEntityConfigByPath(POINTER_CONFIG));
     }
@@ -72,8 +77,7 @@ public class EntityFactory {
                         new PlayerInputComponent(),
                         new PlayerPhysicsComponent(),
                         new PlayerGraphicsComponent());
-                entity.setEntityConfig(
-                        Entity.getEntityConfig(EntityFactory.PLAYER_CONFIG));
+                entity.setEntityConfig(Entity.getEntityConfig(EntityFactory.PLAYER_CONFIG));
                 entity.sendMessage(Component.MESSAGE.LOAD_ANIMATIONS, json.toJson(entity.getEntityConfig()));
                 return entity;
             case POINTER:
@@ -81,8 +85,8 @@ public class EntityFactory {
                         new PointerInputComponent(),
                         new PointerPhysicsComponent(),
                         new PointerGraphicsComponent());
-                entity.setEntityConfig(
-                        Entity.getEntityConfig(EntityFactory.POINTER_CONFIG));
+                entity.setEntityConfig(Entity.getEntityConfig(EntityFactory.POINTER_CONFIG));
+                //entity.sendMessage(Component.MESSAGE.LOAD_ANIMATIONS, json.toJson(entity.getEntityConfig()));
                 return entity;
             case DEMO_PLAYER:
                 entity = new Entity(
@@ -95,11 +99,25 @@ public class EntityFactory {
                         new NPCInputComponent(),
                         new NPCPhysicsComponent(),
                         new NPCGraphicsComponent());
+                //entity.setEntityConfig(Entity.getEntityConfig(EntityFactory.TREES_CONFIG));
+
+                return entity;
+            case MAP_OBJECTS:
+                entity = new Entity(
+                        new NPCInputComponent(),
+                        new NPCPhysicsComponent(),
+                        new NPCGraphicsComponent());
                 return entity;
             default:
                 return null;
 
         }
+    }
+
+    public Entity getEntityByName(EntityName entityName){
+        EntityConfig config = new EntityConfig(entities.get(entityName.toString()));
+        Entity entity = Entity.initEntity(config);
+        return entity;
     }
 
 }

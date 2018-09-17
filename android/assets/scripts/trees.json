@@ -1,0 +1,229 @@
+[
+  {
+    "entityID" : "SMALL_TREE",
+    "state" : "IMMOBILE",
+    "direction" : "DOWN",
+    "frameWidth": 15,
+    "frameHeight": 30,
+    "conversationConfigPath" : "",
+    "questConfigPath" : "",
+    "currentQuestID" : "",
+    "itemTypeID": "NONE",
+    "entityProperties": {
+      "ENTITY_HEALTH_POINTS": {
+        "class": "java.lang.String",
+        "value": 15
+      },
+      "ENTITY_ATTACK_POINTS": {
+        "class": "java.lang.String",
+        "value": 40
+      },
+      "ENTITY_DEFENSE_POINTS": {
+        "class": "java.lang.String",
+        "value": 5
+      },
+      "ENTITY_XP_REWARD": {
+        "class": "java.lang.String",
+        "value": 5
+      },
+      "ENTITY_GP_REWARD": {
+        "class": "java.lang.String",
+        "value": 5
+      }
+    },
+    "animationConfig": [
+      {
+        "frameDuration": 0.5,
+        "animationType": "IDLE",
+        "texturePaths": [
+          "android/assets/gfx/gnome_player.png"
+        ],
+        "gridPoints": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 1,
+            "y": 0
+          },
+          {
+            "x": 2,
+            "y": 0
+          },
+          {
+            "x": 3,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "frameDuration": 0.5,
+        "animationType": "IMMOBILE",
+        "texturePaths": [
+          "android/assets/gfx/gnome_player.png"
+        ],
+        "gridPoints": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 1,
+            "y": 0
+          },
+          {
+            "x": 2,
+            "y": 0
+          },
+          {
+            "x": 3,
+            "y": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "entityID" : "MEDIUM_TREE",
+    "state" : "IMMOBILE",
+    "direction" : "DOWN",
+    "frameWidth": 15,
+    "frameHeight": 30,
+    "conversationConfigPath" : "",
+    "questConfigPath" : "",
+    "currentQuestID" : "",
+    "itemTypeID": "NONE",
+    "entityProperties": {
+      "ENTITY_HEALTH_POINTS": {
+        "class": "java.lang.String",
+        "value": 15
+      },
+      "ENTITY_ATTACK_POINTS": {
+        "class": "java.lang.String",
+        "value": 40
+      },
+      "ENTITY_DEFENSE_POINTS": {
+        "class": "java.lang.String",
+        "value": 5
+      },
+      "ENTITY_XP_REWARD": {
+        "class": "java.lang.String",
+        "value": 5
+      },
+      "ENTITY_GP_REWARD": {
+        "class": "java.lang.String",
+        "value": 5
+      }
+    },
+    "animationConfig": [
+      {
+        "frameDuration": 0.5,
+        "animationType": "IDLE",
+        "texturePaths": [
+          "android/assets/gfx/gnome_player.png"
+
+        ],
+        "gridPoints": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "frameDuration": 0.5,
+        "animationType": "IMMOBILE",
+        "texturePaths": [
+          "android/assets/gfx/gnome_player.png"
+
+        ],
+        "gridPoints": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "entityID" : "SHRUB",
+    "state" : "IMMOBILE",
+    "direction" : "DOWN",
+    "frameWidth": 15,
+    "frameHeight": 30,
+    "conversationConfigPath" : "",
+    "questConfigPath" : "",
+    "currentQuestID" : "",
+    "itemTypeID": "NONE",
+    "entityProperties": {
+      "ENTITY_HEALTH_POINTS": {
+        "class": "java.lang.String",
+        "value": 15
+      },
+      "ENTITY_ATTACK_POINTS": {
+        "class": "java.lang.String",
+        "value": 40
+      },
+      "ENTITY_DEFENSE_POINTS": {
+        "class": "java.lang.String",
+        "value": 5
+      },
+      "ENTITY_XP_REWARD": {
+        "class": "java.lang.String",
+        "value": 5
+      },
+      "ENTITY_GP_REWARD": {
+        "class": "java.lang.String",
+        "value": 5
+      }
+    },
+    "animationConfig": [
+      {
+        "frameDuration": 0.5,
+        "animationType": "IDLE",
+        "texturePaths": [
+          "android/assets/gfx/gnome_player.png"
+
+        ],
+        "gridPoints": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "frameDuration": 0.5,
+        "animationType": "IMMOBILE",
+        "texturePaths": [
+          "android/assets/gfx/gnome_player.png"
+
+        ],
+        "gridPoints": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ]
+      }
+    ]
+  }
+]

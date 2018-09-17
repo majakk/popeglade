@@ -9,7 +9,7 @@
       "frameDuration": 0.05,
       "animationType": "IDLE",
       "texturePaths": [
-        "android/assets/gfx/pointer.png"
+        "android/assets/gfx/player.png"
       ],
       "gridPoints": [
         {

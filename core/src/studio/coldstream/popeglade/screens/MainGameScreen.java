@@ -173,7 +173,7 @@ public class MainGameScreen implements Screen {
     @Override
     public void pause() {
         Gdx.app.log(TAG, "Pause called");
-        setGameState(GameState.SAVING);
+        //setGameState(GameState.SAVING); //ToDo: This line breaks pause() currently
         renderer.getPlayerHUD().pause();
     }
 

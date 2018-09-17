@@ -1,6 +1,7 @@
 package studio.coldstream.popeglade.gameworld;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.Array;
 
 import studio.coldstream.popeglade.gameobjects.entities.Entity;
 import studio.coldstream.popeglade.gameobjects.entities.EntityFactory;
@@ -16,6 +17,8 @@ public class GameWorld {
     private static MapManager mapMgr;
     private static Entity player;
     private static Entity pointer;
+    private Array<Entity> mapEntities;
+    private Array<Entity> mapNPCs;
 
     public GameWorld() {
         Gdx.app.log(TAG, "Attached");

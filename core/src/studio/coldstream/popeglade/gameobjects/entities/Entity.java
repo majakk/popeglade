@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 import studio.coldstream.popeglade.gameobjects.maps.MapManager;
 import studio.coldstream.popeglade.profiles.ProfileManager;
@@ -166,6 +167,50 @@ public class Entity {
         }else{
             return serializedConfig;
         }
+    }
+
+    public static Entity initEntity(EntityConfig entityConfig, Vector2 position){
+        Json json = new Json();
+        Entity entity = EntityFactory.getEntity(EntityFactory.EntityType.NPC);
+        entity.setEntityConfig(entityConfig);
+
+        entity.sendMessage(Component.MESSAGE.LOAD_ANIMATIONS, json.toJson(entity.getEntityConfig()));
+        entity.sendMessage(Component.MESSAGE.INIT_START_POSITION, json.toJson(position));
+        entity.sendMessage(Component.MESSAGE.INIT_STATE, json.toJson(entity.getEntityConfig().getState()));
+        entity.sendMessage(Component.MESSAGE.INIT_DIRECTION, json.toJson(entity.getEntityConfig().getDirection()));
+
+        return entity;
+    }
+
+    public static Hashtable<String, Entity> initEntities(Array<EntityConfig> configs){
+        Json json = new Json();
+        Hashtable<String, Entity > entities = new Hashtable<String, Entity>();
+        for( EntityConfig config: configs ){
+            Entity entity = EntityFactory.getEntity(EntityFactory.EntityType.NPC);
+
+            entity.setEntityConfig(config);
+            entity.sendMessage(Component.MESSAGE.LOAD_ANIMATIONS, json.toJson(entity.getEntityConfig()));
+            entity.sendMessage(Component.MESSAGE.INIT_START_POSITION, json.toJson(new Vector2(0,0)));
+            entity.sendMessage(Component.MESSAGE.INIT_STATE, json.toJson(entity.getEntityConfig().getState()));
+            entity.sendMessage(Component.MESSAGE.INIT_DIRECTION, json.toJson(entity.getEntityConfig().getDirection()));
+
+            entities.put(entity.getEntityConfig().getEntityID(), entity);
+        }
+
+        return entities;
+    }
+
+    public static Entity initEntity(EntityConfig entityConfig){
+        Json json = new Json();
+        Entity entity = EntityFactory.getEntity(EntityFactory.EntityType.NPC);
+        entity.setEntityConfig(entityConfig);
+
+        entity.sendMessage(Component.MESSAGE.LOAD_ANIMATIONS, json.toJson(entity.getEntityConfig()));
+        entity.sendMessage(Component.MESSAGE.INIT_START_POSITION, json.toJson(new Vector2(0,0)));
+        entity.sendMessage(Component.MESSAGE.INIT_STATE, json.toJson(entity.getEntityConfig().getState()));
+        entity.sendMessage(Component.MESSAGE.INIT_DIRECTION, json.toJson(entity.getEntityConfig().getDirection()));
+
+        return entity;
     }
 
 }

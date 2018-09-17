@@ -10,6 +10,11 @@ public class NPCPhysicsComponent extends PhysicsComponent {
 
     private Entity.State state;
 
+    public NPCPhysicsComponent(){
+        boundingBoxLocation = BoundingBoxLocation.BOTTOM_CENTER;
+        initBoundingBox(0.6f,0.25f);
+    }
+
     @Override
     public void receiveMessage(String message) {
         String[] string = message.split(Component.MESSAGE_TOKEN);
@@ -37,6 +42,6 @@ public class NPCPhysicsComponent extends PhysicsComponent {
 
     @Override
     public void update(Entity entity, MapManager mapMgr, float delta){
-
+        updateBoundingBoxPosition(nextEntityPosition);
     }
 }

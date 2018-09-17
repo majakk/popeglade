@@ -2,9 +2,11 @@ package studio.coldstream.popeglade.gameobjects.maps;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 
 import studio.coldstream.popeglade.gameobjects.entities.Entity;
 
@@ -52,6 +54,14 @@ public class MapManager {
         return currentMap.getPortalLayer();
     }
 
+    public MapLayer getObjectsLayer(){
+        return currentMap.getObjectsLayer();
+    }
+
+    public Array<Entity> getCurrentMapEntities() {
+        return currentMap.mapEntities;
+    }
+
     /*public MapLayer getEnemySpawnLayer(){
         return currentMap.getEnemySpawnLayer();
     }*/
@@ -88,6 +98,10 @@ public class MapManager {
     /*public void enableCurrentmapMusic(){
         currentMap.loadMusic();
     }*/
+
+    public void updateCurrentMapEntities(MapManager mapMgr, Batch batch, float delta){
+        currentMap.updateMapEntities(mapMgr, batch, delta);
+    }
 
     public void setPlayer(Entity entity){
         this.player = entity;

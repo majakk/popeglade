@@ -11,14 +11,20 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 
 
+import java.util.Comparator;
+
+import javafx.scene.effect.BlendMode;
 import studio.coldstream.popeglade.gamehelpers.LocationHandler;
 import studio.coldstream.popeglade.gameobjects.entities.Component;
 import studio.coldstream.popeglade.gameobjects.entities.Entity;
@@ -51,11 +57,14 @@ public class GameRenderer {
     private static MapManager mapMgr;
     private static Entity player;
     private static Entity pointer;
+    private Array<Entity> mapEntities;
+    private final yPositionComparator entityComparator;
+
     private OrthogonalTiledMapRenderer mapRenderer = null;
 
     private InputMultiplexer multiplexer;
 
-    //private LocationHandler lh;
+    private LocationHandler lh;
 
     public GameRenderer(MainGameScreen screen) {
         Gdx.app.log(TAG, "Attached");
@@ -70,6 +79,8 @@ public class GameRenderer {
         mapMgr = screen.getWorld().getMapMgr();
         player = screen.getWorld().getPlayerEntity();
         pointer = screen.getWorld().getPointerEntity();
+
+        this.entityComparator = new yPositionComparator();
 
         hudCamera = new OrthographicCamera();
         hudCamera.setToOrtho(false, myScreen.getPhysicalViewport().x, myScreen.getPhysicalViewport().y);
@@ -109,8 +120,8 @@ public class GameRenderer {
         multiplexer.addProcessor(new PointerInputComponent());
         Gdx.input.setInputProcessor(multiplexer);
 
-
-
+        mapEntities = mapMgr.getCurrentMapEntities();
+        mapEntities.add(player);
         //lh = new LocationHandler();
 
         //Gdx.app.log(TAG, "MapSize X: " + mapMgr.getMapDimensions().x);
@@ -126,6 +137,8 @@ public class GameRenderer {
             playerHUD.render(delta);
             return;
         }
+
+        mapEntities.sort(entityComparator);
 
         //Gdx.app.log("GameRenderer", "render");
         //pointer.update(delta, player, mapMgr);
@@ -221,8 +234,28 @@ public class GameRenderer {
 
         mapRenderer.getBatch().end();
 
+
+        /*for (Entity entity : mapEntities) {
+            Gdx.app.log(TAG,"Entity count: " + mapEntities.size);
+            entity.update(mapMgr, batcher, delta);
+        }*/
+        mapMgr.updateCurrentMapEntities(mapMgr, batcher, delta);
+
         //Player
-        player.update(mapMgr, batcher, delta);
+        //player.update(mapMgr, batcher, delta);
+
+        //3 layers onTop of player 3x3 (ok,we'll see)
+        //TiledMapTileLayer groundMapLayer = (TiledMapTileLayer)mapMgr.getCurrentTiledMap().getLayers().get(Map.GROUND_LAYER);
+        //if( groundMapLayer != null ) {
+        //    mapRenderer.renderTileLayer(groundMapLayer);
+        //}
+        //TiledMapTileLayer.Cell adam = lh.pointerTile(player, mapMgr, batcher);
+        /*TiledMapTileLayer.Cell bertil = groundMapLayer.getCell((int)Math.floor(player.getCurrentPosition().x),(int)Math.floor(player.getCurrentPosition().y));
+        Gdx.app.log(TAG,"Cell ID: " + (int)Math.floor(player.getCurrentPosition().y));
+        //bertil.getTile().setBlendMode(TiledMapTile.BlendMode.ALPHA);
+        TiledMapTileLayer.Cell roland = groundMapLayer.getCell(1,1);*/
+
+
 
         //Top level stuff
         mapRenderer.getBatch().begin();
@@ -236,6 +269,7 @@ public class GameRenderer {
 
         pointer.update(mapMgr, batcher, delta);
 
+        //Debug Lines Rendering
         //mapMgr.updateCurrentMapEntities(mapMgr, mapRenderer.getBatch(), delta);
         if(MainGameScreen.isCollisionGridEnabled()) {
             MapObjects objects = mapMgr.getCollisionLayer().getObjects();
@@ -333,6 +367,8 @@ public class GameRenderer {
 
     }
 
+
+
     /*public OrthographicCamera getCamera(){
         return cam;
     }*/
@@ -347,6 +383,28 @@ public class GameRenderer {
     /*private void initAssets() {
         //playerAnimation = AssetLoader.playerAnimation;
     }*/
+    private static class yPositionComparator implements Comparator<Entity> {
+        //private final Entity yCoordinate;
+
+        private yPositionComparator() {
+            //this.yCoordinate = Entity;
+        }
+
+        @Override
+        public int compare(Entity o1, Entity o2) {
+            if (o1 == o2) {
+                return 0;
+            } else if (o1 == null) {
+                return -1;
+            } else if (o2 == null) {
+                return 1;
+            }
+
+            return o1.getCurrentPosition().y > o2.getCurrentPosition().y ? -1 : 1;
+        }
+
+    }
+
 
     public PlayerHUD getPlayerHUD(){
         return playerHUD;

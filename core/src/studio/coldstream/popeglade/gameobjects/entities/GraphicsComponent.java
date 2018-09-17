@@ -1,5 +1,6 @@
 package studio.coldstream.popeglade.gameobjects.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -33,7 +34,7 @@ public abstract class GraphicsComponent implements Component {
 
     protected GraphicsComponent(){
         currentPosition = new Vector2(0,0);
-        currentState = Entity.State.WALKING;
+        currentState = Entity.State.IMMOBILE;
         currentDirection = DOWN;
         json = new Json();
         animations = new Hashtable();
@@ -49,15 +50,18 @@ public abstract class GraphicsComponent implements Component {
         switch (currentDirection) {
             case DOWN:
                 if (currentState == Entity.State.WALKING) {
+
                     Animation<TextureRegion> animation = animations.get(Entity.AnimationType.WALK_DOWN);
                     if( animation == null ) return;
                     currentFrame = animation.getKeyFrame(frameTime);
                 } else if(currentState == Entity.State.IDLE) {
                     Animation<TextureRegion> animation = animations.get(Entity.AnimationType.WALK_DOWN);
+
                     if( animation == null ) return;
                     currentFrame = animation.getKeyFrames()[0];
                 } else if(currentState == Entity.State.IMMOBILE) {
                     Animation<TextureRegion> animation = animations.get(Entity.AnimationType.IMMOBILE);
+
                     if( animation == null ) return;
                     currentFrame = animation.getKeyFrame(frameTime);
                 }
@@ -112,6 +116,10 @@ public abstract class GraphicsComponent implements Component {
                 }
                 break;
             default:
+                Gdx.app.log(TAG, "" + (currentFrame == null));
+                Animation<TextureRegion> animation = animations.get(Entity.AnimationType.IDLE);
+                if( animation == null ) return;
+                currentFrame = animation.getKeyFrames()[0];
                 break;
         }
     }
