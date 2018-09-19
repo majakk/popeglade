@@ -59,6 +59,7 @@ public class Entity {
     }
 
     public static Vector2 frameDimensions;
+    public static Vector2 numOfTilesDimensions;
     //public static final int FRAME_WIDTH = 18;
     //public static final int FRAME_HEIGHT = 18;
 
@@ -122,6 +123,10 @@ public class Entity {
         return physicsComponent.boundingBox;
     }
 
+    public String getEntityID(){
+        return entityConfig.getEntityID();
+    }
+
     public Vector2 getCurrentPosition(){
         return graphicsComponent.currentPosition;
     }
@@ -161,6 +166,11 @@ public class Entity {
         Gdx.app.log(TAG, "FrameDimensions: " + Integer.valueOf(entityConfig.getFrameWidth()) + ":" + Integer.valueOf(entityConfig.getFrameHeight()));
 
         frameDimensions = new Vector2(Integer.valueOf(entityConfig.getFrameWidth()),Integer.valueOf(entityConfig.getFrameHeight()));
+        numOfTilesDimensions = new Vector2(Integer.valueOf(entityConfig.getNumOfTilesWidth()), Integer.valueOf(entityConfig.getNumOfTilesHeight()));
+        /*frameDimensions = new Vector2(
+                Integer.valueOf(entityConfig.getFrameWidth()) * Integer.valueOf(entityConfig.getNumOfTilesWidth()),
+                Integer.valueOf(entityConfig.getFrameHeight()) * Integer.valueOf(entityConfig.getNumOfTilesHeight())
+        );*/
 
         if( serializedConfig == null ){
             return entityConfig;
@@ -205,10 +215,15 @@ public class Entity {
         Entity entity = EntityFactory.getEntity(EntityFactory.EntityType.NPC);
         entity.setEntityConfig(entityConfig);
 
+        //entity.sendMessage(Component.MESSAGE.INIT_FRAME_DIMENSIONS, json.toJson(entity.getEntityConfig().getFrameDimensions()));
+        //entity.sendMessage(Component.MESSAGE.INIT_NUM_OF_TILES_DIMENSIONS, json.toJson(entity.getEntityConfig().getNumOfTilesDimensions()));
+
         entity.sendMessage(Component.MESSAGE.LOAD_ANIMATIONS, json.toJson(entity.getEntityConfig()));
         entity.sendMessage(Component.MESSAGE.INIT_START_POSITION, json.toJson(new Vector2(0,0)));
         entity.sendMessage(Component.MESSAGE.INIT_STATE, json.toJson(entity.getEntityConfig().getState()));
         entity.sendMessage(Component.MESSAGE.INIT_DIRECTION, json.toJson(entity.getEntityConfig().getDirection()));
+        entity.sendMessage(Component.MESSAGE.INIT_BOUNDING_BOX, json.toJson(entity.getEntityConfig()));
+
 
         return entity;
     }

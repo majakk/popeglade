@@ -3,6 +3,7 @@ package studio.coldstream.popeglade.gameobjects.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 
 import studio.coldstream.popeglade.gameobjects.maps.MapManager;
 
@@ -14,7 +15,7 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
     public PlayerPhysicsComponent(){
         boundingBoxLocation = BoundingBoxLocation.BOTTOM_CENTER;
         //initBoundingBox(0.5f, 0.5f);
-        initBoundingBox(0.6f,0.25f);
+        //initBoundingBox(0.6f,0.25f);
         //_previousDiscovery = "";
         //_previousEnemySpawn = "0";
         //_mouseSelectCoordinates = new Vector3(0,0,0);
@@ -40,6 +41,12 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
                 currentDirection = json.fromJson(Entity.Direction.class, string[1]);
             } else if(string[0].equalsIgnoreCase(MESSAGE.INIT_SELECT_ENTITY.toString())) {
                 //Gdx.app.log(TAG, "Init select Entity Message ends here");
+            } else if (string[0].equalsIgnoreCase(MESSAGE.INIT_BOUNDING_BOX.toString())) {
+                EntityConfig entityConfig = json.fromJson(EntityConfig.class, string[1]);
+                Array<EntityConfig.BoundingBox> boundingBoxes = entityConfig.getBoundingBox();
+                for( EntityConfig.BoundingBox boundingBox : boundingBoxes ){
+                    initBoundingBox(boundingBox.getBoundingBox()); //ToDO Here we need something like addBoundingBox...
+                }
             }
             //Gdx.app.log(TAG, "Key Pressed: " + currentEntityPosition + " : " + currentDirection);
         }

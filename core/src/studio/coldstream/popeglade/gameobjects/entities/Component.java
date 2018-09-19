@@ -17,7 +17,10 @@ public interface Component {
         LOAD_ANIMATIONS,
         INIT_SELECT_ENTITY,
         ENTITY_SELECTED,
-        ENTITY_DESELECTED
+        ENTITY_DESELECTED,
+        INIT_FRAME_DIMENSIONS,
+        INIT_NUM_OF_TILES_DIMENSIONS,
+        INIT_BOUNDING_BOX
     }
 
     void dispose();

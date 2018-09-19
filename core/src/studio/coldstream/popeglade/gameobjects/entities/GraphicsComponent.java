@@ -21,14 +21,14 @@ import static studio.coldstream.popeglade.gameobjects.entities.Entity.Direction.
 public abstract class GraphicsComponent implements Component {
     private static final String TAG = GraphicsComponent.class.getSimpleName();
 
-
-
     protected TextureRegion currentFrame = null;
     protected float frameTime = 0f;
     protected Entity.State currentState;
     protected Entity.Direction currentDirection;
     protected Json json;
     protected Vector2 currentPosition;
+    protected Vector2 frameDimensions;
+    protected Vector2 numOfTilesDimensions;
     protected Hashtable<Entity.AnimationType, Animation<TextureRegion>> animations;
     protected ShapeRenderer shapeRenderer;
 
@@ -36,6 +36,8 @@ public abstract class GraphicsComponent implements Component {
         currentPosition = new Vector2(0,0);
         currentState = Entity.State.IMMOBILE;
         currentDirection = DOWN;
+        frameDimensions = new Vector2(0,0);
+        numOfTilesDimensions = new Vector2(0,0);
         json = new Json();
         animations = new Hashtable();
         shapeRenderer = new ShapeRenderer();
@@ -116,10 +118,10 @@ public abstract class GraphicsComponent implements Component {
                 }
                 break;
             default:
-                Gdx.app.log(TAG, "" + (currentFrame == null));
+                /*Gdx.app.log(TAG, "" + (currentFrame == null));
                 Animation<TextureRegion> animation = animations.get(Entity.AnimationType.IDLE);
                 if( animation == null ) return;
-                currentFrame = animation.getKeyFrames()[0];
+                currentFrame = animation.getKeyFrames()[0];*/
                 break;
         }
     }
@@ -132,6 +134,8 @@ public abstract class GraphicsComponent implements Component {
         AssetLoader.loadTextureAsset(secondTexture);
         Texture texture2 = AssetLoader.getTextureAsset(secondTexture);
 
+        //TextureRegion[][] texture1Frames = TextureRegion.split(texture1, (int)frameDimensions.x * (int)numOfTilesDimensions.x, (int)frameDimensions.y * (int)numOfTilesDimensions.y);
+        //TextureRegion[][] texture2Frames = TextureRegion.split(texture2, (int)frameDimensions.x * (int)numOfTilesDimensions.x, (int)frameDimensions.y * (int)numOfTilesDimensions.y);
         TextureRegion[][] texture1Frames = TextureRegion.split(texture1, (int)Entity.frameDimensions.x, (int)Entity.frameDimensions.y);
         TextureRegion[][] texture2Frames = TextureRegion.split(texture2, (int)Entity.frameDimensions.x, (int)Entity.frameDimensions.y);
 
@@ -143,11 +147,13 @@ public abstract class GraphicsComponent implements Component {
         return animation;
     }
 
-    protected Animation loadAnimation(String textureName, Array<GridPoint2> points, float frameDuration){
+    protected Animation loadAnimation(String textureName, Vector2 frameDimensions, Vector2 numOfTilesDimensions, Array<GridPoint2> points, float frameDuration){
         AssetLoader.loadTextureAsset(textureName);
         Texture texture = AssetLoader.getTextureAsset(textureName);
+        Gdx.app.log(TAG, "NumOfTilesX: " + (int)numOfTilesDimensions.x + " : " + (int)frameDimensions.x);
+        //TextureRegion[][] textureFrames = TextureRegion.split(texture, (int)Entity.frameDimensions.x * (int)Entity.numOfTilesDimensions.x, (int)Entity.frameDimensions.y * (int)Entity.numOfTilesDimensions.y);
 
-        TextureRegion[][] textureFrames = TextureRegion.split(texture, (int)Entity.frameDimensions.x, (int)Entity.frameDimensions.y);
+        TextureRegion[][] textureFrames = TextureRegion.split(texture, (int)frameDimensions.x * (int)numOfTilesDimensions.x, (int)frameDimensions.y * (int)numOfTilesDimensions.y);
 
         TextureRegion[] animationKeyFrames = new TextureRegion[points.size];
 

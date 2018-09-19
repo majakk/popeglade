@@ -1,7 +1,11 @@
 package studio.coldstream.popeglade.gameobjects.entities;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 
 import studio.coldstream.popeglade.gameobjects.maps.MapManager;
 
@@ -32,6 +36,12 @@ public class NPCPhysicsComponent extends PhysicsComponent {
                 currentDirection = json.fromJson(Entity.Direction.class, string[1]);
             } else if(string[0].equalsIgnoreCase(MESSAGE.INIT_SELECT_ENTITY.toString())) {
                 Gdx.app.log(TAG, "Init select Entity Message ends here in NPCPhysicsComponent");
+            } else if (string[0].equalsIgnoreCase(MESSAGE.INIT_BOUNDING_BOX.toString())) {
+                EntityConfig entityConfig = json.fromJson(EntityConfig.class, string[1]);
+                Array<EntityConfig.BoundingBox> boundingBoxes = entityConfig.getBoundingBox();
+                for( EntityConfig.BoundingBox boundingBox : boundingBoxes ){
+                    initBoundingBox(boundingBox.getBoundingBox()); //ToDO Here we need something like addBoundingBox...
+                }
             }
 
         }

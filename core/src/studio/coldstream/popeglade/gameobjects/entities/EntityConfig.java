@@ -2,6 +2,7 @@ package studio.coldstream.popeglade.gameobjects.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.GridPoint2;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
@@ -20,6 +21,10 @@ public class EntityConfig {
     private String itemTypeID;
     private String frameWidth;
     private String frameHeight;
+    private String numOfTilesWidth;
+    private String numOfTilesHeight;
+    private Array<BoundingBox> boundingBox;
+    //private String test;
     private ObjectMap<String, String> entityProperties;
 
 
@@ -53,7 +58,10 @@ public class EntityConfig {
         itemTypeID = config.getItemTypeID();
         frameWidth = config.getFrameWidth();
         frameHeight = config.getFrameHeight();
-
+        numOfTilesWidth = config.getNumOfTilesWidth();
+        numOfTilesHeight = config.getNumOfTilesHeight();
+        boundingBox = new Array<BoundingBox>();
+        boundingBox.addAll(config.getBoundingBox());
         animationConfig = new Array<AnimationConfig>();
         animationConfig.addAll(config.getAnimationConfig());
 
@@ -62,23 +70,33 @@ public class EntityConfig {
 
         entityProperties = new ObjectMap<String, String>();
         entityProperties.putAll(config.entityProperties);
+    }
 
+    public String getNumOfTilesWidth() {
+        return numOfTilesWidth;
+    }
 
+    public String getNumOfTilesHeight() {
+        return numOfTilesHeight;
     }
 
     public String getFrameHeight() {
         return frameHeight;
     }
 
-    public Vector2 getFrameDimensions() {
-        //Gdx.app.log(TAG, "Created " + getFrameWidth() + " : " + getFrameHeight());
-        //return new Vector2(Integer.decode(frameWidth), Integer.decode(frameHeight));
-
-        return new Vector2(Integer.valueOf(getFrameWidth()),Integer.valueOf(getFrameHeight()));
-    }
-
     public String getFrameWidth() {
         return frameWidth;
+    }
+
+    public Vector2 getNumOfTilesDimensions() {
+        //Gdx.app.log(TAG, "Created " + getFrameWidth() + " : " + getFrameHeight());
+        //return new Vector2(Integer.decode(frameWidth), Integer.decode(frameHeight));
+        return new Vector2(Integer.valueOf(getNumOfTilesWidth()),Integer.valueOf(getNumOfTilesHeight()));
+        //return new Vector2(Integer.valueOf(getFrameWidth()) * Integer.valueOf(getNumOfTilesWidth()),Integer.valueOf(getFrameHeight()) * Integer.valueOf(getNumOfTilesHeight()));
+    }
+
+    public Vector2 getFrameDimensions() {
+        return new Vector2(Integer.valueOf(getFrameWidth()),Integer.valueOf(getFrameHeight()));
     }
 
     public void setFrameWidth(String frameWidth) {
@@ -164,6 +182,10 @@ public class EntityConfig {
         this.state = state;
     }
 
+    public Array<BoundingBox> getBoundingBox() {
+        return boundingBox;
+    }
+
     public Array<AnimationConfig> getAnimationConfig() {
         return animationConfig;
     }
@@ -180,6 +202,30 @@ public class EntityConfig {
         this.inventory = inventory;
     }*/
 
+    //An inner class for the bounding box
+    static public class BoundingBox{
+        private String x;
+        private String y;
+        private String w;
+        private String h;
+
+        public BoundingBox(){
+            x = new String();
+            y = new String();
+            w = new String();
+            h = new String();
+        }
+
+        public Rectangle getBoundingBox() {
+            return new Rectangle(
+                    Integer.parseInt(x),
+                    Integer.parseInt(y),
+                    Integer.parseInt(w),
+                    Integer.parseInt(h)
+                    );
+        }
+    }
+
     //An inner class of the EntityConfig is AnimationConfig.
     static public class AnimationConfig{
         private float frameDuration = 1.0f;
@@ -191,8 +237,6 @@ public class EntityConfig {
             animationType = Entity.AnimationType.IDLE;
             texturePaths = new Array<>();
             gridPoints = new Array<>();
-            //Gdx.app.log(TAG, "Attached");
-
         }
 
         public float getFrameDuration() {

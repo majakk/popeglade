@@ -50,6 +50,7 @@ public abstract class PhysicsComponent implements Component {
         this.tempEntities = new Array<>();
         boundingBoxLocation = BoundingBoxLocation.BOTTOM_LEFT;
         //_selectionRay = new Ray(new Vector3(), new Vector3());
+        new Rectangle(1,1,1,1);
     }
 
     @Override
@@ -155,7 +156,7 @@ public abstract class PhysicsComponent implements Component {
 
     protected boolean isCollisionWithMapEntities(Entity entity, MapManager mapMgr){
         tempEntities.clear();
-        //tempEntities.addAll(mapMgr.getCurrentMapEntities());
+        tempEntities.addAll(mapMgr.getCurrentMapEntities());
         //tempEntities.addAll(mapMgr.getCurrentMapQuestEntities());
         boolean isCollisionWithMapEntities = false;
 
@@ -316,5 +317,9 @@ public abstract class PhysicsComponent implements Component {
         float newUnitScaleY = (Entity.frameDimensions.y / Entity.frameDimensions.y) ;
         boundingBox.set(nextEntityPosition.x / Map.UNIT_SCALE, nextEntityPosition.y / Map.UNIT_SCALE, Entity.frameDimensions.x * percentageWidth / newUnitScaleX, Entity.frameDimensions.y * percentageHeight / newUnitScaleY);
         return;
+    }
+
+    protected void initBoundingBox(Rectangle adam){
+        boundingBox.set(adam);
     }
 }

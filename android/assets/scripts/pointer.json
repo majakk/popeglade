@@ -4,6 +4,8 @@
   "direction": "DOWN",
   "frameWidth": 32,
   "frameHeight": 32,
+  "numOfTilesWidth": 1,
+  "numOfTilesHeight": 1,
   "animationConfig": [
     {
       "frameDuration": 0.05,

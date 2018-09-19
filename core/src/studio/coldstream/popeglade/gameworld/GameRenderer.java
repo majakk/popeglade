@@ -28,6 +28,8 @@ import javafx.scene.effect.BlendMode;
 import studio.coldstream.popeglade.gamehelpers.LocationHandler;
 import studio.coldstream.popeglade.gameobjects.entities.Component;
 import studio.coldstream.popeglade.gameobjects.entities.Entity;
+import studio.coldstream.popeglade.gameobjects.entities.EntityConfig;
+import studio.coldstream.popeglade.gameobjects.entities.EntityFactory;
 import studio.coldstream.popeglade.gameobjects.entities.PlayerInputComponent;
 import studio.coldstream.popeglade.gameobjects.entities.PointerInputComponent;
 import studio.coldstream.popeglade.gameobjects.maps.Map;
@@ -296,6 +298,20 @@ public class GameRenderer {
                 // do something with circle...
             }*/
             }
+            for (Entity entity : mapEntities){
+                Rectangle rect = entity.getCurrentBoundingBox();
+                shapeRenderer.setProjectionMatrix(mapRenderer.getBatch().getProjectionMatrix());
+                shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+                if(entity.getEntityID() == "PLAYER") {
+                    shapeRenderer.setColor(Color.BLUE);
+                } else {
+                    shapeRenderer.setColor(Color.RED);
+                }
+                shapeRenderer.rect(rect.getX() * Map.UNIT_SCALE, rect.getY() * Map.UNIT_SCALE, rect.getWidth() * Map.UNIT_SCALE, rect.getHeight() * Map.UNIT_SCALE);
+                shapeRenderer.end();
+            }
+
+
         }
 
         playerHUD.render(delta);
@@ -402,7 +418,6 @@ public class GameRenderer {
 
             return o1.getCurrentPosition().y > o2.getCurrentPosition().y ? -1 : 1;
         }
-
     }
 
 

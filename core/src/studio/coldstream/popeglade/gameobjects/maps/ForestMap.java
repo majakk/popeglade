@@ -24,7 +24,15 @@ public class ForestMap extends Map {
         for( Vector2 position: mapObjectsStartPositions){
             Entity entity = EntityFactory.getInstance().getEntityByName(EntityFactory.EntityName.SMALL_TREE);
             entity.sendMessage(Component.MESSAGE.INIT_START_POSITION, json.toJson(position));
+            entity.sendMessage(Component.MESSAGE.INIT_FRAME_DIMENSIONS, json.toJson(entity.getEntityConfig().getFrameDimensions()));
+            entity.sendMessage(Component.MESSAGE.INIT_NUM_OF_TILES_DIMENSIONS, json.toJson(entity.getEntityConfig().getNumOfTilesDimensions()));
+            entity.sendMessage(Component.MESSAGE.INIT_BOUNDING_BOX, json.toJson(entity.getEntityConfig()));
             Gdx.app.debug(TAG, "Tree Positions: " + position );
+            /*EntityConfig entityConfig = ProfileManager.getInstance().getProperty(entity.getEntityConfig().getEntityID(), EntityConfig.class);
+            if( entityConfig != null ){
+                entity.setEntityConfig(entityConfig);
+            }*/
+            Gdx.app.debug(TAG, "LOADED CONFIG?:  " + entity.getEntityConfig().getNumOfTilesDimensions().x );
             mapEntities.add(entity);
             //Gdx.app.debug(TAG, "Tree Data: " + entity.getEntityConfig().getEntityID() );
         }

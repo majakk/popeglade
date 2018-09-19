@@ -4,6 +4,16 @@
   "direction": "DOWN",
   "frameWidth": 15,
   "frameHeight": 30,
+  "numOfTilesWidth": 1,
+  "numOfTilesHeight": 1,
+  "boundingBox": [
+    {
+      "x": 0,
+      "y": 0,
+      "w": 8,
+      "h": 6
+    }
+  ],
   "animationConfig": [
     {
       "frameDuration": 0.9,

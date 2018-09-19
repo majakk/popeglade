@@ -45,7 +45,8 @@ public class PlayerGraphicsComponent extends GraphicsComponent {
             } else if (string[0].equalsIgnoreCase(MESSAGE.LOAD_ANIMATIONS.toString())) {
                 EntityConfig entityConfig = json.fromJson(EntityConfig.class, string[1]);
                 Array<EntityConfig.AnimationConfig> animationConfigs = entityConfig.getAnimationConfig();
-
+                Vector2 frameDimensions = entityConfig.getFrameDimensions();
+                Vector2 numOfTilesDimensions = entityConfig.getNumOfTilesDimensions();
                 for( EntityConfig.AnimationConfig animationConfig : animationConfigs ){
                     Array<String> textureNames = animationConfig.getTexturePaths();
                     Array<GridPoint2> points = animationConfig.getGridPoints();
@@ -54,7 +55,7 @@ public class PlayerGraphicsComponent extends GraphicsComponent {
                     Animation<TextureRegion> animation = null;
 
                     if( textureNames.size == 1) {
-                        animation = loadAnimation(textureNames.get(0), points, frameDuration);
+                        animation = loadAnimation(textureNames.get(0), frameDimensions, numOfTilesDimensions, points, frameDuration);
                     }else if( textureNames.size == 2){
                         animation = loadAnimation(textureNames.get(0), textureNames.get(1), points, frameDuration);
                     }
@@ -91,7 +92,7 @@ public class PlayerGraphicsComponent extends GraphicsComponent {
                 entity.getEntityConfig().getFrameDimensions().y * Map.UNIT_SCALE * PLAYER_SPRITE_SCALE); //Should it be compensated for the ratio between texture_width (player) and MapTileWidth?
         batch.end();
 
-        if(MainGameScreen.isCollisionGridEnabled()) {
+        /*if(MainGameScreen.isCollisionGridEnabled()) {
             Rectangle rect = entity.getCurrentBoundingBox();
             shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
@@ -100,10 +101,7 @@ public class PlayerGraphicsComponent extends GraphicsComponent {
                     rect.getWidth() * Map.UNIT_SCALE * PLAYER_SPRITE_SCALE,
                     rect.getHeight() * Map.UNIT_SCALE * PLAYER_SPRITE_SCALE);
             shapeRenderer.end();
-        }
-
-
-
+        }*/
     }
 
     @Override

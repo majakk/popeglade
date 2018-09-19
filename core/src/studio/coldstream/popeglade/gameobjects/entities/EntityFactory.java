@@ -78,7 +78,9 @@ public class EntityFactory {
                         new PlayerPhysicsComponent(),
                         new PlayerGraphicsComponent());
                 entity.setEntityConfig(Entity.getEntityConfig(EntityFactory.PLAYER_CONFIG));
+                entity.getEntityConfig().setEntityID("PLAYER");
                 entity.sendMessage(Component.MESSAGE.LOAD_ANIMATIONS, json.toJson(entity.getEntityConfig()));
+                entity.sendMessage(Component.MESSAGE.INIT_BOUNDING_BOX, json.toJson(entity.getEntityConfig()));
                 return entity;
             case POINTER:
                 entity = new Entity(

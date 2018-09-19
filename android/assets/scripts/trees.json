@@ -3,8 +3,10 @@
     "entityID" : "SMALL_TREE",
     "state" : "IMMOBILE",
     "direction" : "DOWN",
-    "frameWidth": 15,
-    "frameHeight": 30,
+    "frameWidth": 16,
+    "frameHeight": 16,
+    "numOfTilesWidth": 3,
+    "numOfTilesHeight": 3,
     "conversationConfigPath" : "",
     "questConfigPath" : "",
     "currentQuestID" : "",
@@ -31,53 +33,44 @@
         "value": 5
       }
     },
+    "boundingBox": [
+      {
+        "x": 0,
+        "y": 0,
+        "w": 10,
+        "h": 10
+      },
+      {
+        "x": 10,
+        "y": 0,
+        "w": 10,
+        "h": 10
+      }
+    ],
     "animationConfig": [
       {
         "frameDuration": 0.5,
         "animationType": "IDLE",
         "texturePaths": [
-          "android/assets/gfx/gnome_player.png"
+          "android/assets/tmx/gfx/Groundtest.png"
         ],
         "gridPoints": [
           {
             "x": 0,
             "y": 0
-          },
-          {
-            "x": 1,
-            "y": 0
-          },
-          {
-            "x": 2,
-            "y": 0
-          },
-          {
-            "x": 3,
-            "y": 0
           }
+
         ]
       },
       {
         "frameDuration": 0.5,
         "animationType": "IMMOBILE",
         "texturePaths": [
-          "android/assets/gfx/gnome_player.png"
+          "android/assets/tmx/gfx/Groundtest.png"
         ],
         "gridPoints": [
           {
             "x": 0,
-            "y": 0
-          },
-          {
-            "x": 1,
-            "y": 0
-          },
-          {
-            "x": 2,
-            "y": 0
-          },
-          {
-            "x": 3,
             "y": 0
           }
         ]
@@ -88,8 +81,10 @@
     "entityID" : "MEDIUM_TREE",
     "state" : "IMMOBILE",
     "direction" : "DOWN",
-    "frameWidth": 15,
-    "frameHeight": 30,
+    "frameWidth": 16,
+    "frameHeight": 16,
+    "numOfTilesWidth": 5,
+    "numOfTilesHeight": 6,
     "conversationConfigPath" : "",
     "questConfigPath" : "",
     "currentQuestID" : "",
@@ -116,12 +111,20 @@
         "value": 5
       }
     },
+    "boundingBox": [
+      {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      }
+    ],
     "animationConfig": [
       {
         "frameDuration": 0.5,
         "animationType": "IDLE",
         "texturePaths": [
-          "android/assets/gfx/gnome_player.png"
+          "android/assets/tmx/gfx/Groundtest.png"
 
         ],
         "gridPoints": [
@@ -139,7 +142,7 @@
         "frameDuration": 0.5,
         "animationType": "IMMOBILE",
         "texturePaths": [
-          "android/assets/gfx/gnome_player.png"
+          "android/assets/tmx/gfx/Groundtest.png"
 
         ],
         "gridPoints": [
@@ -159,8 +162,10 @@
     "entityID" : "SHRUB",
     "state" : "IMMOBILE",
     "direction" : "DOWN",
-    "frameWidth": 15,
-    "frameHeight": 30,
+    "frameWidth": 16,
+    "frameHeight": 16,
+    "numOfTilesWidth": 2,
+    "numOfTilesHeight": 2,
     "conversationConfigPath" : "",
     "questConfigPath" : "",
     "currentQuestID" : "",
@@ -187,13 +192,20 @@
         "value": 5
       }
     },
+    "boundingBox": [
+      {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      }
+    ],
     "animationConfig": [
       {
         "frameDuration": 0.5,
         "animationType": "IDLE",
         "texturePaths": [
-          "android/assets/gfx/gnome_player.png"
-
+          "android/assets/tmx/gfx/Groundtest.png"
         ],
         "gridPoints": [
           {
@@ -210,7 +222,7 @@
         "frameDuration": 0.5,
         "animationType": "IMMOBILE",
         "texturePaths": [
-          "android/assets/gfx/gnome_player.png"
+          "android/assets/tmx/gfx/Groundtest.png"
 
         ],
         "gridPoints": [
