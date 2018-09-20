@@ -45,7 +45,8 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
                 EntityConfig entityConfig = json.fromJson(EntityConfig.class, string[1]);
                 Array<EntityConfig.BoundingBox> boundingBoxes = entityConfig.getBoundingBox();
                 for( EntityConfig.BoundingBox boundingBox : boundingBoxes ){
-                    initBoundingBox(boundingBox.getBoundingBox()); //ToDO Here we need something like addBoundingBox...
+                    addBoundingBox(boundingBox.getBoundingBox());
+                    Gdx.app.log(TAG, "Bounding Boxes Added: " + boundingBox.toString());
                 }
             }
             //Gdx.app.log(TAG, "Key Pressed: " + currentEntityPosition + " : " + currentDirection);
@@ -58,7 +59,7 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
     @Override
     public void update(Entity entity, MapManager mapMgr, float delta) {
         //We want the hitbox to be at the feet for a better feel
-        updateBoundingBoxPosition(nextEntityPosition);
+        updatePlayerBoundingBoxPosition(nextEntityPosition);
 
         //updatePortalLayerActivation(mapMgr);
         //updateDiscoverLayerActivation(mapMgr);
@@ -71,7 +72,7 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
 
         //X-axis collisions
         calculateNextPositionX(delta);
-        updateBoundingBoxPosition(new Vector2(nextEntityPosition.x, currentEntityPosition.y));
+        updatePlayerBoundingBoxPosition(new Vector2(nextEntityPosition.x, currentEntityPosition.y));
         //updateBoundingBoxPosition(currentEntityPosition);
         if (    !isCollisionWithMapLayer(entity, mapMgr) &&
                 !isCollisionWithMapEntities(entity, mapMgr) &&
@@ -86,7 +87,7 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
 
         //Y-axis collisions
         calculateNextPositionY(delta);
-        updateBoundingBoxPosition(new Vector2(currentEntityPosition.x, nextEntityPosition.y));
+        updatePlayerBoundingBoxPosition(new Vector2(currentEntityPosition.x, nextEntityPosition.y));
         if (    !isCollisionWithMapLayer(entity, mapMgr) &&
                 !isCollisionWithMapEntities(entity, mapMgr) &&
                 state == Entity.State.WALKING){
@@ -99,9 +100,5 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
         }
 
     }
-
-
-
-
 
 }

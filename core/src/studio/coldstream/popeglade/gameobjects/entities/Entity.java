@@ -119,7 +119,7 @@ public class Entity {
             component.dispose();
     }
 
-    public Rectangle getCurrentBoundingBox(){
+    public Array<Rectangle> getCurrentBoundingBoxes(){
         return physicsComponent.boundingBox;
     }
 
@@ -222,7 +222,7 @@ public class Entity {
         entity.sendMessage(Component.MESSAGE.INIT_START_POSITION, json.toJson(new Vector2(0,0)));
         entity.sendMessage(Component.MESSAGE.INIT_STATE, json.toJson(entity.getEntityConfig().getState()));
         entity.sendMessage(Component.MESSAGE.INIT_DIRECTION, json.toJson(entity.getEntityConfig().getDirection()));
-        entity.sendMessage(Component.MESSAGE.INIT_BOUNDING_BOX, json.toJson(entity.getEntityConfig()));
+        //entity.sendMessage(Component.MESSAGE.INIT_BOUNDING_BOX, json.toJson(entity.getEntityConfig()));
 
 
         return entity;

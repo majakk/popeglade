@@ -41,9 +41,9 @@ public class EntityConfig {
     }
 
     EntityConfig(){
-        animationConfig = new Array<>();
+        //animationConfig = new Array<>();
         //inventory = new Array<ItemTypeID>();
-        entityProperties = new ObjectMap<>();
+        //entityProperties = new ObjectMap<>();
         //Gdx.app.log(TAG, "End of constructor: " + entityProperties.get(""));
 
     }

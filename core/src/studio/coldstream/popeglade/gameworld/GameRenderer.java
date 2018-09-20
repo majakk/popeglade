@@ -299,16 +299,18 @@ public class GameRenderer {
             }*/
             }
             for (Entity entity : mapEntities){
-                Rectangle rect = entity.getCurrentBoundingBox();
-                shapeRenderer.setProjectionMatrix(mapRenderer.getBatch().getProjectionMatrix());
-                shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-                if(entity.getEntityID() == "PLAYER") {
-                    shapeRenderer.setColor(Color.BLUE);
-                } else {
-                    shapeRenderer.setColor(Color.RED);
+                Array<Rectangle> rect = entity.getCurrentBoundingBoxes();
+                for (Rectangle r : rect) {
+                    shapeRenderer.setProjectionMatrix(mapRenderer.getBatch().getProjectionMatrix());
+                    shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+                    if (entity.getEntityID() == "PLAYER") {
+                        shapeRenderer.setColor(Color.BLUE);
+                    } else {
+                        shapeRenderer.setColor(Color.RED);
+                    }
+                    shapeRenderer.rect(r.getX() * Map.UNIT_SCALE, r.getY() * Map.UNIT_SCALE, r.getWidth() * Map.UNIT_SCALE, r.getHeight() * Map.UNIT_SCALE);
+                    shapeRenderer.end();
                 }
-                shapeRenderer.rect(rect.getX() * Map.UNIT_SCALE, rect.getY() * Map.UNIT_SCALE, rect.getWidth() * Map.UNIT_SCALE, rect.getHeight() * Map.UNIT_SCALE);
-                shapeRenderer.end();
             }
 
 

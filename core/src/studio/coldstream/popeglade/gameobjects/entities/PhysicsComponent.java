@@ -6,6 +6,7 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 
@@ -37,7 +38,7 @@ public abstract class PhysicsComponent implements Component {
 
     protected Array<Entity> tempEntities;
 
-    public Rectangle boundingBox;
+    protected Array<Rectangle> boundingBox;
     protected BoundingBoxLocation boundingBoxLocation;
     //protected Ray _selectionRay;
 
@@ -45,12 +46,12 @@ public abstract class PhysicsComponent implements Component {
         this.nextEntityPosition = new Vector2(0,0);
         this.currentEntityPosition = new Vector2(0,0);
         this.velocity = new Vector2(DEFAULT_VELOCITY, DEFAULT_VELOCITY);
-        this.boundingBox = new Rectangle();
+        this.boundingBox = new Array<Rectangle>(10);
         this.json = new Json();
         this.tempEntities = new Array<>();
-        boundingBoxLocation = BoundingBoxLocation.BOTTOM_LEFT;
+        this.boundingBoxLocation = BoundingBoxLocation.BOTTOM_LEFT;
         //_selectionRay = new Ray(new Vector3(), new Vector3());
-        new Rectangle(1,1,1,1);
+        //new Rectangle(1,1,1,1);
     }
 
     @Override
@@ -166,12 +167,16 @@ public abstract class PhysicsComponent implements Component {
                 continue;
             }
 
-            Rectangle targetRect = mapEntity.getCurrentBoundingBox();
-            if (boundingBox.overlaps(targetRect) ){
-                //Collision
-                entity.sendMessage(MESSAGE.COLLISION_WITH_ENTITY);
-                isCollisionWithMapEntities = true;
-                break;
+            Array<Rectangle> targetRect = mapEntity.getCurrentBoundingBoxes();
+            for (Rectangle bB : boundingBox) {
+                for (Rectangle tR : targetRect) {
+                    if (bB.overlaps(tR)) {
+                        //Collision
+                        entity.sendMessage(MESSAGE.COLLISION_WITH_ENTITY);
+                        isCollisionWithMapEntities = true;
+                        break;
+                    }
+                }
             }
         }
         tempEntities.clear();
@@ -185,7 +190,7 @@ public abstract class PhysicsComponent implements Component {
             return false;
         }
 
-        if (entitySource.getCurrentBoundingBox().overlaps(entityTarget.getCurrentBoundingBox()) ){
+        if (entitySource.getCurrentBoundingBoxes().get(0).overlaps(entityTarget.getCurrentBoundingBoxes().get(0)) ){
             //Collision
             entitySource.sendMessage(MESSAGE.COLLISION_WITH_ENTITY);
             isCollisionWithMapEntities = true;
@@ -206,10 +211,12 @@ public abstract class PhysicsComponent implements Component {
         for( MapObject object: mapCollisionLayer.getObjects()){
             if(object instanceof RectangleMapObject) {
                 rectangle = ((RectangleMapObject)object).getRectangle();
-                if( boundingBox.overlaps(rectangle) ){
-                    //Collision
-                    entity.sendMessage(MESSAGE.COLLISION_WITH_MAP);
-                    return true;
+                for (Rectangle bB : boundingBox) {
+                    if (bB.overlaps(rectangle)) {
+                        //Collision
+                        entity.sendMessage(MESSAGE.COLLISION_WITH_MAP);
+                        return true;
+                    }
                 }
             }
         }
@@ -278,7 +285,7 @@ public abstract class PhysicsComponent implements Component {
         //Gdx.app.debug(TAG, "SETTING Bounding Box for " + entity.getEntityConfig().getEntityID() + ": (" + minX + "," + minY + ")  width: " + width + " height: " + height);
     }*/
 
-    protected void updateBoundingBoxPosition(Vector2 position){
+    protected void updatePlayerBoundingBoxPosition(Vector2 position){
         //Need to account for the unitscale, since the map coordinates will be in pixels
         float minX;
         float minY;
@@ -291,35 +298,65 @@ public abstract class PhysicsComponent implements Component {
             minY = position.y;
         }
 
-        switch(boundingBoxLocation){
-            case BOTTOM_LEFT:
-                boundingBox.set(minX, minY, boundingBox.getWidth(), boundingBox.getHeight());
-                break;
-            case BOTTOM_CENTER:
-                //boundingBox.setCenter(minX + Entity.frameDimensions.x/(2), minY + Entity.frameDimensions.y/(4));
-                boundingBox.set(minX + (Entity.frameDimensions.x - boundingBox.getWidth())/(2), minY, boundingBox.getWidth(), boundingBox.getHeight());
-                break;
-            case CENTER:
-                boundingBox.setCenter(minX + Entity.frameDimensions.x/(2), minY + Entity.frameDimensions.y/(2));
-                break;
+        for(Rectangle bB : boundingBox) {
+            switch (boundingBoxLocation) {
+                case BOTTOM_LEFT:
+                    bB.set(minX, minY, bB.getWidth(), bB.getHeight());
+                    break;
+                case BOTTOM_CENTER:
+                    //boundingBox.setCenter(minX + Entity.frameDimensions.x/(2), minY + Entity.frameDimensions.y/(4));
+                    bB.set(minX + (Entity.frameDimensions.x - bB.getWidth()) / (2), minY, bB.getWidth(), bB.getHeight());
+                    break;
+                case CENTER:
+                    bB.setCenter(minX + Entity.frameDimensions.x / (2), minY + Entity.frameDimensions.y / (2));
+                    break;
+            }
+        }
+        //Gdx.app.debug(TAG, "SETTING Bounding Box for " + entity.getEntityConfig().getEntityID() + ": (" + minX + "," + minY + ")  width: " + width + " height: " + height);
+    }
+
+    protected void updateNPCBoundingBoxPosition(Entity entity, Vector2 position){
+        //Need to account for the unitscale, since the map coordinates will be in pixels
+        float minX;
+        float minY;
+
+        if( Map.UNIT_SCALE > 0 ) {
+            minX = position.x / Map.UNIT_SCALE;
+            minY = position.y / Map.UNIT_SCALE;
+        }else{
+            minX = position.x;
+            minY = position.y;
         }
 
+        int i = 0;
+        for(Rectangle bB : this.boundingBox) {
+            bB.set(minX + entity.getEntityConfig().getBoundingBox().get(i).getBoundingBox().x, minY + entity.getEntityConfig().getBoundingBox().get(i).getBoundingBox().y, bB.getWidth(), bB.getHeight());
+            i++;
+        }
 
-
-
-
-
-        //Gdx.app.debug(TAG, "SETTING Bounding Box for " + entity.getEntityConfig().getEntityID() + ": (" + minX + "," + minY + ")  width: " + width + " height: " + height);
     }
 
     protected void initBoundingBox(float percentageWidth, float percentageHeight){
         float newUnitScaleX = (Entity.frameDimensions.x / Entity.frameDimensions.x) ;
         float newUnitScaleY = (Entity.frameDimensions.y / Entity.frameDimensions.y) ;
-        boundingBox.set(nextEntityPosition.x / Map.UNIT_SCALE, nextEntityPosition.y / Map.UNIT_SCALE, Entity.frameDimensions.x * percentageWidth / newUnitScaleX, Entity.frameDimensions.y * percentageHeight / newUnitScaleY);
+        boundingBox.add(new Rectangle(nextEntityPosition.x / Map.UNIT_SCALE, nextEntityPosition.y / Map.UNIT_SCALE, Entity.frameDimensions.x * percentageWidth / newUnitScaleX, Entity.frameDimensions.y * percentageHeight / newUnitScaleY));
         return;
     }
 
-    protected void initBoundingBox(Rectangle adam){
-        boundingBox.set(adam);
+    protected void addBoundingBox(Rectangle adam){
+        /*if(this.boundingBox.size > 0) {
+            for (Rectangle burton : this.boundingBox) {
+                if (burton.x == adam.x && burton.y == adam.y)
+                    return;
+                else
+                    this.boundingBox.add(new Rectangle(adam));
+            }
+        }*/
+
+            this.boundingBox.add(new Rectangle(adam));
+
+
+
+        Gdx.app.log(TAG, "Bounding Boxes Added: " + boundingBox.get(boundingBox.size-1).x);
     }
 }

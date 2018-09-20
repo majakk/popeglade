@@ -104,12 +104,12 @@ public class EntityFactory {
                 //entity.setEntityConfig(Entity.getEntityConfig(EntityFactory.TREES_CONFIG));
 
                 return entity;
-            case MAP_OBJECTS:
+           /* case MAP_OBJECTS:
                 entity = new Entity(
                         new NPCInputComponent(),
                         new NPCPhysicsComponent(),
                         new NPCGraphicsComponent());
-                return entity;
+                return entity;*/
             default:
                 return null;
 

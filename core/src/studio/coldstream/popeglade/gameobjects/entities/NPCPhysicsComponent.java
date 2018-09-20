@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.GridPoint2;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
@@ -16,7 +17,8 @@ public class NPCPhysicsComponent extends PhysicsComponent {
 
     public NPCPhysicsComponent(){
         boundingBoxLocation = BoundingBoxLocation.BOTTOM_CENTER;
-        initBoundingBox(0.6f,0.25f);
+        //this.boundingBox = new Array<Rectangle>(10);
+        //initBoundingBox(0.6f,0.25f);
     }
 
     @Override
@@ -40,7 +42,8 @@ public class NPCPhysicsComponent extends PhysicsComponent {
                 EntityConfig entityConfig = json.fromJson(EntityConfig.class, string[1]);
                 Array<EntityConfig.BoundingBox> boundingBoxes = entityConfig.getBoundingBox();
                 for( EntityConfig.BoundingBox boundingBox : boundingBoxes ){
-                    initBoundingBox(boundingBox.getBoundingBox()); //ToDO Here we need something like addBoundingBox...
+                    addBoundingBox(boundingBox.getBoundingBox());
+                    //Gdx.app.log(TAG, "Bounding Boxes Added: " + boundingBox.getBoundingBox().x);
                 }
             }
 
@@ -52,6 +55,6 @@ public class NPCPhysicsComponent extends PhysicsComponent {
 
     @Override
     public void update(Entity entity, MapManager mapMgr, float delta){
-        updateBoundingBoxPosition(nextEntityPosition);
+        updateNPCBoundingBoxPosition(entity, nextEntityPosition);
     }
 }
