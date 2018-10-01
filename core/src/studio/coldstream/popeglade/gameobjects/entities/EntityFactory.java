@@ -17,7 +17,7 @@ public class EntityFactory {
         POINTER,
         DEMO_PLAYER,
         NPC,
-        MAP_OBJECTS
+        MAP_OBJECT
     }
 
     public enum EntityName{
@@ -78,7 +78,7 @@ public class EntityFactory {
                         new PlayerPhysicsComponent(),
                         new PlayerGraphicsComponent());
                 entity.setEntityConfig(Entity.getEntityConfig(EntityFactory.PLAYER_CONFIG));
-                entity.getEntityConfig().setEntityID("PLAYER");
+                entity.getEntityConfig().setEntityID(EntityType.PLAYER.toString());
                 entity.sendMessage(Component.MESSAGE.LOAD_ANIMATIONS, json.toJson(entity.getEntityConfig()));
                 entity.sendMessage(Component.MESSAGE.INIT_BOUNDING_BOX, json.toJson(entity.getEntityConfig()));
                 return entity;
@@ -104,12 +104,12 @@ public class EntityFactory {
                 //entity.setEntityConfig(Entity.getEntityConfig(EntityFactory.TREES_CONFIG));
 
                 return entity;
-           /* case MAP_OBJECTS:
+           case MAP_OBJECT:
                 entity = new Entity(
-                        new NPCInputComponent(),
+                        new PointerInputComponent(),
                         new NPCPhysicsComponent(),
                         new NPCGraphicsComponent());
-                return entity;*/
+                return entity;
             default:
                 return null;
 

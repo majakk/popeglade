@@ -229,5 +229,7 @@ public abstract class Map {
     }
 
 
-
+    public Array<Entity> getMapEntities() {
+        return mapEntities;
+    }
 }

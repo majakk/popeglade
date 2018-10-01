@@ -55,9 +55,7 @@ public abstract class PhysicsComponent implements Component {
     }
 
     @Override
-    public void receiveMessage(String message) {
-
-    }
+    public void receiveMessage(String message) {}
 
     protected void setNextPositionToCurrentX(Entity entity){
         this.currentEntityPosition.x = nextEntityPosition.x;
@@ -170,7 +168,9 @@ public abstract class PhysicsComponent implements Component {
             Array<Rectangle> targetRect = mapEntity.getCurrentBoundingBoxes();
             for (Rectangle bB : boundingBox) {
                 for (Rectangle tR : targetRect) {
+
                     if (bB.overlaps(tR)) {
+                        //Gdx.app.log(TAG, "Testing Collision!: " + boundingBox.get(boundingBox.size-1).x);
                         //Collision
                         entity.sendMessage(MESSAGE.COLLISION_WITH_ENTITY);
                         isCollisionWithMapEntities = true;
@@ -344,19 +344,7 @@ public abstract class PhysicsComponent implements Component {
     }
 
     protected void addBoundingBox(Rectangle adam){
-        /*if(this.boundingBox.size > 0) {
-            for (Rectangle burton : this.boundingBox) {
-                if (burton.x == adam.x && burton.y == adam.y)
-                    return;
-                else
-                    this.boundingBox.add(new Rectangle(adam));
-            }
-        }*/
-
-            this.boundingBox.add(new Rectangle(adam));
-
-
-
+        this.boundingBox.add(new Rectangle(adam));
         Gdx.app.log(TAG, "Bounding Boxes Added: " + boundingBox.get(boundingBox.size-1).x);
     }
 }

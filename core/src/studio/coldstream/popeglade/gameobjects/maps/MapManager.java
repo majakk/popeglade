@@ -99,6 +99,10 @@ public class MapManager {
         currentMap.loadMusic();
     }*/
 
+    /*public Array<Entity> getCurrentMapEntities(){
+        return currentMap.getMapEntities();
+    }*/
+
     public void updateCurrentMapEntities(MapManager mapMgr, Batch batch, float delta){
         currentMap.updateMapEntities(mapMgr, batch, delta);
     }

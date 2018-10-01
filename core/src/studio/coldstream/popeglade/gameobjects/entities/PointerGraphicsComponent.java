@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.GridPoint2;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
@@ -16,6 +17,8 @@ import studio.coldstream.popeglade.gamehelpers.LocationHandler;
 import studio.coldstream.popeglade.gameobjects.maps.Map;
 import studio.coldstream.popeglade.gameobjects.maps.MapManager;
 import studio.coldstream.popeglade.screens.MainGameScreen;
+
+import static studio.coldstream.popeglade.gameobjects.maps.Map.UNIT_SCALE;
 
 public class PointerGraphicsComponent extends GraphicsComponent {
     private static final String TAG = PointerGraphicsComponent.class.getSimpleName();
@@ -86,6 +89,52 @@ public class PointerGraphicsComponent extends GraphicsComponent {
         if(clickFlag) {
             TiledMapTileLayer.Cell adam = lh.pointerTile(entity, mapMgr, batch);
             Gdx.app.log(TAG,"Cell ID: " + adam.getTile().getId());
+
+            Rectangle aR = new Rectangle(lh.actionTileRect(mapMgr.getPlayer(), mapMgr));
+            aR.setSize(0.9f/UNIT_SCALE);
+            aR.setPosition(aR.x/UNIT_SCALE,aR.y/UNIT_SCALE);
+            //Gdx.app.log(TAG, "ActionTileRect: " + aR);
+
+            boolean isCollisionWithMapEntities = false;
+            String id = "";
+
+            Rectangle bB = new Rectangle(lh.pointerTileRect(entity,mapMgr,batch));
+            bB.setSize(1/UNIT_SCALE);
+            bB.setPosition(bB.x/UNIT_SCALE,bB.y/UNIT_SCALE);
+
+            //Gdx.app.log(TAG, "PointerTileRect: " + bB);
+
+            //Gdx.app.log(TAG, "Testing Point/Action Intersect: " + (bB.x == aR.x && bB.y == aR.y) );
+            //Rectangle bB = entity.getCurrentBoundingBoxes().get(0);
+            for(Entity mapEntity: mapMgr.getCurrentMapEntities()){
+                //Check for testing against self
+                /*if( mapEntity.equals(entity) ){
+                    continue;
+                }*/
+                //Gdx.app.log(TAG, "Testing Collision! " + mapEntity.getCurrentBoundingBoxes().get(0));
+                //Gdx.app.log(TAG, "Testing Collision! " + bB);
+                if(mapEntity.getEntityID() != EntityFactory.EntityType.PLAYER.toString()) {
+                    Array<Rectangle> targetRect = mapEntity.getCurrentBoundingBoxes();
+
+                    for (Rectangle tR : targetRect) {
+
+                        //If both pointer and player rectangles overlap a bounding box
+                        if (bB.overlaps(tR) && aR.overlaps(tR)) {
+                            //Gdx.app.log(TAG, "Testing Collision!: " + bB.overlaps(tR) + " : " + aR.overlaps(tR));
+
+                            //entity.sendMessage(MESSAGE.COLLISION_WITH_ENTITY);
+                            id = mapEntity.getEntityID();
+                            mapEntity.sendMessage(MESSAGE.INIT_SELECT_ENTITY, json.toJson("TESTTEST"));
+                            isCollisionWithMapEntities = true;
+                            break;
+                        }
+                    }
+                }
+
+            }
+
+            Gdx.app.log(TAG,"Entity Clicked: " + isCollisionWithMapEntities + " : " + id);
+
             clickFlag = false;
         }
 

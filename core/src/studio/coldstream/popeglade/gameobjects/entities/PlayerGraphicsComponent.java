@@ -1,5 +1,6 @@
 package studio.coldstream.popeglade.gameobjects.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
+import studio.coldstream.popeglade.gamehelpers.LocationHandler;
 import studio.coldstream.popeglade.gameobjects.maps.Map;
 import studio.coldstream.popeglade.gameobjects.maps.MapManager;
 import studio.coldstream.popeglade.screens.MainGameScreen;
@@ -20,8 +22,11 @@ public class PlayerGraphicsComponent extends GraphicsComponent {
 
     public static final float PLAYER_SPRITE_SCALE = 1.0f;
     protected Vector2 previousPosition;
+    private LocationHandler lh;
+
 
     public PlayerGraphicsComponent(){
+        lh = new LocationHandler();
         previousPosition = new Vector2(0,0);
     }
 
@@ -42,6 +47,9 @@ public class PlayerGraphicsComponent extends GraphicsComponent {
                 currentState = json.fromJson(Entity.State.class, string[1]);
             } else if (string[0].equalsIgnoreCase(MESSAGE.CURRENT_DIRECTION.toString())) {
                 currentDirection = json.fromJson(Entity.Direction.class, string[1]);
+            } else if(string[0].equalsIgnoreCase(MESSAGE.INIT_SELECT_ENTITY.toString())) {
+                //Vector2 currentPosition = json.fromJson(Vector2.class, string[1]);
+                Gdx.app.log(TAG, "Init select Entity Message ends here in PlayerGraphicsComponent!!!");
             } else if (string[0].equalsIgnoreCase(MESSAGE.LOAD_ANIMATIONS.toString())) {
                 EntityConfig entityConfig = json.fromJson(EntityConfig.class, string[1]);
                 Array<EntityConfig.AnimationConfig> animationConfigs = entityConfig.getAnimationConfig();
@@ -81,27 +89,12 @@ public class PlayerGraphicsComponent extends GraphicsComponent {
         camera.position.set(currentPosition.x, currentPosition.y, 0f);
         camera.update();
 
-
-
-        //NOTE: Code used to graphically debug boundingboxes
-
-
         batch.begin();
         batch.draw(currentFrame, currentPosition.x, currentPosition.y,
                 entity.getEntityConfig().getFrameDimensions().x * Map.UNIT_SCALE * PLAYER_SPRITE_SCALE,
                 entity.getEntityConfig().getFrameDimensions().y * Map.UNIT_SCALE * PLAYER_SPRITE_SCALE); //Should it be compensated for the ratio between texture_width (player) and MapTileWidth?
         batch.end();
 
-        /*if(MainGameScreen.isCollisionGridEnabled()) {
-            Rectangle rect = entity.getCurrentBoundingBox();
-            shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-            shapeRenderer.setColor(Color.BLUE);
-            shapeRenderer.rect(rect.getX() * Map.UNIT_SCALE, rect.getY() * Map.UNIT_SCALE,
-                    rect.getWidth() * Map.UNIT_SCALE * PLAYER_SPRITE_SCALE,
-                    rect.getHeight() * Map.UNIT_SCALE * PLAYER_SPRITE_SCALE);
-            shapeRenderer.end();
-        }*/
     }
 
     @Override

@@ -31,8 +31,8 @@ public class MainGameScreen implements Screen {
         PAUSED, MENU, READY, RUNNING, GAMEOVER, HIGHSCORE, SAVING, LOADING
     }
 
-    private GameWorld world;
-    private GameRenderer renderer;
+    private static GameWorld world;
+    private static GameRenderer renderer;
     private static GameState gameState;
     private float runTime;
 
@@ -117,8 +117,12 @@ public class MainGameScreen implements Screen {
         Gdx.app.debug(TAG, "SetupViewport: physical: (" + VIEWPORT.physicalWidth + "," + VIEWPORT.physicalHeight + ")" );
     }
 
-    public GameWorld getWorld(){
+    public static GameWorld getWorld(){
         return world;
+    }
+
+    public static GameRenderer getRenderer(){
+        return renderer;
     }
 
     @Override

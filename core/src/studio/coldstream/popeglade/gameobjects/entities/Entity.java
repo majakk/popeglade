@@ -127,9 +127,15 @@ public class Entity {
         return entityConfig.getEntityID();
     }
 
+    /* String getEntityType(){
+        return
+    }*/
+
     public Vector2 getCurrentPosition(){
         return graphicsComponent.currentPosition;
     }
+
+    public Direction getCurrentDirection() { return graphicsComponent.currentDirection;}
 
     public void setCurrentPosition(int x, int y) {
         graphicsComponent.currentPosition.x = x;
@@ -213,6 +219,24 @@ public class Entity {
     public static Entity initEntity(EntityConfig entityConfig){
         Json json = new Json();
         Entity entity = EntityFactory.getEntity(EntityFactory.EntityType.NPC);
+        entity.setEntityConfig(entityConfig);
+
+        //entity.sendMessage(Component.MESSAGE.INIT_FRAME_DIMENSIONS, json.toJson(entity.getEntityConfig().getFrameDimensions()));
+        //entity.sendMessage(Component.MESSAGE.INIT_NUM_OF_TILES_DIMENSIONS, json.toJson(entity.getEntityConfig().getNumOfTilesDimensions()));
+
+        entity.sendMessage(Component.MESSAGE.LOAD_ANIMATIONS, json.toJson(entity.getEntityConfig()));
+        entity.sendMessage(Component.MESSAGE.INIT_START_POSITION, json.toJson(new Vector2(0,0)));
+        entity.sendMessage(Component.MESSAGE.INIT_STATE, json.toJson(entity.getEntityConfig().getState()));
+        entity.sendMessage(Component.MESSAGE.INIT_DIRECTION, json.toJson(entity.getEntityConfig().getDirection()));
+        //entity.sendMessage(Component.MESSAGE.INIT_BOUNDING_BOX, json.toJson(entity.getEntityConfig()));
+
+
+        return entity;
+    }
+
+    public static Entity initObjectEntity(EntityConfig entityConfig){
+        Json json = new Json();
+        Entity entity = EntityFactory.getEntity(EntityFactory.EntityType.MAP_OBJECT);
         entity.setEntityConfig(entityConfig);
 
         //entity.sendMessage(Component.MESSAGE.INIT_FRAME_DIMENSIONS, json.toJson(entity.getEntityConfig().getFrameDimensions()));

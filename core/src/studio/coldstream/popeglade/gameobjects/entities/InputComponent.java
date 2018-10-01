@@ -15,7 +15,7 @@ public abstract class InputComponent implements Component, InputProcessor {
     protected Json json;
 
     protected enum Keys {
-        LEFT, RIGHT, UP, DOWN, INVENTORY, QUIT, PAUSE, F1
+        LEFT, RIGHT, UP, DOWN, INVENTORY, QUIT, PAUSE, F1, E
     }
 
     protected enum Mouse {

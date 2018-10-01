@@ -1,6 +1,7 @@
 package studio.coldstream.popeglade.gameobjects.entities;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 
 import studio.coldstream.popeglade.gameobjects.maps.MapManager;
@@ -9,6 +10,12 @@ public class PointerPhysicsComponent extends PhysicsComponent {
     private static final String TAG = PointerPhysicsComponent.class.getSimpleName();
 
     private Entity.State state;
+
+    private boolean clickFlag = false;
+
+    public PointerPhysicsComponent(){
+        initBoundingBox(0.5f, 0.5f);
+    }
 
     @Override
     public void receiveMessage(String message) {
@@ -26,7 +33,8 @@ public class PointerPhysicsComponent extends PhysicsComponent {
             } else if(string[0].equalsIgnoreCase(MESSAGE.CURRENT_DIRECTION.toString())) {
                 currentDirection = json.fromJson(Entity.Direction.class, string[1]);
             } else if(string[0].equalsIgnoreCase(MESSAGE.INIT_SELECT_ENTITY.toString())) {
-                //Gdx.app.log(TAG, "Init select Entity Message ends here in NPCPhysicsComponent");
+                Gdx.app.log(TAG, "Collision?: " );
+                clickFlag = true;
             }
 
         }
@@ -37,6 +45,12 @@ public class PointerPhysicsComponent extends PhysicsComponent {
 
     @Override
     public void update(Entity entity, MapManager mapMgr, float delta){
+        if(clickFlag) {
+            //for (Entity adam : mapMgr.getCurrentMapEntities()) {
+                Gdx.app.log(TAG, "Collision?: " + isCollisionWithMapEntities(entity, mapMgr) + " BoundingBox: " + true);
+            //}
+            clickFlag = false;
+        }
         /*setNextPositionToCurrentX(entity);
         setNextPositionToCurrentY(entity);*/
     }

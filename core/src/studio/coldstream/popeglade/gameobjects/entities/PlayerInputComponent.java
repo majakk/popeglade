@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+import studio.coldstream.popeglade.gameworld.GameWorld;
 import studio.coldstream.popeglade.screens.MainGameScreen;
 
 public class PlayerInputComponent extends InputComponent {
@@ -46,35 +47,39 @@ public class PlayerInputComponent extends InputComponent {
             MainGameScreen.setGameState(MainGameScreen.GameState.PAUSED);
             pauseReleased();
 
-        }else if( keys.get(Keys.LEFT) && keys.get(Keys.UP)){
+        } else if( keys.get(Keys.LEFT) && keys.get(Keys.UP)){
             entity.sendMessage(MESSAGE.CURRENT_STATE, json.toJson(Entity.State.WALKING));
             entity.sendMessage(MESSAGE.CURRENT_DIRECTION, json.toJson(Entity.Direction.LEFT_UP));
-        }else if( keys.get(Keys.RIGHT) && keys.get(Keys.UP)){
+        } else if( keys.get(Keys.RIGHT) && keys.get(Keys.UP)){
             entity.sendMessage(MESSAGE.CURRENT_STATE, json.toJson(Entity.State.WALKING));
             entity.sendMessage(MESSAGE.CURRENT_DIRECTION, json.toJson(Entity.Direction.RIGHT_UP));
-        }else if( keys.get(Keys.LEFT) && keys.get(Keys.DOWN)){
+        } else if( keys.get(Keys.LEFT) && keys.get(Keys.DOWN)){
             entity.sendMessage(MESSAGE.CURRENT_STATE, json.toJson(Entity.State.WALKING));
             entity.sendMessage(MESSAGE.CURRENT_DIRECTION, json.toJson(Entity.Direction.LEFT_DOWN));
-        }else if(keys.get(Keys.RIGHT) && keys.get(Keys.DOWN)){
+        } else if(keys.get(Keys.RIGHT) && keys.get(Keys.DOWN)){
             entity.sendMessage(MESSAGE.CURRENT_STATE, json.toJson(Entity.State.WALKING));
             entity.sendMessage(MESSAGE.CURRENT_DIRECTION, json.toJson(Entity.Direction.RIGHT_DOWN));
 
-        }else if( keys.get(Keys.LEFT)){
+        } else if( keys.get(Keys.LEFT)){
             entity.sendMessage(MESSAGE.CURRENT_STATE, json.toJson(Entity.State.WALKING));
             entity.sendMessage(MESSAGE.CURRENT_DIRECTION, json.toJson(Entity.Direction.LEFT));
-        }else if( keys.get(Keys.RIGHT)){
+        } else if( keys.get(Keys.RIGHT)){
             entity.sendMessage(MESSAGE.CURRENT_STATE, json.toJson(Entity.State.WALKING));
             entity.sendMessage(MESSAGE.CURRENT_DIRECTION, json.toJson(Entity.Direction.RIGHT));
-        }else if( keys.get(Keys.UP)){
+        } else if( keys.get(Keys.UP)){
             entity.sendMessage(MESSAGE.CURRENT_STATE, json.toJson(Entity.State.WALKING));
             entity.sendMessage(MESSAGE.CURRENT_DIRECTION, json.toJson(Entity.Direction.UP));
-        }else if(keys.get(Keys.DOWN)){
+        } else if(keys.get(Keys.DOWN)){
             entity.sendMessage(MESSAGE.CURRENT_STATE, json.toJson(Entity.State.WALKING));
             entity.sendMessage(MESSAGE.CURRENT_DIRECTION, json.toJson(Entity.Direction.DOWN));
 
-        }else if(keys.get(Keys.QUIT)) {
+        } else if(keys.get(Keys.QUIT)) {
             quitReleased();
             Gdx.app.exit();
+
+        } else if(keys.get(Keys.INVENTORY)) {
+            MainGameScreen.getRenderer().getPlayerHUD().toggleInventoryUIVisibility();
+            inventoryReleased();
 
         } else if(keys.get(Keys.F1)) {
             if(MainGameScreen.isCollisionGridEnabled())
@@ -140,6 +145,9 @@ public class PlayerInputComponent extends InputComponent {
             this.pausePressed();
         }
         if( keycode == Input.Keys.I ){
+            this.inventoryPressed();
+        }
+        if( keycode == Input.Keys.E ){
             this.inventoryPressed();
         }
         if( keycode == Input.Keys.F1 ){

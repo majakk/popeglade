@@ -86,7 +86,6 @@ public class GameRenderer {
 
         hudCamera = new OrthographicCamera();
         hudCamera.setToOrtho(false, myScreen.getPhysicalViewport().x, myScreen.getPhysicalViewport().y);
-        //hudCamera.setToOrtho(false, myScreen.getViewport().x, myScreen.getViewport().y);
 
         playerHUD = new PlayerHUD(hudCamera, player);
         hudCamera.update();
@@ -103,8 +102,6 @@ public class GameRenderer {
         cam.setToOrtho(false, myScreen.getViewport().x, myScreen.getViewport().y);
         cam.update();
 
-
-
         mapMgr.setCamera(cam);
 
         batcher = new SpriteBatch();
@@ -112,8 +109,6 @@ public class GameRenderer {
 
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(cam.combined);
-
-        //playerHUD.getStage().getBatch().setProjectionMatrix(cam.combined); //Somehow the icons do not position themselves properly
 
         //Input devices and their target processing classes
         multiplexer = new InputMultiplexer();
@@ -124,7 +119,7 @@ public class GameRenderer {
 
         mapEntities = mapMgr.getCurrentMapEntities();
         mapEntities.add(player);
-        //lh = new LocationHandler();
+        lh = new LocationHandler();
 
         //Gdx.app.log(TAG, "MapSize X: " + mapMgr.getMapDimensions().x);
     }
@@ -143,7 +138,7 @@ public class GameRenderer {
         mapEntities.sort(entityComparator);
 
         //Gdx.app.log("GameRenderer", "render");
-        //pointer.update(delta, player, mapMgr);
+        //pointer.update(mapMgr, batcher, delta);
         //Clear and draw background
         Gdx.gl.glClearColor(0.6f, 0.6f, 0.8f, 1);
         Gdx.gl.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
@@ -161,8 +156,6 @@ public class GameRenderer {
         cam.position.y = MathUtils.clamp(mapMgr.getPlayer().getCurrentPosition().y, cam.viewportHeight / 2, mapMgr.getMapDimensions().y * Map.UNIT_SCALE - cam.viewportHeight / 2);
         cam.update();
 
-        //batcher.setProjectionMatrix(cam.combined); //Super important line!
-
         if( mapMgr.hasMapChanged() ) {
             mapRenderer.setMap(mapMgr.getCurrentTiledMap());
             player.sendMessage(Component.MESSAGE.INIT_START_POSITION, json.toJson(mapMgr.getPlayerStartUnitScaled()));
@@ -177,41 +170,12 @@ public class GameRenderer {
 
         mapRenderer.setView(cam);
 
-
-        //Draw bottom map
-
-
-
-        //Draw all sprites
         batcher.setProjectionMatrix(cam.combined); //Super important line!
-        //shapeRenderer.setProjectionMatrix(cam.combined); //Super important line!
-        //batcher.begin();
 
-        //Draw Player
-        //player.render(delta, runTime, batcher);
-
-
-        //batcher.end();
-
-       /* Gdx.gl.glEnable(Gdx.gl20.GL_BLEND);
-        Gdx.gl.glBlendFunc(Gdx.gl20.GL_SRC_ALPHA, Gdx.gl20.GL_ONE_MINUS_SRC_ALPHA);*/
-        //shapeRenderer.setProjectionMatrix(cam.combined);
-        /*shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(new Color(1, 1, 1, 0.5f));
-        shapeRenderer.circle(player.getX(), player.getY(), 25);
-        shapeRenderer.end();
-        Gdx.gl.glDisable(Gdx.gl20.GL_BLEND);*/
-
-
-
-        //Draw top map
         Gdx.gl.glEnable(Gdx.gl20.GL_BLEND);
         Gdx.gl.glBlendFunc(Gdx.gl20.GL_SRC_ALPHA, Gdx.gl20.GL_ONE_MINUS_SRC_ALPHA);
 
-        /*tileLayer = (TiledMapTileLayer) terrain.getTiledMap().getLayers().get(1);
-        cell = tileLayer.getCell((int)Math.floor((double)pointer.getX()/(double) terrain.getSingleTileWidth()),(int)Math.floor((double)pointer.getY()/(double) terrain.getSingleTileHeight()));*/
-
-        //Ground level stuff
+        //Map
         mapRenderer.getBatch().begin();
 
             TiledMapTileLayer backgroundMapLayer = (TiledMapTileLayer)mapMgr.getCurrentTiledMap().getLayers().get(Map.BACKGROUND_LAYER);
@@ -236,28 +200,11 @@ public class GameRenderer {
 
         mapRenderer.getBatch().end();
 
-
-        /*for (Entity entity : mapEntities) {
-            Gdx.app.log(TAG,"Entity count: " + mapEntities.size);
-            entity.update(mapMgr, batcher, delta);
-        }*/
+        //Update and Draw mapEntities (including player)
         mapMgr.updateCurrentMapEntities(mapMgr, batcher, delta);
 
         //Player
         //player.update(mapMgr, batcher, delta);
-
-        //3 layers onTop of player 3x3 (ok,we'll see)
-        //TiledMapTileLayer groundMapLayer = (TiledMapTileLayer)mapMgr.getCurrentTiledMap().getLayers().get(Map.GROUND_LAYER);
-        //if( groundMapLayer != null ) {
-        //    mapRenderer.renderTileLayer(groundMapLayer);
-        //}
-        //TiledMapTileLayer.Cell adam = lh.pointerTile(player, mapMgr, batcher);
-        /*TiledMapTileLayer.Cell bertil = groundMapLayer.getCell((int)Math.floor(player.getCurrentPosition().x),(int)Math.floor(player.getCurrentPosition().y));
-        Gdx.app.log(TAG,"Cell ID: " + (int)Math.floor(player.getCurrentPosition().y));
-        //bertil.getTile().setBlendMode(TiledMapTile.BlendMode.ALPHA);
-        TiledMapTileLayer.Cell roland = groundMapLayer.getCell(1,1);*/
-
-
 
         //Top level stuff
         mapRenderer.getBatch().begin();
@@ -269,41 +216,37 @@ public class GameRenderer {
 
         mapRenderer.getBatch().end();
 
-        pointer.update(mapMgr, batcher, delta);
-
         //Debug Lines Rendering
-        //mapMgr.updateCurrentMapEntities(mapMgr, mapRenderer.getBatch(), delta);
         if(MainGameScreen.isCollisionGridEnabled()) {
             MapObjects objects = mapMgr.getCollisionLayer().getObjects();
             for (MapObject object : objects) {
                 if (object instanceof RectangleMapObject) {
                     Rectangle rect = ((RectangleMapObject) object).getRectangle();
-                    // do something with rect...
                     shapeRenderer.setProjectionMatrix(mapRenderer.getBatch().getProjectionMatrix());
                     shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
                     shapeRenderer.setColor(Color.RED);
                     shapeRenderer.rect(rect.getX() * Map.UNIT_SCALE, rect.getY() * Map.UNIT_SCALE, rect.getWidth() * Map.UNIT_SCALE, rect.getHeight() * Map.UNIT_SCALE);
                     shapeRenderer.end();
                 }
-            /*else if (object instanceof PolygonMapObject) {
-                Polygon polygon = ((PolygonMapObject) object).getPolygon();
-                // do something with polygon...
-            }
-            else if (object instanceof PolylineMapObject) {
-                Polyline chain = ((PolylineMapObject) object).getPolyline();
-                // do something with chain...
-            }
-            else if (object instanceof CircleMapObject) {
-                Circle circle = ((CircleMapObject) object).getCircle();
-                // do something with circle...
-            }*/
+                /*else if (object instanceof PolygonMapObject) {
+                    Polygon polygon = ((PolygonMapObject) object).getPolygon();
+                    // do something with polygon...
+                }
+                else if (object instanceof PolylineMapObject) {
+                    Polyline chain = ((PolylineMapObject) object).getPolyline();
+                    // do something with chain...
+                }
+                else if (object instanceof CircleMapObject) {
+                    Circle circle = ((CircleMapObject) object).getCircle();
+                    // do something with circle...
+                }*/
             }
             for (Entity entity : mapEntities){
                 Array<Rectangle> rect = entity.getCurrentBoundingBoxes();
                 for (Rectangle r : rect) {
                     shapeRenderer.setProjectionMatrix(mapRenderer.getBatch().getProjectionMatrix());
                     shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-                    if (entity.getEntityID() == "PLAYER") {
+                    if (entity.getEntityID() == EntityFactory.EntityType.PLAYER.toString()) {
                         shapeRenderer.setColor(Color.BLUE);
                     } else {
                         shapeRenderer.setColor(Color.RED);
@@ -313,94 +256,27 @@ public class GameRenderer {
                 }
             }
 
+            Rectangle rect = lh.actionTileRect(player,mapMgr);
+            shapeRenderer.setProjectionMatrix(mapRenderer.getBatch().getProjectionMatrix());
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            shapeRenderer.setColor(Color.CYAN);
+            shapeRenderer.rect(
+                    rect.x,
+                    rect.y ,
+                    rect.width,
+                    rect.height);
+            shapeRenderer.end();
+
 
         }
 
         playerHUD.render(delta);
 
-
-
-
-        /*** *************************************
-         *
-         *  The code below is for debugging only
-         *
-         * **************************************/
-
-
-        //Used to graphically debug boundingboxes
-        /*Rectangle rect = player.getCurrentBoundingBox();
-        shapeRenderer.setProjectionMatrix(cam.combined);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.RED);
-        shapeRenderer.rect(rect.getX() * Map.UNIT_SCALE , rect.getY() * Map.UNIT_SCALE, rect.getWidth() * Map.UNIT_SCALE, rect.getHeight()*Map.UNIT_SCALE);
-        shapeRenderer.end();*/
-
-
-        /*Gdx.gl.glLineWidth(2);
-
-        //Draw collision rects
-        shapeRenderer.setProjectionMatrix(cam.combined);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-
-            //Draw Player Collision Rect
-            shapeRenderer.setColor(1,0,0,0.2f);
-            shapeRenderer.rect(player.getBoundingRect().x, player.getBoundingRect().y, player.getBoundingRect().width, player.getBoundingRect().height);
-
-        shapeRenderer.end();
-
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-
-            for(int i = 0; i < 9; i++){
-                if(lh.isTileWall(lh.playerNineTile(player, terrain).get(i)))
-                    shapeRenderer.rect(lh.playerNineTileRect(player, terrain).get(i).x, lh.playerNineTileRect(player, terrain).get(i).y, lh.playerNineTileRect(player, terrain).get(i).width, lh.playerNineTileRect(player, terrain).get(i).height);
-            }
-
-        shapeRenderer.end();*/
-
-        //Draw pointer rect
-        /*shapeRenderer.setProjectionMatrix(cam.combined); //Super important line!
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-
-            shapeRenderer.setColor(0.3f,1,0.3f,0.2f);
-            //shapeRenderer.rect(lh.pointerTileRect(pointer, terrain).x, lh.pointerTileRect(pointer, terrain).y, lh.pointerTileRect(pointer, terrain).width, lh.pointerTileRect(pointer, terrain).height);
-            shapeRenderer.rect(lh.pointerTileRect(pointer, mapMgr).x, lh.pointerTileRect(pointer, mapMgr).y, lh.pointerTileRect(pointer, mapMgr).width, lh.pointerTileRect(pointer, mapMgr).height);
-
-        shapeRenderer.end();*/
-
-        //Draw values in rects
-        /*batcher.begin();
-
-            //Ninerect
-            //for(int i = 0; i < 9; i++){
-            //    font.draw(batcher, lh.playerNineTile(player, terrain).get(i).getTile().getId() + "", lh.playerNineTileRect(player, terrain).get(i).x + 2, lh.playerNineTileRect(player, terrain).get(i).y + 8);
-            //}
-
-            //Pointerrect
-            font.draw(batcher, lh.pointerTile(pointer, terrain).getTile().getId() + "", lh.pointerTileRect(pointer, terrain).x + 2, lh.pointerTileRect(pointer, terrain).y + 8);
-
-        batcher.end();*/
-
-
+        //Pointer (Top of top)
+        pointer.update(mapMgr, batcher, delta);
 
     }
 
-
-
-    /*public OrthographicCamera getCamera(){
-        return cam;
-    }*/
-
-    /*private void initGameObjects() {
-        //player = myWorld.getPlayer();
-        //terrain = myWorld.getTerrain();
-        //pointer = myWorld.getPointer();
-        //hud = new HeadUpDisplay(player);
-    }*/
-
-    /*private void initAssets() {
-        //playerAnimation = AssetLoader.playerAnimation;
-    }*/
     private static class yPositionComparator implements Comparator<Entity> {
         //private final Entity yCoordinate;
 

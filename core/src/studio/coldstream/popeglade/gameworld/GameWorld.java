@@ -56,7 +56,6 @@ public class GameWorld {
     public Terrain getTerrain() { return terrain; }*/
 
 
-    //public Pointer getPointer() { return pointer; }
     public Entity getPlayerEntity() { return player; }
     public Entity getPointerEntity() { return pointer; }
     public MapManager getMapMgr() { return mapMgr; }

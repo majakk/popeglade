@@ -149,6 +149,26 @@ public class LocationHandler {
         return tempRect;
     }*/
 
+    public Rectangle actionTileRect(Entity entity, MapManager mapMgr) {
+        float tileSizeX = mapMgr.getMapTileDimension().x;
+        float tileSizeY = mapMgr.getMapTileDimension().y;
+        //Gdx.app.log(TAG,"Dimensions: ");
+
+        tempRect.set(
+                (float)Math.round(entity.getCurrentPosition().x) + ((
+                        entity.getCurrentDirection() == Entity.Direction.LEFT ||
+                        entity.getCurrentDirection() == Entity.Direction.LEFT_UP ||
+                        entity.getCurrentDirection() == Entity.Direction.LEFT_DOWN)?-1:0) + ((
+                        entity.getCurrentDirection() == Entity.Direction.RIGHT ||
+                        entity.getCurrentDirection() == Entity.Direction.RIGHT_UP ||
+                        entity.getCurrentDirection() == Entity.Direction.RIGHT_DOWN)?1:0),
+                (float)Math.round(entity.getCurrentPosition().y - (entity.getCurrentBoundingBoxes().get(0).height) * Map.UNIT_SCALE) + ((entity.getCurrentDirection() == Entity.Direction.UP)?1:0) + ((entity.getCurrentDirection() == Entity.Direction.DOWN)?-1:0),
+                tileSizeX * Map.UNIT_SCALE,
+                tileSizeY * Map.UNIT_SCALE);
+        return tempRect;
+
+    }
+
     public Rectangle pointerTileRect(Entity entity, MapManager mapMgr, Batch batch) {
         //float numOfTilesX = mapMgr.getMapNumOfTiles().x;
         //float numOfTilesY = mapMgr.getMapNumOfTiles().y;

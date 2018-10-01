@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -178,5 +179,11 @@ public class PlayerHUD implements Screen, ProfileObserver{
 
     public Stage getStage() {
         return stage;
+    }
+
+    public void toggleInventoryUIVisibility() {
+        this.inventoryUI.setVisible(inventoryUI.isVisible() ? false : true);
+        ImageButton inventoryButton = statusUI.getInventoryButton();
+        inventoryButton.toggle();
     }
 }
